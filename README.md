@@ -150,13 +150,13 @@ Memories are periodically **reorbited** - moved between zones based on their tot
 
 ## Documentation
 
-**[Landing Page](https://sangjun0000.github.io/stellar-memory/)** | **[Full Documentation](https://sangjun0000.github.io/stellar-memory/docs/)**
+**[Landing Page](https://stellar-memory.com/)** | **[Full Documentation](https://stellar-memory.com/docs/)**
 
-- [Getting Started](https://sangjun0000.github.io/stellar-memory/docs/getting-started/)
-- [API Reference](https://sangjun0000.github.io/stellar-memory/docs/api-reference/)
-- [REST API](https://sangjun0000.github.io/stellar-memory/docs/rest-api/)
-- [MCP Integration](https://sangjun0000.github.io/stellar-memory/docs/mcp/claude-code/)
-- [Guides](https://sangjun0000.github.io/stellar-memory/docs/guides/chatbot/)
+- [Getting Started](https://stellar-memory.com/docs/getting-started/)
+- [API Reference](https://stellar-memory.com/docs/api-reference/)
+- [REST API](https://stellar-memory.com/docs/rest-api/)
+- [MCP Integration](https://stellar-memory.com/docs/mcp/claude-code/)
+- [Guides](https://stellar-memory.com/docs/guides/chatbot/)
 
 ## Contributing
 

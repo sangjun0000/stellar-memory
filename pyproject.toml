@@ -20,9 +20,9 @@ keywords = ["ai", "memory", "llm", "mcp", "recall", "context"]
 dependencies = []
 
 [project.urls]
-Homepage = "https://sangjun0000.github.io/stellar-memory/"
+Homepage = "https://stellar-memory.com/"
 Repository = "https://github.com/sangjun0000/stellar-memory"
-Documentation = "https://github.com/sangjun0000/stellar-memory#readme"
+Documentation = "https://stellar-memory.com/docs/"
 Changelog = "https://github.com/sangjun0000/stellar-memory/blob/main/CHANGELOG.md"
 
 [project.scripts]

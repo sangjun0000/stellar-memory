@@ -47,6 +47,6 @@ docker run -p 9000:9000 -v stellar-data:/data sangjun0000/stellar-memory
 ## Links
 
 - [GitHub Repository](https://github.com/sangjun0000/stellar-memory)
-- [Documentation](https://sangjun0000.github.io/stellar-memory/docs/)
+- [Documentation](https://stellar-memory.com/docs/)
 - [PyPI Package](https://pypi.org/project/stellar-memory/)
-- [Landing Page](https://sangjun0000.github.io/stellar-memory/)
+- [Landing Page](https://stellar-memory.com/)
