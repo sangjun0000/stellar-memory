@@ -89,3 +89,13 @@
   - `stellar-memory-p9/stellar-memory-p9.design.md`
   - `stellar-memory-p9/stellar-memory-p9.analysis.md`
   - `stellar-memory-p9/stellar-memory-p9.report.md`
+
+### stellar-memory-launch (v1.0.0 Launch)
+- **Archived**: 2026-02-18
+- **Match Rate**: 100% (61% → 84% → 100%, 2 iterations)
+- **Features**: F1 Project Metadata, F2 PyPI Deployment, F3 GitHub Release, F4 MkDocs Documentation, F5 Docker Hub (CI/CD), F6 CI/CD Pipeline, F7 Community & Discoverability
+- **Deliverables**: GitHub repo, Landing page, MkDocs docs, PyPI v1.0.0, GitHub Release v1.0.0, Docker CI/CD, Social Preview
+- **Documents**:
+  - `stellar-memory-launch/stellar-memory-launch.plan.md`
+  - `stellar-memory-launch/stellar-memory-launch.analysis.md`
+  - `stellar-memory-launch/stellar-memory-launch.report.md`
