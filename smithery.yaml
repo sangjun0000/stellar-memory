@@ -1,0 +1,41 @@
+name: stellar-memory
+description: "Celestial-structure-based AI memory management. Give any AI human-like memory with 5 orbital zones, emotion engine, and adaptive decay."
+version: "1.0.0"
+license: MIT
+author: sangjun0000
+homepage: https://stellar-memory.com
+repository: https://github.com/sangjun0000/stellar-memory
+
+server:
+  command: stellar-memory
+  args: ["serve-mcp"]
+
+install:
+  pip: stellar-memory[mcp]
+
+tools:
+  - name: stellar_store
+    description: "Store a memory with automatic importance scoring and zone placement"
+  - name: stellar_recall
+    description: "Recall relevant memories using semantic search across all zones"
+  - name: stellar_stats
+    description: "Get memory statistics and zone distribution overview"
+  - name: stellar_timeline
+    description: "View chronological memory timeline with zone transitions"
+  - name: stellar_introspect
+    description: "Analyze knowledge state, identify gaps and strengths"
+  - name: stellar_reason
+    description: "Memory-augmented reasoning with context from stored memories"
+
+tags:
+  - ai-memory
+  - llm
+  - mcp
+  - celestial
+  - context-management
+  - emotion-ai
+  - memory-management
+
+categories:
+  - memory
+  - ai

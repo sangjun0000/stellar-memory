@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "stellar-memory": {
+      "command": "stellar-memory",
+      "args": ["serve-mcp"],
+      "env": {}
+    }
+  }
+}
