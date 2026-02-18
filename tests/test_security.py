@@ -4,6 +4,12 @@ import os
 import tempfile
 import pytest
 
+try:
+    import cryptography
+    HAS_CRYPTOGRAPHY = True
+except ImportError:
+    HAS_CRYPTOGRAPHY = False
+
 from stellar_memory.security.encryption import EncryptionManager
 from stellar_memory.security.access_control import AccessControl, DEFAULT_ROLES
 from stellar_memory.security.audit import SecurityAudit
@@ -22,6 +28,7 @@ class TestEncryptionManager:
         mgr = EncryptionManager(key=key)
         assert mgr.enabled
 
+    @pytest.mark.skipif(not HAS_CRYPTOGRAPHY, reason="cryptography not installed")
     def test_encrypt_decrypt_roundtrip(self):
         key = EncryptionManager.generate_key()
         mgr = EncryptionManager(key=key)
@@ -31,6 +38,7 @@ class TestEncryptionManager:
         decrypted = mgr.decrypt(encrypted)
         assert decrypted == plaintext
 
+    @pytest.mark.skipif(not HAS_CRYPTOGRAPHY, reason="cryptography not installed")
     def test_different_nonces(self):
         key = EncryptionManager.generate_key()
         mgr = EncryptionManager(key=key)
@@ -38,6 +46,7 @@ class TestEncryptionManager:
         e2 = mgr.encrypt("same text")
         assert e1 != e2  # different nonces
 
+    @pytest.mark.skipif(not HAS_CRYPTOGRAPHY, reason="cryptography not installed")
     def test_decrypt_wrong_key_fails(self):
         key1 = EncryptionManager.generate_key()
         key2 = EncryptionManager.generate_key()
@@ -81,6 +90,7 @@ class TestEncryptionManager:
         assert len(key) == 32
         assert isinstance(key, bytes)
 
+    @pytest.mark.skipif(not HAS_CRYPTOGRAPHY, reason="cryptography not installed")
     def test_unicode_content(self):
         key = EncryptionManager.generate_key()
         mgr = EncryptionManager(key=key)
@@ -88,12 +98,14 @@ class TestEncryptionManager:
         encrypted = mgr.encrypt(text)
         assert mgr.decrypt(encrypted) == text
 
+    @pytest.mark.skipif(not HAS_CRYPTOGRAPHY, reason="cryptography not installed")
     def test_empty_string(self):
         key = EncryptionManager.generate_key()
         mgr = EncryptionManager(key=key)
         encrypted = mgr.encrypt("")
         assert mgr.decrypt(encrypted) == ""
 
+    @pytest.mark.skipif(not HAS_CRYPTOGRAPHY, reason="cryptography not installed")
     def test_large_content(self):
         key = EncryptionManager.generate_key()
         mgr = EncryptionManager(key=key)

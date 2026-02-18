@@ -31,7 +31,10 @@ class TestVersionManagement:
 
     def test_pyproject_version_matches(self):
         """pyproject.toml version should be consistent."""
-        import tomllib
+        try:
+            import tomllib
+        except ModuleNotFoundError:
+            pytest.skip("tomllib requires Python 3.11+")
         from pathlib import Path
         toml_path = Path(__file__).parent.parent / "pyproject.toml"
         if not toml_path.exists():
