@@ -9,7 +9,6 @@ authors = [{name = "Stellar Memory Contributors"}]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
@@ -69,9 +68,12 @@ docs = ["mkdocs-material>=9.5.0"]
 
 dev = ["pytest>=7.0", "pytest-cov>=4.0", "httpx>=0.27.0"]
 
+[tool.setuptools.packages.find]
+include = ["stellar_memory*"]
+
 [build-system]
-requires = ["setuptools>=68.0"]
-build-backend = "setuptools.backends._legacy:_Backend"
+requires = ["setuptools>=68.0,<75", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
