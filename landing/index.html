@@ -6,12 +6,43 @@
   <meta name="description" content="Give any AI human-like memory. Celestial-structure-based memory system with 5 orbital zones, emotion engine, metacognition, and self-learning." />
   <meta property="og:title" content="Stellar Memory — Give any AI human-like memory" />
   <meta property="og:description" content="Celestial-structure-based AI memory management system. 5 orbital zones, emotion engine, metacognition, self-learning, and MCP integration." />
-  <meta property="og:url" content="https://sangjun0000.github.io/stellar-memory/" />
+  <meta property="og:url" content="https://stellar-memory.com/" />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://sangjun0000.github.io/stellar-memory/social-preview.svg" />
+  <meta property="og:image" content="https://stellar-memory.com/social-preview.svg" />
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Stellar Memory — Give any AI human-like memory" />
   <meta name="twitter:description" content="Celestial-structure-based AI memory management. 5 orbital zones, emotion engine, metacognition, and self-learning." />
+  <link rel="canonical" href="https://stellar-memory.com/" />
+  <meta name="robots" content="index, follow" />
+  <meta name="keywords" content="AI memory, LLM memory, stellar memory, celestial memory, MCP, AI agent memory, Python AI library, memory management, emotion AI, metacognition" />
+  <meta name="author" content="sangjun0000" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Stellar Memory",
+    "description": "Celestial-structure-based AI memory management system. Give any AI human-like memory with 5 orbital zones, emotion engine, metacognition, and self-learning.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Cross-platform",
+    "offers": [
+      {"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "5,000 memories, 1 agent, SQLite, Local MCP"},
+      {"@type": "Offer", "name": "Pro", "price": "29", "priceCurrency": "USD", "description": "50,000 memories, 5 agents, PostgreSQL, Cloud MCP, Dashboard"},
+      {"@type": "Offer", "name": "Team", "price": "99", "priceCurrency": "USD", "description": "500,000 memories, 20 agents, Team Sync, RBAC, Audit Logs"},
+      {"@type": "Offer", "name": "Enterprise", "price": "0", "priceCurrency": "USD", "description": "Unlimited memories and agents, On-premise, SLA, Custom pricing"}
+    ],
+    "author": {
+      "@type": "Person",
+      "name": "sangjun0000",
+      "url": "https://github.com/sangjun0000"
+    },
+    "codeRepository": "https://github.com/sangjun0000/stellar-memory",
+    "programmingLanguage": "Python",
+    "license": "https://opensource.org/licenses/MIT",
+    "softwareVersion": "1.0.0",
+    "downloadUrl": "https://pypi.org/project/stellar-memory/",
+    "url": "https://stellar-memory.com/"
+  }
+  </script>
   <title>Stellar Memory — Give any AI human-like memory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -1022,6 +1053,130 @@
     }
 
     /* ============================================================
+       PRICING
+    ============================================================ */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      max-width: 1100px;
+      margin: 48px auto 0;
+    }
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.12);
+    }
+    .pricing-popular {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 40px rgba(240,180,41,0.1);
+    }
+    .pricing-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-gold);
+      color: #000;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 16px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .pricing-tier {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+    .pricing-price {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .pricing-price span {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+    .pricing-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+    .pricing-features {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 24px;
+      flex: 1;
+    }
+    .pricing-features li {
+      font-size: 0.85rem;
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pricing-features li.incl { color: var(--text-secondary); }
+    .pricing-features li.excl { color: var(--text-muted); opacity: 0.45; }
+    .pricing-features li.incl::before {
+      content: "";
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+      background: var(--accent-gold);
+      -webkit-mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/contain no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/contain no-repeat;
+    }
+    .pricing-features li.excl::before {
+      content: "\2014";
+      width: 16px;
+      text-align: center;
+      flex-shrink: 0;
+      font-size: 0.75rem;
+    }
+    .pricing-cta {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      color: var(--text-primary);
+      transition: background 0.2s;
+      margin-top: auto;
+    }
+    .pricing-cta:hover { background: rgba(255,255,255,0.05); }
+    .pricing-cta-gold {
+      background: var(--accent-gold);
+      color: #000;
+      border-color: var(--accent-gold);
+    }
+    .pricing-cta-gold:hover { background: var(--accent-glow); }
+
+    @media (max-width: 900px) {
+      .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .pricing-grid { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; }
+    }
+
+    /* ============================================================
        FOOTER
     ============================================================ */
     footer {
@@ -1192,6 +1347,7 @@
           <li><a href="#architecture">Architecture</a></li>
           <li><a href="#quickstart">Quick Start</a></li>
           <li><a href="#integrations">Integrations</a></li>
+          <li><a href="#pricing">Pricing</a></li>
           <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
         </ul>
         <button class="nav-hamburger" aria-label="Menu" onclick="toggleMobileMenu()">
@@ -1677,7 +1833,7 @@
           </div>
 
           <div style="margin-top: 32px; display:flex; gap:12px; flex-wrap:wrap;">
-            <a href="https://sangjun0000.github.io/stellar-memory/docs/" target="_blank" rel="noopener" class="btn-primary" style="font-size:0.875rem; padding:10px 20px;">
+            <a href="https://stellar-memory.com/docs/" target="_blank" rel="noopener" class="btn-primary" style="font-size:0.875rem; padding:10px 20px;">
               Full Documentation
             </a>
             <a href="https://pypi.org/project/stellar-memory/" target="_blank" rel="noopener" class="btn-secondary" style="font-size:0.875rem; padding:10px 20px;">
@@ -1825,6 +1981,90 @@
   </section>
 
   <!-- ============================================================
+       PRICING
+  ============================================================ -->
+  <section id="pricing">
+    <div class="container">
+      <div style="text-align:center;">
+        <div class="section-label">Pricing</div>
+        <h2 class="section-title">Simple, transparent pricing</h2>
+        <p class="section-sub">Start free. Scale when you need to.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Free -->
+        <div class="pricing-card">
+          <div class="pricing-tier">Free</div>
+          <div class="pricing-price">$0<span>/mo</span></div>
+          <div class="pricing-desc">For personal projects</div>
+          <ul class="pricing-features">
+            <li class="incl">5,000 memories</li>
+            <li class="incl">1 agent</li>
+            <li class="incl">SQLite storage</li>
+            <li class="incl">Local MCP server</li>
+            <li class="incl">CLI interface</li>
+            <li class="excl">Cloud sync</li>
+            <li class="excl">Web dashboard</li>
+          </ul>
+          <a href="https://pypi.org/project/stellar-memory/" target="_blank" rel="noopener" class="pricing-cta">Get Started</a>
+        </div>
+
+        <!-- Pro (Popular) -->
+        <div class="pricing-card pricing-popular">
+          <div class="pricing-badge">Most Popular</div>
+          <div class="pricing-tier">Pro</div>
+          <div class="pricing-price">$29<span>/mo</span></div>
+          <div class="pricing-desc">For serious builders</div>
+          <ul class="pricing-features">
+            <li class="incl">50,000 memories</li>
+            <li class="incl">5 agents</li>
+            <li class="incl">PostgreSQL + pgvector</li>
+            <li class="incl">Cloud MCP endpoint</li>
+            <li class="incl">Web dashboard</li>
+            <li class="incl">Email support</li>
+            <li class="excl">Team sync</li>
+          </ul>
+          <a href="#" class="pricing-cta pricing-cta-gold">Coming Soon</a>
+        </div>
+
+        <!-- Team -->
+        <div class="pricing-card">
+          <div class="pricing-tier">Team</div>
+          <div class="pricing-price">$99<span>/mo</span></div>
+          <div class="pricing-desc">For growing teams</div>
+          <ul class="pricing-features">
+            <li class="incl">500,000 memories</li>
+            <li class="incl">20 agents</li>
+            <li class="incl">Everything in Pro</li>
+            <li class="incl">CRDT team sync</li>
+            <li class="incl">RBAC + audit logs</li>
+            <li class="incl">Priority support</li>
+            <li class="incl">SSO</li>
+          </ul>
+          <a href="#" class="pricing-cta">Coming Soon</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="pricing-card">
+          <div class="pricing-tier">Enterprise</div>
+          <div class="pricing-price">Custom</div>
+          <div class="pricing-desc">For organizations</div>
+          <ul class="pricing-features">
+            <li class="incl">Unlimited memories</li>
+            <li class="incl">Unlimited agents</li>
+            <li class="incl">Everything in Team</li>
+            <li class="incl">On-premise deployment</li>
+            <li class="incl">Dedicated support</li>
+            <li class="incl">SLA guarantee</li>
+            <li class="incl">Custom integrations</li>
+          </ul>
+          <a href="mailto:contact@stellar-memory.com" class="pricing-cta">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
        FOOTER
   ============================================================ -->
   <footer>
@@ -1851,8 +2091,8 @@
         <div class="footer-col">
           <h4>Docs</h4>
           <ul class="footer-links">
-            <li><a href="https://sangjun0000.github.io/stellar-memory/docs/getting-started/" target="_blank" rel="noopener">Getting Started</a></li>
-            <li><a href="https://sangjun0000.github.io/stellar-memory/docs/api-reference/" target="_blank" rel="noopener">API Reference</a></li>
+            <li><a href="https://stellar-memory.com/docs/getting-started/" target="_blank" rel="noopener">Getting Started</a></li>
+            <li><a href="https://stellar-memory.com/docs/api-reference/" target="_blank" rel="noopener">API Reference</a></li>
             <li><a href="https://github.com/sangjun0000/stellar-memory/tree/main/examples" target="_blank" rel="noopener">Examples</a></li>
             <li><a href="https://github.com/sangjun0000/stellar-memory/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>
           </ul>
