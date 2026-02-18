@@ -4,6 +4,27 @@ All notable changes to Stellar Memory will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.0.0] - 2026-02-18 (P9 - Stable Release)
+
+### Added
+- Metacognition Engine: `introspect()` for knowledge state analysis (confidence, coverage, gaps)
+- Confidence-scored recall: `recall_with_confidence()` with threshold filtering
+- Self-Learning: `optimize()` for automatic weight tuning from recall patterns
+- Weight rollback safety: `rollback_weights()` for safe recovery
+- Multimodal memory: code/JSON/structured data handlers with `detect_content_type()`
+- Memory Reasoning: `reason()` for insight generation from memory combinations
+- Contradiction detection: `detect_contradictions()` for identifying conflicting memories
+- Benchmark suite: `benchmark()` with recall@k, latency, memory profiling
+- HTML benchmark reports: `BenchmarkReport.to_html()`
+- 7 new REST API endpoints (introspect, recall/confident, optimize, rollback-weights, reason, contradictions, benchmark)
+- 5 new CLI commands (introspect, recall --confident, optimize, rollback-weights, benchmark)
+- 5 new MCP tools (memory_introspect, memory_recall_confident, memory_optimize, memory_reason, memory_benchmark)
+- Landing page and GitHub Pages site
+
+### Changed
+- Version bumped to 1.0.0 (Production/Stable)
+- All P9 features default `enabled=False` for backward compatibility
+
 ## [0.9.0] - 2026-02-17 (P8)
 
 ### Added

@@ -3,7 +3,7 @@
 > Give any AI human-like memory. Built on a celestial structure.
 
 [![PyPI](https://img.shields.io/pypi/v/stellar-memory)](https://pypi.org/project/stellar-memory/)
-[![Tests](https://img.shields.io/github/actions/workflow/status/stellar-memory/stellar-memory/ci.yml?label=tests)](https://github.com/stellar-memory/stellar-memory/actions)
+[![Tests](https://img.shields.io/github/actions/workflow/status/sangjun0000/stellar-memory/ci.yml?label=tests)](https://github.com/sangjun0000/stellar-memory/actions)
 [![Python](https://img.shields.io/pypi/pyversions/stellar-memory)](https://pypi.org/project/stellar-memory/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -150,11 +150,11 @@ Memories are periodically **reorbited** - moved between zones based on their tot
 
 ## Documentation
 
-- [Getting Started](https://stellar-memory.readthedocs.io/getting-started/)
-- [API Reference](https://stellar-memory.readthedocs.io/api-reference/)
-- [REST API](https://stellar-memory.readthedocs.io/rest-api/)
-- [MCP Integration](https://stellar-memory.readthedocs.io/mcp/claude-code/)
-- [Guides](https://stellar-memory.readthedocs.io/guides/chatbot/)
+- [Getting Started](https://github.com/sangjun0000/stellar-memory/blob/main/docs/getting-started/)
+- [API Reference](https://github.com/sangjun0000/stellar-memory/blob/main/docs/api-reference/)
+- [REST API](https://github.com/sangjun0000/stellar-memory/blob/main/docs/rest-api/)
+- [MCP Integration](https://github.com/sangjun0000/stellar-memory/blob/main/docs/mcp/claude-code/)
+- [Guides](https://github.com/sangjun0000/stellar-memory/blob/main/docs/guides/chatbot/)
 
 ## Contributing
 
