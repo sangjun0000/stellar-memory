@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://sangjun0000.github.io/stellar-memory/sitemap.xml
+Sitemap: https://stellar-memory.com/sitemap.xml
