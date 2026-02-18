@@ -59,8 +59,8 @@ Stellar Memory v1.0.0 코드 완성 및 GitHub 저장소/랜딩 페이지 배포
 
 - [ ] `python -m build`로 sdist + wheel 생성
 - [ ] `twine check dist/*`로 패키지 검증
-- [ ] TestPyPI에 먼저 시험 배포 (`twine upload --repository testpypi`)
-- [ ] TestPyPI에서 설치 테스트 (`pip install -i https://test.pypi.org/simple/ stellar-memory`)
+- [ ] ~~TestPyPI 시험 배포~~ (선택사항 - v1.0.0은 직접 PyPI 배포 성공)
+- [ ] ~~TestPyPI 설치 테스트~~ (선택사항 - 향후 릴리스에서 권장)
 - [ ] PyPI에 정식 배포 (`twine upload dist/*`)
 - [ ] `pip install stellar-memory` 설치 확인
 
@@ -91,12 +91,12 @@ Stellar Memory v1.0.0 코드 완성 및 GitHub 저장소/랜딩 페이지 배포
 **우선순위**: P1
 
 - [ ] Docker Hub 계정/저장소 생성
-- [ ] `docker build -t sangjun0000/stellar-memory:1.0.0 .`
-- [ ] `docker push sangjun0000/stellar-memory:1.0.0`
-- [ ] `docker push sangjun0000/stellar-memory:latest`
+- [ ] Docker 이미지 배포 (아래 중 택1):
+  - 수동: `docker build` + `docker push` (Docker Desktop 필요)
+  - 자동: release.yml CI/CD + GitHub Secrets (DOCKER_USERNAME, DOCKER_PASSWORD) 등록
 - [ ] Docker Hub README 작성
 
-**전제 조건**: Docker Hub 계정, Docker Desktop 실행
+**전제 조건**: Docker Hub 계정, GitHub Secrets 또는 Docker Desktop
 **성공 기준**: `docker pull sangjun0000/stellar-memory` 성공
 
 ### F6: CI/CD 파이프라인 수정

@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Give any AI human-like memory. Celestial-structure-based memory system with 5 orbital zones, emotion engine, metacognition, and self-learning." />
+  <meta property="og:title" content="Stellar Memory — Give any AI human-like memory" />
+  <meta property="og:description" content="Celestial-structure-based AI memory management system. 5 orbital zones, emotion engine, metacognition, self-learning, and MCP integration." />
+  <meta property="og:url" content="https://sangjun0000.github.io/stellar-memory/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://sangjun0000.github.io/stellar-memory/docs/assets/images/favicon.png" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Stellar Memory — Give any AI human-like memory" />
+  <meta name="twitter:description" content="Celestial-structure-based AI memory management. 5 orbital zones, emotion engine, metacognition, and self-learning." />
+  <title>Stellar Memory — Give any AI human-like memory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ============================================================
+       RESET & BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-void:       #030712;
+      --bg-deep:       #060d1f;
+      --bg-surface:    #0c1a35;
+      --bg-card:       #0f2044;
+      --bg-card-hover: #132654;
+
+      --accent-gold:   #f0b429;
+      --accent-amber:  #f59e0b;
+      --accent-glow:   #fcd34d;
+      --accent-blue:   #3b82f6;
+      --accent-indigo: #6366f1;
+      --accent-cyan:   #06b6d4;
+      --accent-violet: #8b5cf6;
+      --accent-rose:   #f43f5e;
+      --accent-emerald:#10b981;
+
+      --text-primary:  #f0f4ff;
+      --text-secondary:#94a3b8;
+      --text-muted:    #475569;
+
+      --border-subtle: rgba(148, 163, 184, 0.08);
+      --border-card:   rgba(148, 163, 184, 0.12);
+
+      --font-sans: 'Inter', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+
+      --shadow-card: 0 4px 24px rgba(0,0,0,0.4), 0 1px 4px rgba(0,0,0,0.3);
+      --shadow-glow: 0 0 40px rgba(240,180,41,0.15);
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-void);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Starfield background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 25% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 40% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 80%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 70% 35%, rgba(255,255,255,0.6) 0%, transparent 100%),
+        radial-gradient(1px 1px at 85% 55%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 15% 75%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 90% 10%, rgba(255,255,255,0.7) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5%  90%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 60% 50%, rgba(255,255,255,0.2) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 33% 40%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 78% 70%, rgba(255,255,255,0.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 48% 92%, rgba(255,255,255,0.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 92% 45%, rgba(255,255,255,0.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 20% 5%,  rgba(255,255,255,0.6) 0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================================
+       LAYOUT UTILITIES
+    ============================================================ */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    section { position: relative; z-index: 1; }
+
+    .section-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 16px;
+    }
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent-gold);
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ============================================================
+       NAV
+    ============================================================ */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 16px 0;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(3, 7, 18, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .nav-logo-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, var(--accent-gold), #b45309);
+      box-shadow: 0 0 12px rgba(240,180,41,0.5);
+      flex-shrink: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text-primary); }
+
+    .nav-cta {
+      background: var(--accent-gold);
+      color: #000 !important;
+      padding: 8px 18px;
+      border-radius: var(--radius-sm);
+      font-weight: 600 !important;
+      font-size: 0.875rem !important;
+      transition: background 0.2s, transform 0.15s !important;
+    }
+    .nav-cta:hover {
+      background: var(--accent-glow) !important;
+      transform: translateY(-1px);
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: 0.3s;
+    }
+
+    /* ============================================================
+       HERO
+    ============================================================ */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+      overflow: hidden;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(240, 180, 41, 0.1);
+      border: 1px solid rgba(240, 180, 41, 0.25);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--accent-gold);
+      margin-bottom: 24px;
+    }
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.7); }
+    }
+
+    .hero-title {
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .hero-title-gradient {
+      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-amber) 40%, #fef3c7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      color: var(--text-secondary);
+      margin-bottom: 36px;
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    .hero-tagline strong {
+      color: var(--text-primary);
+      font-weight: 600;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-gold);
+      color: #000;
+      text-decoration: none;
+      padding: 13px 24px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: var(--accent-glow);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(240,180,41,0.3);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--text-primary);
+      text-decoration: none;
+      padding: 12px 22px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-card);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(148,163,184,0.3);
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-2px);
+    }
+
+    .hero-install {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      max-width: fit-content;
+    }
+
+    .install-prefix {
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .install-cmd {
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      color: var(--text-primary);
+      user-select: all;
+    }
+
+    .copy-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      padding: 4px;
+      border-radius: 4px;
+      transition: color 0.2s, background 0.2s;
+      display: flex;
+      align-items: center;
+    }
+    .copy-btn:hover {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.08);
+    }
+    .copy-btn svg { width: 16px; height: 16px; }
+
+    /* ============================================================
+       SOLAR SYSTEM ANIMATION
+    ============================================================ */
+    .solar-system {
+      position: relative;
+      width: 420px;
+      height: 420px;
+      margin: 0 auto;
+    }
+
+    /* Sun — Core memory */
+    .sun {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7cd, var(--accent-gold) 45%, #b45309 80%);
+      box-shadow:
+        0 0 20px rgba(240,180,41,0.8),
+        0 0 50px rgba(240,180,41,0.4),
+        0 0 90px rgba(240,180,41,0.15);
+      animation: sun-pulse 4s ease-in-out infinite;
+      z-index: 10;
+    }
+
+    @keyframes sun-pulse {
+      0%, 100% { box-shadow: 0 0 20px rgba(240,180,41,0.8), 0 0 50px rgba(240,180,41,0.4), 0 0 90px rgba(240,180,41,0.15); }
+      50%       { box-shadow: 0 0 30px rgba(240,180,41,1),   0 0 70px rgba(240,180,41,0.5), 0 0 120px rgba(240,180,41,0.2); }
+    }
+
+    /* Orbit rings */
+    .orbit {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(148,163,184,0.12);
+    }
+
+    .orbit-1 { width: 100px; height: 100px; }
+    .orbit-2 { width: 158px; height: 158px; }
+    .orbit-3 { width: 220px; height: 220px; }
+    .orbit-4 { width: 286px; height: 286px; }
+    .orbit-5 { width: 360px; height: 360px; border-style: dashed; border-color: rgba(148,163,184,0.07); }
+
+    /* Planet wrapper — rotates around sun */
+    .planet-orbit {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform-origin: 0 0;
+      border-radius: 50%;
+    }
+
+    /* Planet dot */
+    .planet {
+      position: absolute;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Zone 1 — Core (red/rose) */
+    .planet-orbit-1 {
+      width: 100px; height: 100px;
+      margin: -50px 0 0 -50px;
+      animation: orbit-rotate 6s linear infinite;
+    }
+    .planet-orbit-1 .planet {
+      width: 10px; height: 10px;
+      top: 0; left: 50%;
+      background: radial-gradient(circle at 35% 35%, #fca5a5, var(--accent-rose));
+      box-shadow: 0 0 8px rgba(244,63,94,0.7);
+    }
+
+    /* Zone 2 — Inner (blue) */
+    .planet-orbit-2a {
+      width: 158px; height: 158px;
+      margin: -79px 0 0 -79px;
+      animation: orbit-rotate 11s linear infinite;
+    }
+    .planet-orbit-2a .planet {
+      width: 12px; height: 12px;
+      top: 0; left: 50%;
+      background: radial-gradient(circle at 35% 35%, #93c5fd, var(--accent-blue));
+      box-shadow: 0 0 10px rgba(59,130,246,0.7);
+    }
+    .planet-orbit-2b {
+      width: 158px; height: 158px;
+      margin: -79px 0 0 -79px;
+      animation: orbit-rotate 11s linear infinite reverse;
+      animation-delay: -5.5s;
+    }
+    .planet-orbit-2b .planet {
+      width: 8px; height: 8px;
+      top: 0; left: 50%;
+      background: radial-gradient(circle at 35% 35%, #c4b5fd, var(--accent-violet));
+      box-shadow: 0 0 8px rgba(139,92,246,0.6);
+    }
+
+    /* Zone 3 — Outer (cyan) */
+    .planet-orbit-3 {
+      width: 220px; height: 220px;
+      margin: -110px 0 0 -110px;
+      animation: orbit-rotate 18s linear infinite;
+    }
+    .planet-orbit-3 .planet {
+      width: 14px; height: 14px;
+      top: 0; left: 50%;
+      background: radial-gradient(circle at 35% 35%, #a5f3fc, var(--accent-cyan));
+      box-shadow: 0 0 12px rgba(6,182,212,0.7);
+    }
+
+    /* Zone 4 — Belt (emerald/green) */
+    .planet-orbit-4a {
+      width: 286px; height: 286px;
+      margin: -143px 0 0 -143px;
+      animation: orbit-rotate 28s linear infinite;
+    }
+    .planet-orbit-4a .planet {
+      width: 9px; height: 9px;
+      top: 0; left: 50%;
+      background: radial-gradient(circle at 35% 35%, #6ee7b7, var(--accent-emerald));
+      box-shadow: 0 0 8px rgba(16,185,129,0.6);
+    }
+    .planet-orbit-4b {
+      width: 286px; height: 286px;
+      margin: -143px 0 0 -143px;
+      animation: orbit-rotate 28s linear infinite;
+      animation-delay: -10s;
+    }
+    .planet-orbit-4b .planet {
+      width: 7px; height: 7px;
+      top: 0; left: 50%;
+      background: radial-gradient(circle at 35% 35%, #d9f99d, #84cc16);
+      box-shadow: 0 0 7px rgba(132,204,22,0.5);
+    }
+    .planet-orbit-4c {
+      width: 286px; height: 286px;
+      margin: -143px 0 0 -143px;
+      animation: orbit-rotate 28s linear infinite;
+      animation-delay: -18s;
+    }
+    .planet-orbit-4c .planet {
+      width: 6px; height: 6px;
+      top: 0; left: 50%;
+      background: radial-gradient(circle at 35% 35%, #fde68a, var(--accent-amber));
+      box-shadow: 0 0 6px rgba(245,158,11,0.5);
+    }
+
+    /* Zone 5 — Cloud (indigo/distant) */
+    .planet-orbit-5 {
+      width: 360px; height: 360px;
+      margin: -180px 0 0 -180px;
+      animation: orbit-rotate 50s linear infinite;
+    }
+    .planet-orbit-5 .planet {
+      width: 7px; height: 7px;
+      top: 0; left: 50%;
+      background: radial-gradient(circle at 35% 35%, #a5b4fc, var(--accent-indigo));
+      box-shadow: 0 0 8px rgba(99,102,241,0.5);
+      opacity: 0.7;
+    }
+
+    @keyframes orbit-rotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+
+    /* Zone labels inside solar system */
+    .zone-label {
+      position: absolute;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* ============================================================
+       STATS BAR
+    ============================================================ */
+    #stats {
+      padding: 28px 0;
+      border-top: 1px solid var(--border-subtle);
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(12, 26, 53, 0.5);
+    }
+
+    .stats-inner {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.75rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border-subtle);
+    }
+
+    /* ============================================================
+       FEATURES
+    ============================================================ */
+    #features {
+      padding: 100px 0;
+    }
+
+    .features-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .features-header .section-label { justify-content: center; }
+    .features-header .section-sub { margin: 0 auto; text-align: center; }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      transition: border-color 0.3s, background 0.3s, transform 0.2s, box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--card-accent, rgba(240,180,41,0.4)), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .feature-card:hover {
+      border-color: rgba(148,163,184,0.2);
+      background: var(--bg-card-hover);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card);
+    }
+    .feature-card:hover::before { opacity: 1; }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .feature-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text-primary);
+    }
+
+    .feature-desc {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ============================================================
+       HOW IT WORKS
+    ============================================================ */
+    #how-it-works {
+      padding: 100px 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(6,13,31,0.6) 50%, transparent 100%);
+    }
+
+    .how-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .how-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .how-step {
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-subtle);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .how-step:last-child { border-bottom: none; }
+    .how-step.inactive { opacity: 0.5; }
+
+    .step-num {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: 1px solid var(--border-card);
+      color: var(--text-secondary);
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .how-step.active .step-num {
+      background: var(--accent-gold);
+      border-color: var(--accent-gold);
+      color: #000;
+    }
+
+    .step-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+    }
+    .step-info p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Code window */
+    .code-window {
+      background: #0a0f1e;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+
+    .code-window-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .window-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green  { background: #28c840; }
+
+    .window-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: 8px;
+    }
+
+    .code-block {
+      padding: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.75;
+      overflow-x: auto;
+      display: none;
+    }
+    .code-block.active { display: block; }
+
+    /* Python syntax highlighting */
+    .kw  { color: #c792ea; }   /* keywords */
+    .fn  { color: #82aaff; }   /* functions/methods */
+    .st  { color: #c3e88d; }   /* strings */
+    .cm  { color: #546e7a; font-style: italic; } /* comments */
+    .nb  { color: #ffcb6b; }   /* numbers/builtins */
+    .cl  { color: #f07178; }   /* class names */
+    .op  { color: #89ddff; }   /* operators/punctuation */
+    .pn  { color: var(--text-secondary); } /* plain */
+
+    /* ============================================================
+       ARCHITECTURE
+    ============================================================ */
+    #architecture {
+      padding: 100px 0;
+    }
+
+    .arch-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .arch-zones {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .arch-zone {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .arch-zone:hover {
+      border-color: rgba(148,163,184,0.2);
+      transform: translateX(4px);
+    }
+
+    .arch-zone-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .arch-zone-info h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 3px;
+      color: var(--text-primary);
+    }
+    .arch-zone-info p {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .arch-zone-badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* Mini solar system for arch section */
+    .arch-solar {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      margin: 0 auto;
+    }
+
+    .arch-orbit {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(148,163,184,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .arch-sun {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #fff7cd, var(--accent-gold) 45%, #b45309 80%);
+      box-shadow: 0 0 16px rgba(240,180,41,0.7), 0 0 40px rgba(240,180,41,0.3);
+      animation: sun-pulse 4s ease-in-out infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.45rem;
+      font-weight: 700;
+      color: rgba(0,0,0,0.6);
+      z-index: 10;
+    }
+
+    .arch-ring {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+    .arch-ring-label {
+      margin-top: -10px;
+      font-size: 0.55rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--bg-void);
+      padding: 0 4px;
+    }
+
+    /* ============================================================
+       QUICK START
+    ============================================================ */
+    #quickstart {
+      padding: 100px 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(6,13,31,0.5) 50%, transparent 100%);
+    }
+
+    .quickstart-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .quickstart-left h2 { margin-bottom: 16px; }
+    .quickstart-left .section-sub { margin-bottom: 32px; }
+
+    .quickstart-feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .quickstart-feature-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(240,180,41,0.15);
+      border: 1px solid rgba(240,180,41,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .quickstart-feature-icon svg { width: 12px; height: 12px; color: var(--accent-gold); }
+    .quickstart-feature p {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* ============================================================
+       INTEGRATIONS
+    ============================================================ */
+    #integrations {
+      padding: 100px 0;
+    }
+
+    .integrations-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .integrations-header .section-label { justify-content: center; }
+    .integrations-header .section-sub { margin: 0 auto; text-align: center; }
+
+    .integrations-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .integration-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 28px 20px;
+      text-align: center;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      cursor: default;
+    }
+    .integration-card:hover {
+      border-color: rgba(148,163,184,0.2);
+      background: var(--bg-card-hover);
+      transform: translateY(-3px);
+    }
+
+    .integration-icon {
+      font-size: 1.8rem;
+      margin-bottom: 12px;
+      display: block;
+    }
+    .integration-name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .integration-type {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* ============================================================
+       FOOTER
+    ============================================================ */
+    footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .footer-brand p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 260px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--text-primary); }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .footer-bottom p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .footer-badges {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border-card);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .badge-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    /* ============================================================
+       TOAST
+    ============================================================ */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      right: 32px;
+      background: rgba(12,26,53,0.95);
+      border: 1px solid var(--accent-gold);
+      border-radius: var(--radius-sm);
+      padding: 12px 20px;
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+      backdrop-filter: blur(12px);
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.3s, opacity 0.3s;
+      pointer-events: none;
+      z-index: 999;
+    }
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ============================================================
+       RESPONSIVE
+    ============================================================ */
+    @media (max-width: 900px) {
+      .hero-inner        { grid-template-columns: 1fr; gap: 48px; }
+      .solar-system      { width: 300px; height: 300px; }
+      .orbit-5           { display: none; }
+      .planet-orbit-5    { display: none; }
+      .orbit-4           { width: 240px; height: 240px; }
+      .planet-orbit-4a,.planet-orbit-4b,.planet-orbit-4c { width:240px;height:240px;margin:-120px 0 0 -120px; }
+      .orbit-3           { width: 180px; height: 180px; }
+      .planet-orbit-3    { width:180px;height:180px;margin:-90px 0 0 -90px; }
+      .orbit-2           { width: 120px; height: 120px; }
+      .planet-orbit-2a,.planet-orbit-2b { width:120px;height:120px;margin:-60px 0 0 -60px; }
+      .orbit-1           { width: 78px; height: 78px; }
+      .planet-orbit-1    { width:78px;height:78px;margin:-39px 0 0 -39px; }
+
+      .features-grid         { grid-template-columns: repeat(2, 1fr); }
+      .how-inner             { grid-template-columns: 1fr; }
+      .arch-inner            { grid-template-columns: 1fr; }
+      .arch-solar            { order: -1; }
+      .quickstart-inner      { grid-template-columns: 1fr; }
+      .integrations-grid     { grid-template-columns: repeat(3, 1fr); }
+      .footer-inner          { grid-template-columns: 1fr 1fr; }
+
+      .nav-links             { display: none; }
+      .nav-hamburger         { display: flex; }
+
+      .stat-divider          { display: none; }
+    }
+
+    @media (max-width: 600px) {
+      .features-grid     { grid-template-columns: 1fr; }
+      .integrations-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-inner      { grid-template-columns: 1fr; }
+      .footer-bottom     { flex-direction: column; gap: 16px; text-align: center; }
+      .stats-inner       { gap: 16px; }
+      .hero-actions      { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav id="nav">
+    <div class="container">
+      <div class="nav-inner">
+        <a href="#hero" class="nav-logo">
+          <div class="nav-logo-icon"></div>
+          Stellar Memory
+        </a>
+        <ul class="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How It Works</a></li>
+          <li><a href="#architecture">Architecture</a></li>
+          <li><a href="#quickstart">Quick Start</a></li>
+          <li><a href="#integrations">Integrations</a></li>
+          <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
+        </ul>
+        <button class="nav-hamburger" aria-label="Menu" onclick="toggleMobileMenu()">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section id="hero">
+    <div class="container">
+      <div class="hero-inner">
+        <!-- Left: text -->
+        <div class="hero-text">
+          <div class="hero-badge">
+            <span class="hero-badge-dot"></span>
+            v1.0.0 — Now Available on PyPI
+          </div>
+          <h1 class="hero-title">
+            <span class="hero-title-gradient">Stellar Memory</span>
+          </h1>
+          <p class="hero-tagline">
+            Give any AI <strong>human-like memory.</strong><br />
+            An intelligent memory system inspired by celestial structures — 5 orbital zones, emotion-aware, self-learning.
+          </p>
+          <div class="hero-actions">
+            <a href="#quickstart" class="btn-primary">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              Get Started
+            </a>
+            <a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="btn-secondary">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+              View on GitHub
+            </a>
+          </div>
+          <div class="hero-install">
+            <span class="install-prefix">$</span>
+            <span class="install-cmd" id="install-text">pip install stellar-memory</span>
+            <button class="copy-btn" onclick="copyInstall()" title="Copy to clipboard" aria-label="Copy install command">
+              <svg id="copy-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: solar system -->
+        <div class="hero-right">
+          <div class="solar-system">
+            <!-- Orbit rings -->
+            <div class="orbit orbit-5"></div>
+            <div class="orbit orbit-4"></div>
+            <div class="orbit orbit-3"></div>
+            <div class="orbit orbit-2"></div>
+            <div class="orbit orbit-1"></div>
+
+            <!-- Sun (Core memory) -->
+            <div class="sun"></div>
+
+            <!-- Orbiting planets -->
+            <div class="planet-orbit planet-orbit-1"><div class="planet"></div></div>
+            <div class="planet-orbit planet-orbit-2a"><div class="planet"></div></div>
+            <div class="planet-orbit planet-orbit-2b"><div class="planet"></div></div>
+            <div class="planet-orbit planet-orbit-3"><div class="planet"></div></div>
+            <div class="planet-orbit planet-orbit-4a"><div class="planet"></div></div>
+            <div class="planet-orbit planet-orbit-4b"><div class="planet"></div></div>
+            <div class="planet-orbit planet-orbit-4c"><div class="planet"></div></div>
+            <div class="planet-orbit planet-orbit-5"><div class="planet"></div></div>
+          </div>
+
+          <!-- Legend -->
+          <div style="text-align:center; margin-top: 20px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
+            <span style="font-size:0.7rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-rose);display:inline-block;"></span>Core
+            </span>
+            <span style="font-size:0.7rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-blue);display:inline-block;"></span>Inner
+            </span>
+            <span style="font-size:0.7rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-cyan);display:inline-block;"></span>Outer
+            </span>
+            <span style="font-size:0.7rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-emerald);display:inline-block;"></span>Belt
+            </span>
+            <span style="font-size:0.7rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;">
+              <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-indigo);display:inline-block;"></span>Cloud
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       STATS BAR
+  ============================================================ -->
+  <section id="stats">
+    <div class="container">
+      <div class="stats-inner">
+        <div class="stat-item">
+          <div class="stat-number">603</div>
+          <div class="stat-label">Tests Passing</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">60</div>
+          <div class="stat-label">Modules</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">44</div>
+          <div class="stat-label">Features</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">96.8%</div>
+          <div class="stat-label">Design Match</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">v1.0.0</div>
+          <div class="stat-label">Stable Release</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-number">5</div>
+          <div class="stat-label">Orbital Zones</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURES
+  ============================================================ -->
+  <section id="features">
+    <div class="container">
+      <div class="features-header">
+        <div class="section-label">Capabilities</div>
+        <h2 class="section-title">Everything a memory system needs</h2>
+        <p class="section-sub">
+          Designed from first principles to mirror the way human memory actually works — layered, emotional, and self-organizing.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <!-- Card 1 -->
+        <div class="feature-card" style="--card-accent: rgba(240,180,41,0.5);">
+          <div class="feature-icon" style="background: rgba(240,180,41,0.1);">
+            <svg width="24" height="24" fill="none" stroke="var(--accent-gold)" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+              <line x1="1" y1="12" x2="3" y2="12"/>
+              <line x1="21" y1="12" x2="23" y2="12"/>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">5-Zone Orbit System</h3>
+          <p class="feature-desc">
+            Memories are organized across five concentric zones — Core, Inner, Outer, Belt, and Cloud — each with distinct retention behavior, priority, and access speed. Just like the solar system.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feature-card" style="--card-accent: rgba(244,63,94,0.4);">
+          <div class="feature-icon" style="background: rgba(244,63,94,0.1);">
+            <svg width="24" height="24" fill="none" stroke="var(--accent-rose)" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Emotion Engine</h3>
+          <p class="feature-desc">
+            Attaches emotional valence and intensity to every memory. High-emotion events are retained longer and recalled with higher priority — exactly like human episodic memory.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feature-card" style="--card-accent: rgba(99,102,241,0.4);">
+          <div class="feature-icon" style="background: rgba(99,102,241,0.1);">
+            <svg width="24" height="24" fill="none" stroke="var(--accent-indigo)" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Metacognition</h3>
+          <p class="feature-desc">
+            The system monitors its own memory state — detecting gaps, contradictions, and knowledge boundaries. It knows what it knows, and what it doesn't.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="feature-card" style="--card-accent: rgba(16,185,129,0.4);">
+          <div class="feature-icon" style="background: rgba(16,185,129,0.1);">
+            <svg width="24" height="24" fill="none" stroke="var(--accent-emerald)" stroke-width="2" viewBox="0 0 24 24">
+              <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+              <polyline points="17 6 23 6 23 12"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Self-Learning</h3>
+          <p class="feature-desc">
+            Continuously refines its own memory organization based on usage patterns. Frequently accessed memories migrate inward; rarely used ones drift to the outer zones or are pruned.
+          </p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="feature-card" style="--card-accent: rgba(6,182,212,0.4);">
+          <div class="feature-icon" style="background: rgba(6,182,212,0.1);">
+            <svg width="24" height="24" fill="none" stroke="var(--accent-cyan)" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <polyline points="21 15 16 10 5 21"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Multimodal Memory</h3>
+          <p class="feature-desc">
+            Store and recall not just text, but structured data, code snippets, conversation history, and references to external documents — all within a unified memory graph.
+          </p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="feature-card" style="--card-accent: rgba(139,92,246,0.4);">
+          <div class="feature-icon" style="background: rgba(139,92,246,0.1);">
+            <svg width="24" height="24" fill="none" stroke="var(--accent-violet)" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="2" y1="12" x2="22" y2="12"/>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            </svg>
+          </div>
+          <h3 class="feature-title">Memory Reasoning</h3>
+          <p class="feature-desc">
+            Before responding, the system reasons over its stored memories — connecting relevant facts, detecting temporal relationships, and synthesizing coherent context for the AI.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS
+  ============================================================ -->
+  <section id="how-it-works">
+    <div class="container">
+      <div style="margin-bottom:60px;">
+        <div class="section-label">Workflow</div>
+        <h2 class="section-title">Simple by design, powerful in practice</h2>
+        <p class="section-sub">Three operations. Infinite memory depth.</p>
+      </div>
+
+      <div class="how-inner">
+        <!-- Steps -->
+        <div class="how-steps">
+          <div class="how-step active" id="step-0" onclick="setStep(0)">
+            <div class="step-num">1</div>
+            <div class="step-info">
+              <h3>Store</h3>
+              <p>Feed any memory — conversations, facts, experiences — into the orbital system. The engine classifies zone placement, assigns emotional weight, and generates embeddings automatically.</p>
+            </div>
+          </div>
+          <div class="how-step inactive" id="step-1" onclick="setStep(1)">
+            <div class="step-num">2</div>
+            <div class="step-info">
+              <h3>Manage</h3>
+              <p>The system autonomously consolidates, prunes, and reorganizes memories over time. You can also manually promote, archive, or link memories to build knowledge graphs.</p>
+            </div>
+          </div>
+          <div class="how-step inactive" id="step-2" onclick="setStep(2)">
+            <div class="step-num">3</div>
+            <div class="step-info">
+              <h3>Recall</h3>
+              <p>Query with natural language or structured filters. The retrieval engine traverses orbital zones, applies emotional and temporal weighting, and returns the most contextually relevant memories.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Code examples -->
+        <div class="code-window">
+          <div class="code-window-bar">
+            <div class="window-dot dot-red"></div>
+            <div class="window-dot dot-yellow"></div>
+            <div class="window-dot dot-green"></div>
+            <span class="window-title">stellar_memory_demo.py</span>
+          </div>
+
+          <!-- Step 0: Store -->
+          <pre class="code-block active" id="code-0"><code><span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
+
+<span class="cm"># Initialize the memory system</span>
+<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
+
+<span class="cm"># Store a conversational memory</span>
+<span class="pn">memory</span><span class="op">.</span><span class="fn">store</span><span class="op">(</span>
+  <span class="pn">content</span><span class="op">=</span><span class="st">"User prefers dark mode and concise answers"</span><span class="op">,</span>
+  <span class="pn">zone</span><span class="op">=</span><span class="st">"inner"</span><span class="op">,</span>
+  <span class="pn">emotion</span><span class="op">=</span><span class="op">{</span><span class="st">"valence"</span><span class="op">:</span> <span class="st">"positive"</span><span class="op">,</span> <span class="st">"intensity"</span><span class="op">:</span> <span class="nb">0.6</span><span class="op">},</span>
+  <span class="pn">tags</span><span class="op">=</span><span class="op">[</span><span class="st">"preference"</span><span class="op">,</span> <span class="st">"ui"</span><span class="op">]</span>
+<span class="op">)</span>
+
+<span class="cm"># Auto-classify zone from content alone</span>
+<span class="pn">memory</span><span class="op">.</span><span class="fn">store_auto</span><span class="op">(</span>
+  <span class="st">"The project deadline is March 15th, 2026"</span>
+<span class="op">)</span></code></pre>
+
+          <!-- Step 1: Manage -->
+          <pre class="code-block" id="code-1"><code><span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
+
+<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
+
+<span class="cm"># Promote a memory to a higher-priority zone</span>
+<span class="pn">memory</span><span class="op">.</span><span class="fn">promote</span><span class="op">(</span><span class="pn">memory_id</span><span class="op">=</span><span class="st">"mem_abc123"</span><span class="op">,</span> <span class="pn">to_zone</span><span class="op">=</span><span class="st">"core"</span><span class="op">)</span>
+
+<span class="cm"># Link two related memories</span>
+<span class="pn">memory</span><span class="op">.</span><span class="fn">link</span><span class="op">(</span><span class="st">"mem_abc123"</span><span class="op">,</span> <span class="st">"mem_def456"</span><span class="op">,</span> <span class="pn">relation</span><span class="op">=</span><span class="st">"caused_by"</span><span class="op">)</span>
+
+<span class="cm"># Run autonomous consolidation</span>
+<span class="pn">report</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">consolidate</span><span class="op">()</span>
+<span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"Pruned: {report.pruned}, Merged: {report.merged}"</span><span class="op">)</span>
+
+<span class="cm"># Archive old cloud-zone memories</span>
+<span class="pn">memory</span><span class="op">.</span><span class="fn">archive_zone</span><span class="op">(</span><span class="st">"cloud"</span><span class="op">,</span> <span class="pn">older_than_days</span><span class="op">=</span><span class="nb">90</span><span class="op">)</span></code></pre>
+
+          <!-- Step 2: Recall -->
+          <pre class="code-block" id="code-2"><code><span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
+
+<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
+
+<span class="cm"># Natural language recall</span>
+<span class="pn">results</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">recall</span><span class="op">(</span>
+  <span class="pn">query</span><span class="op">=</span><span class="st">"What are the user's display preferences?"</span><span class="op">,</span>
+  <span class="pn">top_k</span><span class="op">=</span><span class="nb">5</span><span class="op">,</span>
+  <span class="pn">zones</span><span class="op">=</span><span class="op">[</span><span class="st">"core"</span><span class="op">,</span> <span class="st">"inner"</span><span class="op">]</span>
+<span class="op">)</span>
+
+<span class="kw">for</span> <span class="pn">mem</span> <span class="kw">in</span> <span class="pn">results</span><span class="op">:</span>
+  <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"[{mem.zone}] {mem.content}"</span><span class="op">)</span>
+  <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"  Score: {mem.relevance:.2f} | Emotion: {mem.emotion}"</span><span class="op">)</span>
+
+<span class="cm"># Build full context for an LLM prompt</span>
+<span class="pn">context</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">build_context</span><span class="op">(</span><span class="pn">query</span><span class="op">=</span><span class="st">"user preferences"</span><span class="op">)</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ARCHITECTURE
+  ============================================================ -->
+  <section id="architecture">
+    <div class="container">
+      <div class="arch-inner">
+        <!-- Left: description -->
+        <div>
+          <div class="section-label">Architecture</div>
+          <h2 class="section-title">The Celestial Zone System</h2>
+          <p class="section-sub" style="margin-bottom:36px;">
+            Five concentric orbital zones model memory priority, retention duration, and access frequency — from the blazing core to the distant cloud.
+          </p>
+
+          <div class="arch-zones">
+            <div class="arch-zone">
+              <div class="arch-zone-dot" style="background:var(--accent-gold); box-shadow:0 0 8px rgba(240,180,41,0.6);"></div>
+              <div class="arch-zone-info">
+                <h4>Core</h4>
+                <p>Permanent, highest-priority memories. Identity, critical facts, irreplaceable knowledge. Never pruned.</p>
+              </div>
+              <span class="arch-zone-badge" style="background:rgba(240,180,41,0.1);color:var(--accent-gold);border:1px solid rgba(240,180,41,0.2);">Zone 1</span>
+            </div>
+            <div class="arch-zone">
+              <div class="arch-zone-dot" style="background:var(--accent-blue); box-shadow:0 0 8px rgba(59,130,246,0.5);"></div>
+              <div class="arch-zone-info">
+                <h4>Inner</h4>
+                <p>Frequently accessed working memories. Recent conversations, active project context, user preferences.</p>
+              </div>
+              <span class="arch-zone-badge" style="background:rgba(59,130,246,0.1);color:var(--accent-blue);border:1px solid rgba(59,130,246,0.2);">Zone 2</span>
+            </div>
+            <div class="arch-zone">
+              <div class="arch-zone-dot" style="background:var(--accent-cyan); box-shadow:0 0 8px rgba(6,182,212,0.5);"></div>
+              <div class="arch-zone-info">
+                <h4>Outer</h4>
+                <p>Moderately accessed episodic memories. Past sessions, historical context, secondary associations.</p>
+              </div>
+              <span class="arch-zone-badge" style="background:rgba(6,182,212,0.1);color:var(--accent-cyan);border:1px solid rgba(6,182,212,0.2);">Zone 3</span>
+            </div>
+            <div class="arch-zone">
+              <div class="arch-zone-dot" style="background:var(--accent-emerald); box-shadow:0 0 8px rgba(16,185,129,0.5);"></div>
+              <div class="arch-zone-info">
+                <h4>Belt</h4>
+                <p>Fragmented, rarely accessed memories. Older sessions, peripheral knowledge, low-confidence facts.</p>
+              </div>
+              <span class="arch-zone-badge" style="background:rgba(16,185,129,0.1);color:var(--accent-emerald);border:1px solid rgba(16,185,129,0.2);">Zone 4</span>
+            </div>
+            <div class="arch-zone">
+              <div class="arch-zone-dot" style="background:var(--accent-indigo); box-shadow:0 0 8px rgba(99,102,241,0.4);"></div>
+              <div class="arch-zone-info">
+                <h4>Cloud</h4>
+                <p>Distant, archival memories. Rarely recalled, candidate for consolidation or permanent archival.</p>
+              </div>
+              <span class="arch-zone-badge" style="background:rgba(99,102,241,0.1);color:var(--accent-indigo);border:1px solid rgba(99,102,241,0.2);">Zone 5</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: arch diagram -->
+        <div class="arch-solar">
+          <div class="arch-sun">CORE</div>
+
+          <!-- Ring 2: Inner -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;border:1px solid rgba(59,130,246,0.25);"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-50deg);width:100px;height:100px;">
+            <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(59,130,246,0.7);background:var(--bg-void);padding:0 4px;white-space:nowrap;">Inner</span>
+          </div>
+
+          <!-- Ring 3: Outer -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160px;height:160px;border-radius:50%;border:1px solid rgba(6,182,212,0.2);"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-60deg);width:160px;height:160px;">
+            <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(6,182,212,0.6);background:var(--bg-void);padding:0 4px;white-space:nowrap;">Outer</span>
+          </div>
+
+          <!-- Ring 4: Belt -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:224px;height:224px;border-radius:50%;border:1px solid rgba(16,185,129,0.18);border-style:dashed;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-40deg);width:224px;height:224px;">
+            <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(16,185,129,0.55);background:var(--bg-void);padding:0 4px;white-space:nowrap;">Belt</span>
+          </div>
+
+          <!-- Ring 5: Cloud -->
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:296px;height:296px;border-radius:50%;border:1px solid rgba(99,102,241,0.12);border-style:dashed;"></div>
+          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);width:296px;height:296px;">
+            <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(99,102,241,0.5);background:var(--bg-void);padding:0 4px;white-space:nowrap;">Cloud</span>
+          </div>
+
+          <!-- Orbiting dots for arch diagram -->
+          <div class="planet-orbit planet-orbit-1" style="width:100px;height:100px;margin:-50px 0 0 -50px;animation-duration:8s;"><div class="planet" style="width:9px;height:9px;top:0;left:50%;background:radial-gradient(circle at 35% 35%,#93c5fd,var(--accent-blue));box-shadow:0 0 8px rgba(59,130,246,0.7);"></div></div>
+          <div class="planet-orbit planet-orbit-2a" style="width:160px;height:160px;margin:-80px 0 0 -80px;animation-duration:15s;"><div class="planet" style="width:9px;height:9px;top:0;left:50%;background:radial-gradient(circle at 35% 35%,#a5f3fc,var(--accent-cyan));box-shadow:0 0 8px rgba(6,182,212,0.7);"></div></div>
+          <div class="planet-orbit planet-orbit-4a" style="width:224px;height:224px;margin:-112px 0 0 -112px;animation-duration:24s;"><div class="planet" style="width:7px;height:7px;top:0;left:50%;background:radial-gradient(circle at 35% 35%,#6ee7b7,var(--accent-emerald));box-shadow:0 0 6px rgba(16,185,129,0.6);"></div></div>
+          <div class="planet-orbit planet-orbit-5" style="width:296px;height:296px;margin:-148px 0 0 -148px;animation-duration:40s;"><div class="planet" style="width:6px;height:6px;top:0;left:50%;background:radial-gradient(circle at 35% 35%,#a5b4fc,var(--accent-indigo));box-shadow:0 0 6px rgba(99,102,241,0.5);opacity:0.7;"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       QUICK START
+  ============================================================ -->
+  <section id="quickstart">
+    <div class="container">
+      <div class="quickstart-inner">
+        <div class="quickstart-left">
+          <div class="section-label">Quick Start</div>
+          <h2 class="section-title">Up and running in minutes</h2>
+          <p class="section-sub">
+            Install from PyPI, initialize the system, and your AI has persistent, structured memory from the very first interaction.
+          </p>
+
+          <div class="quickstart-feature">
+            <div class="quickstart-feature-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p>No external database required — SQLite by default, PostgreSQL in production</p>
+          </div>
+          <div class="quickstart-feature">
+            <div class="quickstart-feature-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p>Drop-in compatible with OpenAI, Anthropic, LangChain, and any LLM</p>
+          </div>
+          <div class="quickstart-feature">
+            <div class="quickstart-feature-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p>MCP server mode for Claude Code and Cursor integration</p>
+          </div>
+          <div class="quickstart-feature">
+            <div class="quickstart-feature-icon">
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <p>REST API with Docker support for scalable deployment</p>
+          </div>
+
+          <div style="margin-top: 32px; display:flex; gap:12px; flex-wrap:wrap;">
+            <a href="https://sangjun0000.github.io/stellar-memory/docs/" target="_blank" rel="noopener" class="btn-primary" style="font-size:0.875rem; padding:10px 20px;">
+              Full Documentation
+            </a>
+            <a href="https://pypi.org/project/stellar-memory/" target="_blank" rel="noopener" class="btn-secondary" style="font-size:0.875rem; padding:10px 20px;">
+              PyPI Package
+            </a>
+          </div>
+        </div>
+
+        <!-- Full quickstart code -->
+        <div class="code-window">
+          <div class="code-window-bar">
+            <div class="window-dot dot-red"></div>
+            <div class="window-dot dot-yellow"></div>
+            <div class="window-dot dot-green"></div>
+            <span class="window-title">quickstart.py</span>
+          </div>
+          <pre class="code-block active"><code><span class="cm"># 1. Install</span>
+<span class="cm"># pip install stellar-memory</span>
+
+<span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
+<span class="kw">from</span> <span class="pn">openai</span> <span class="kw">import</span> <span class="cl">OpenAI</span>
+
+<span class="cm"># 2. Initialize</span>
+<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">(</span>
+  <span class="pn">storage</span><span class="op">=</span><span class="st">"sqlite:///my_ai.db"</span><span class="op">,</span>
+  <span class="pn">embedding_model</span><span class="op">=</span><span class="st">"text-embedding-3-small"</span>
+<span class="op">)</span>
+<span class="pn">client</span> <span class="op">=</span> <span class="cl">OpenAI</span><span class="op">()</span>
+
+<span class="kw">def</span> <span class="fn">chat_with_memory</span><span class="op">(</span><span class="pn">user_message</span><span class="op">:</span> <span class="pn">str</span><span class="op">)</span> <span class="op">-></span> <span class="pn">str</span><span class="op">:</span>
+  <span class="cm"># 3. Recall relevant memories</span>
+  <span class="pn">context</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">build_context</span><span class="op">(</span><span class="pn">user_message</span><span class="op">)</span>
+
+  <span class="cm"># 4. Use memories as system context</span>
+  <span class="pn">response</span> <span class="op">=</span> <span class="pn">client</span><span class="op">.</span><span class="pn">chat</span><span class="op">.</span><span class="pn">completions</span><span class="op">.</span><span class="fn">create</span><span class="op">(</span>
+    <span class="pn">model</span><span class="op">=</span><span class="st">"gpt-4o"</span><span class="op">,</span>
+    <span class="pn">messages</span><span class="op">=</span><span class="op">[</span>
+      <span class="op">{</span><span class="st">"role"</span><span class="op">:</span> <span class="st">"system"</span><span class="op">,</span> <span class="st">"content"</span><span class="op">:</span> <span class="pn">context</span><span class="op">},</span>
+      <span class="op">{</span><span class="st">"role"</span><span class="op">:</span> <span class="st">"user"</span><span class="op">,</span>   <span class="st">"content"</span><span class="op">:</span> <span class="pn">user_message</span><span class="op">}</span>
+    <span class="op">]</span>
+  <span class="op">)</span>
+  <span class="pn">answer</span> <span class="op">=</span> <span class="pn">response</span><span class="op">.</span><span class="pn">choices</span><span class="op">[</span><span class="nb">0</span><span class="op">].</span><span class="pn">message</span><span class="op">.</span><span class="pn">content</span>
+
+  <span class="cm"># 5. Store the new exchange</span>
+  <span class="pn">memory</span><span class="op">.</span><span class="fn">store_auto</span><span class="op">(</span><span class="nb">f</span><span class="st">"Q: {user_message}\nA: {answer}"</span><span class="op">)</span>
+  <span class="kw">return</span> <span class="pn">answer</span>
+
+<span class="cm"># That's it. Your AI now remembers.</span>
+<span class="fn">print</span><span class="op">(</span><span class="fn">chat_with_memory</span><span class="op">(</span><span class="st">"What did we discuss last week?"</span><span class="op">))</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INTEGRATIONS
+  ============================================================ -->
+  <section id="integrations">
+    <div class="container">
+      <div class="integrations-header">
+        <div class="section-label">Integrations</div>
+        <h2 class="section-title">Works with your existing stack</h2>
+        <p class="section-sub">
+          Drop Stellar Memory into any AI workflow. Native support for the tools you already use.
+        </p>
+      </div>
+
+      <div class="integrations-grid">
+        <div class="integration-card">
+          <span class="integration-icon">
+            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+              <circle cx="50" cy="50" r="48" fill="#CC785C"/>
+              <text x="50" y="68" text-anchor="middle" font-size="42" font-weight="800" fill="white" font-family="serif">C</text>
+            </svg>
+          </span>
+          <div class="integration-name">Claude Code</div>
+          <div class="integration-type">MCP Server</div>
+        </div>
+        <div class="integration-card">
+          <span class="integration-icon">
+            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+              <rect width="100" height="100" rx="16" fill="#1e1e2e"/>
+              <text x="50" y="68" text-anchor="middle" font-size="38" font-weight="700" fill="#00d1ff" font-family="monospace">{'>'}_</text>
+            </svg>
+          </span>
+          <div class="integration-name">Cursor</div>
+          <div class="integration-type">MCP Server</div>
+        </div>
+        <div class="integration-card">
+          <span class="integration-icon">
+            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+              <rect width="100" height="100" rx="16" fill="#1564C0"/>
+              <text x="50" y="68" text-anchor="middle" font-size="32" font-weight="800" fill="white" font-family="sans-serif">API</text>
+            </svg>
+          </span>
+          <div class="integration-name">REST API</div>
+          <div class="integration-type">HTTP / JSON</div>
+        </div>
+        <div class="integration-card">
+          <span class="integration-icon">
+            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+              <rect width="100" height="100" rx="16" fill="#1C3A6A"/>
+              <text x="50" y="62" text-anchor="middle" font-size="24" font-weight="700" fill="#4AABE8" font-family="monospace">LC</text>
+              <text x="50" y="82" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.4)" font-family="sans-serif">chain</text>
+            </svg>
+          </span>
+          <div class="integration-name">LangChain</div>
+          <div class="integration-type">Python SDK</div>
+        </div>
+        <div class="integration-card">
+          <span class="integration-icon">
+            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
+              <rect width="100" height="100" rx="16" fill="#10a37f"/>
+              <text x="50" y="68" text-anchor="middle" font-size="28" font-weight="800" fill="white" font-family="sans-serif">OAI</text>
+            </svg>
+          </span>
+          <div class="integration-name">OpenAI SDK</div>
+          <div class="integration-type">Python / JS</div>
+        </div>
+      </div>
+
+      <!-- Docker snippet -->
+      <div style="max-width: 680px; margin: 0 auto;">
+        <div class="code-window">
+          <div class="code-window-bar">
+            <div class="window-dot dot-red"></div>
+            <div class="window-dot dot-yellow"></div>
+            <div class="window-dot dot-green"></div>
+            <span class="window-title">Docker deployment</span>
+          </div>
+          <pre class="code-block active" style="display:block;"><code><span class="cm"># Pull and run the Stellar Memory REST server</span>
+<span class="pn">docker pull</span> <span class="st">sangjun0000/stellar-memory:latest</span>
+
+<span class="pn">docker run</span> <span class="op">-d</span> <span class="op">\</span>
+  <span class="op">-p</span> <span class="nb">8080</span><span class="op">:</span><span class="nb">8080</span> <span class="op">\</span>
+  <span class="op">-v</span> <span class="pn">stellar_data</span><span class="op">:/</span><span class="pn">data</span> <span class="op">\</span>
+  <span class="op">-e</span> <span class="pn">OPENAI_API_KEY</span><span class="op">=</span><span class="st">your_key</span> <span class="op">\</span>
+  <span class="pn">sangjun0000/stellar-memory:latest</span>
+
+<span class="cm"># Health check</span>
+<span class="pn">curl</span> <span class="pn">http://localhost:8080/health</span></code></pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+            <div class="nav-logo-icon" style="width:28px;height:28px;"></div>
+            <h3>Stellar Memory</h3>
+          </div>
+          <p>An intelligent AI memory system inspired by celestial structures. Give any AI the gift of human-like, persistent, emotional memory.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Project</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener">GitHub Repository</a></li>
+            <li><a href="https://pypi.org/project/stellar-memory/" target="_blank" rel="noopener">PyPI Package</a></li>
+            <li><a href="https://github.com/sangjun0000/stellar-memory/releases" target="_blank" rel="noopener">Releases</a></li>
+            <li><a href="https://github.com/sangjun0000/stellar-memory/issues" target="_blank" rel="noopener">Issue Tracker</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Docs</h4>
+          <ul class="footer-links">
+            <li><a href="https://sangjun0000.github.io/stellar-memory/docs/getting-started/" target="_blank" rel="noopener">Getting Started</a></li>
+            <li><a href="https://sangjun0000.github.io/stellar-memory/docs/api-reference/" target="_blank" rel="noopener">API Reference</a></li>
+            <li><a href="https://github.com/sangjun0000/stellar-memory/tree/main/examples" target="_blank" rel="noopener">Examples</a></li>
+            <li><a href="https://github.com/sangjun0000/stellar-memory/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul class="footer-links">
+            <li><a href="https://github.com/sangjun0000/stellar-memory/discussions" target="_blank" rel="noopener">Discussions</a></li>
+            <li><a href="https://github.com/sangjun0000/stellar-memory/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
+            <li><a href="https://github.com/sangjun0000/stellar-memory/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a></li>
+            <li><a href="https://github.com/sangjun0000" target="_blank" rel="noopener">Author</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>Built with care by <a href="https://github.com/sangjun0000" target="_blank" rel="noopener" style="color:var(--accent-gold);text-decoration:none;">sangjun0000</a>. MIT Licensed. Open source forever.</p>
+        <div class="footer-badges">
+          <span class="badge"><span class="badge-dot" style="background:var(--accent-emerald);"></span>v1.0.0 Stable</span>
+          <span class="badge"><span class="badge-dot" style="background:var(--accent-gold);"></span>MIT License</span>
+          <span class="badge"><span class="badge-dot" style="background:var(--accent-blue);"></span>Python 3.9+</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast">Copied to clipboard!</div>
+
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+    // ── Nav scroll effect ──────────────────────────────────────
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    // ── Mobile menu ────────────────────────────────────────────
+    function toggleMobileMenu() {
+      const links = document.querySelector('.nav-links');
+      if (links.style.display === 'flex') {
+        links.style.display = '';
+      } else {
+        links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(3,7,18,0.97);backdrop-filter:blur(16px);padding:24px;gap:20px;border-bottom:1px solid rgba(148,163,184,0.08);z-index:99;';
+        links.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => { links.style.display = ''; }, { once: true });
+        });
+      }
+    }
+
+    // ── Copy install command ───────────────────────────────────
+    function copyInstall() {
+      const text = document.getElementById('install-text').textContent;
+      navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2200);
+    }
+
+    // ── How it works step switcher ─────────────────────────────
+    function setStep(idx) {
+      for (let i = 0; i < 3; i++) {
+        const step = document.getElementById('step-' + i);
+        const code = document.getElementById('code-' + i);
+        step.classList.toggle('active', i === idx);
+        step.classList.toggle('inactive', i !== idx);
+        code.classList.toggle('active', i === idx);
+      }
+    }
+
+    // Auto-cycle steps
+    let currentStep = 0;
+    let autoCycle = setInterval(() => {
+      currentStep = (currentStep + 1) % 3;
+      setStep(currentStep);
+    }, 4000);
+
+    // Pause auto-cycle on manual interaction
+    document.querySelectorAll('.how-step').forEach((el, i) => {
+      el.addEventListener('click', () => {
+        clearInterval(autoCycle);
+        setStep(i);
+        currentStep = i;
+        // Resume after 8s of inactivity
+        autoCycle = setInterval(() => {
+          currentStep = (currentStep + 1) % 3;
+          setStep(currentStep);
+        }, 4000);
+      });
+    });
+
+    // ── Intersection observer for fade-in ─────────────────────
+    const observerStyle = document.createElement('style');
+    observerStyle.textContent = `
+      .fade-up {
+        opacity: 0;
+        transform: translateY(24px);
+        transition: opacity 0.6s ease, transform 0.6s ease;
+      }
+      .fade-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    `;
+    document.head.appendChild(observerStyle);
+
+    const fadeTargets = [
+      ...document.querySelectorAll('.feature-card'),
+      ...document.querySelectorAll('.arch-zone'),
+      ...document.querySelectorAll('.integration-card'),
+      ...document.querySelectorAll('.stat-item'),
+    ];
+
+    fadeTargets.forEach((el, i) => {
+      el.classList.add('fade-up');
+      el.style.transitionDelay = (i % 6) * 0.07 + 's';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    fadeTargets.forEach(el => observer.observe(el));
+
+    // ── Smooth active nav link highlighting ────────────────────
+    const sections = document.querySelectorAll('section[id]');
+    const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(sec => {
+        if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
+      });
+      navAnchors.forEach(a => {
+        a.style.color = a.getAttribute('href') === '#' + current
+          ? 'var(--text-primary)'
+          : '';
+      });
+    }, { passive: true });
+  </script>
+</body>
+</html>
