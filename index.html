@@ -26,8 +26,8 @@
     "operatingSystem": "Cross-platform",
     "offers": [
       {"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "5,000 memories, 1 agent, SQLite, Local MCP"},
-      {"@type": "Offer", "name": "Pro", "price": "29", "priceCurrency": "USD", "description": "50,000 memories, 5 agents, PostgreSQL, Cloud MCP, Dashboard"},
-      {"@type": "Offer", "name": "Team", "price": "99", "priceCurrency": "USD", "description": "500,000 memories, 20 agents, Team Sync, RBAC, Audit Logs"},
+      {"@type": "Offer", "name": "Pro", "price": "29", "priceCurrency": "USD", "billingIncrement": "P1M", "description": "50,000 memories, 5 agents, PostgreSQL, Cloud MCP, Dashboard"},
+      {"@type": "Offer", "name": "Team", "price": "99", "priceCurrency": "USD", "billingIncrement": "P1M", "description": "500,000 memories, 20 agents, Team Sync, RBAC, Audit Logs"},
       {"@type": "Offer", "name": "Enterprise", "price": "0", "priceCurrency": "USD", "description": "Unlimited memories and agents, On-premise, SLA, Custom pricing"}
     ],
     "author": {
@@ -1367,7 +1367,7 @@
         <div class="hero-text">
           <div class="hero-badge">
             <span class="hero-badge-dot"></span>
-            v1.0.0 — Now Available on PyPI
+            v2.0.0 — Now Available on PyPI
           </div>
           <h1 class="hero-title">
             <span class="hero-title-gradient">Stellar Memory</span>
@@ -1457,22 +1457,22 @@
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number">60</div>
+          <div class="stat-number">83</div>
           <div class="stat-label">Modules</div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number">44</div>
+          <div class="stat-number">64</div>
           <div class="stat-label">Features</div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number">96.8%</div>
+          <div class="stat-number">97.2%</div>
           <div class="stat-label">Design Match</div>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <div class="stat-number">v1.0.0</div>
+          <div class="stat-number">v2.0.0</div>
           <div class="stat-label">Stable Release</div>
         </div>
         <div class="stat-divider"></div>
@@ -2024,7 +2024,7 @@
             <li class="incl">Email support</li>
             <li class="excl">Team sync</li>
           </ul>
-          <a href="#" class="pricing-cta pricing-cta-gold">Coming Soon</a>
+          <a href="javascript:void(0)" onclick="openCheckoutModal('pro')" class="pricing-cta pricing-cta-gold">Subscribe</a>
         </div>
 
         <!-- Team -->
@@ -2041,7 +2041,7 @@
             <li class="incl">Priority support</li>
             <li class="incl">SSO</li>
           </ul>
-          <a href="#" class="pricing-cta">Coming Soon</a>
+          <a href="javascript:void(0)" onclick="openCheckoutModal('team')" class="pricing-cta">Subscribe</a>
         </div>
 
         <!-- Enterprise -->
@@ -2063,6 +2063,46 @@
       </div>
     </div>
   </section>
+
+  <!-- ============================================================
+       CHECKOUT MODAL
+  ============================================================ -->
+  <div id="checkout-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:1000;">
+    <div style="background:var(--bg-card,#1a1a2e);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:32px;max-width:420px;width:90%;position:relative;">
+      <button onclick="closeCheckoutModal()" style="position:absolute;top:12px;right:16px;background:none;border:none;color:var(--text-muted,#888);font-size:1.5rem;cursor:pointer;">&times;</button>
+      <h3 style="font-size:1.3rem;font-weight:700;color:var(--text-primary,#fff);margin-bottom:4px;">Subscribe to <span id="modal-tier-name">Pro</span></h3>
+      <p style="font-size:1rem;color:var(--accent-gold,#f0b429);margin-bottom:24px;" id="modal-price-text">$29/mo</p>
+
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <!-- Lemon Squeezy (default) -->
+        <button onclick="doCheckout('lemonsqueezy')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;background:rgba(240,180,41,0.08);border:1px solid var(--accent-gold,#f0b429);color:var(--text-primary,#fff);cursor:pointer;text-align:left;">
+          <span style="font-size:1.5rem;">🍋</span>
+          <span>
+            <span style="font-size:0.95rem;font-weight:600;display:block;">Pay with Card</span>
+            <span style="font-size:0.75rem;color:var(--text-muted,#888);">Global &middot; Tax included</span>
+          </span>
+        </button>
+
+        <!-- Stripe -->
+        <button onclick="doCheckout('stripe')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary,#fff);cursor:pointer;text-align:left;">
+          <span style="font-size:1.5rem;">💳</span>
+          <span>
+            <span style="font-size:0.95rem;font-weight:600;display:block;">Pay with Stripe</span>
+            <span style="font-size:0.75rem;color:var(--text-muted,#888);">Global &middot; Card payments</span>
+          </span>
+        </button>
+
+        <!-- TossPayments -->
+        <button onclick="doCheckout('toss')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:var(--text-primary,#fff);cursor:pointer;text-align:left;">
+          <span style="font-size:1.5rem;">🇰🇷</span>
+          <span>
+            <span style="font-size:0.95rem;font-weight:600;display:block;">토스페이먼츠로 결제</span>
+            <span style="font-size:0.75rem;color:var(--text-muted,#888);">한국 &middot; 카드/계좌이체</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- ============================================================
        FOOTER
@@ -2112,7 +2152,7 @@
       <div class="footer-bottom">
         <p>Built with care by <a href="https://github.com/sangjun0000" target="_blank" rel="noopener" style="color:var(--accent-gold);text-decoration:none;">sangjun0000</a>. MIT Licensed. Open source forever.</p>
         <div class="footer-badges">
-          <span class="badge"><span class="badge-dot" style="background:var(--accent-emerald);"></span>v1.0.0 Stable</span>
+          <span class="badge"><span class="badge-dot" style="background:var(--accent-emerald);"></span>v2.0.0 Stable</span>
           <span class="badge"><span class="badge-dot" style="background:var(--accent-gold);"></span>MIT License</span>
           <span class="badge"><span class="badge-dot" style="background:var(--accent-blue);"></span>Python 3.9+</span>
         </div>
@@ -2145,6 +2185,52 @@
         });
       }
     }
+
+    // ── Checkout modal ──────────────────────────────────────────
+    var _checkoutTier = 'pro';
+    var CHECKOUT_URLS = {
+      lemonsqueezy: {
+        pro: 'https://stellar-memory.lemonsqueezy.com/checkout/buy/VARIANT_PRO',
+        team: 'https://stellar-memory.lemonsqueezy.com/checkout/buy/VARIANT_TEAM'
+      },
+      stripe: {
+        pro: 'https://api.stellar-memory.com/billing/stripe/checkout?tier=pro',
+        team: 'https://api.stellar-memory.com/billing/stripe/checkout?tier=team'
+      },
+      toss: {
+        pro: 'https://api.stellar-memory.com/billing/toss/checkout?tier=pro',
+        team: 'https://api.stellar-memory.com/billing/toss/checkout?tier=team'
+      }
+    };
+
+    function openCheckoutModal(tier) {
+      _checkoutTier = tier;
+      var prices = { pro: '$29/mo', team: '$99/mo' };
+      document.getElementById('modal-tier-name').textContent = tier.charAt(0).toUpperCase() + tier.slice(1);
+      document.getElementById('modal-price-text').textContent = prices[tier] || '$29/mo';
+      document.getElementById('checkout-modal').style.display = 'flex';
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkout-modal').style.display = 'none';
+    }
+
+    function doCheckout(provider) {
+      var url = CHECKOUT_URLS[provider] && CHECKOUT_URLS[provider][_checkoutTier];
+      if (url) {
+        if (provider === 'lemonsqueezy') {
+          window.open(url, '_blank');
+        } else {
+          window.location.href = url;
+        }
+      }
+      closeCheckoutModal();
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('checkout-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeCheckoutModal();
+    });
 
     // ── Copy install command ───────────────────────────────────
     function copyInstall() {
