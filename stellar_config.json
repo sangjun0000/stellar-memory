@@ -1,0 +1,20 @@
+{
+  "memory_function": {
+    "w_recall": 0.3,
+    "w_freshness": 0.3,
+    "w_arbitrary": 0.25,
+    "w_context": 0.15,
+    "max_recall": 1000,
+    "decay_alpha": 0.0001,
+    "freshness_cap": -1.0
+  },
+  "zones": [
+    {"zone_id": 0, "name": "core",  "max_slots": 20,   "importance_min": 0.8},
+    {"zone_id": 1, "name": "inner", "max_slots": 100,  "importance_min": 0.5, "importance_max": 0.8},
+    {"zone_id": 2, "name": "outer", "max_slots": 1000, "importance_min": 0.2, "importance_max": 0.5},
+    {"zone_id": 3, "name": "belt",  "max_slots": null,  "importance_min": 0.0, "importance_max": 0.2},
+    {"zone_id": 4, "name": "cloud", "max_slots": null,  "importance_min": -999, "importance_max": 0.0}
+  ],
+  "reorbit_interval": 300,
+  "db_path": "stellar_memory.db"
+}

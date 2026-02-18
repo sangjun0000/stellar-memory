@@ -1,0 +1,10 @@
+__pycache__
+*.pyc
+.git
+.pytest_cache
+tests/
+docs/
+*.egg-info
+.pdca-status.json
+stellar_data/
+*.db

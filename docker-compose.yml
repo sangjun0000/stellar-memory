@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  stellar:
+    build: .
+    ports:
+      - "9000:9000"
+    environment:
+      - STELLAR_DB_PATH=/data/stellar_memory.db
+    volumes:
+      - stellar-data:/data
+
+  stellar-pg:
+    build: .
+    ports:
+      - "9001:9000"
+    environment:
+      - STELLAR_STORAGE_BACKEND=postgresql
+      - STELLAR_DB_URL=postgresql://stellar:stellar@postgres:5432/stellar
+    depends_on:
+      - postgres
+
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: stellar
+      POSTGRES_PASSWORD: stellar
+      POSTGRES_DB: stellar
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  stellar-data:
+  pg-data:

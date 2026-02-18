@@ -1,0 +1,39 @@
+site_name: Stellar Memory
+site_description: Celestial-structure-based AI memory management
+site_url: https://stellar-memory.readthedocs.io
+repo_url: https://github.com/stellar-memory/stellar-memory
+repo_name: stellar-memory/stellar-memory
+
+theme:
+  name: material
+  palette:
+    primary: deep purple
+    accent: amber
+  features:
+    - content.code.copy
+    - navigation.sections
+    - search.suggest
+    - navigation.top
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - API Reference: api-reference.md
+  - Guides:
+    - AI Chatbot: guides/chatbot.md
+    - Personal Assistant: guides/personal-assistant.md
+    - Code Assistant: guides/code-assistant.md
+    - Knowledge Management: guides/knowledge-management.md
+  - MCP Integration:
+    - Claude Code: mcp/claude-code.md
+    - Cursor: mcp/cursor.md
+    - Tool Catalog: mcp/tool-catalog.md
+  - REST API: rest-api.md
+  - Changelog: changelog.md
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - admonition
+  - tables
