@@ -972,6 +972,210 @@
     }
 
     /* ============================================================
+       USE CASES
+    ============================================================ */
+    #use-cases { padding: 100px 0; }
+
+    .use-cases-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .use-case-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 28px 24px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .use-case-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .use-case-icon {
+      width: 44px; height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 16px;
+    }
+    .use-case-icon svg { width: 22px; height: 22px; }
+    .use-case-card h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .use-case-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+    @media (max-width: 900px) {
+      .use-cases-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .use-cases-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
+       SETUP WIZARD
+    ============================================================ */
+    .ai-selector {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 32px auto;
+      max-width: 700px;
+    }
+    .ai-card {
+      background: var(--bg-card);
+      border: 2px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .ai-card:hover { transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
+    .ai-card.selected { border-color: var(--accent-gold); box-shadow: var(--shadow-glow); }
+    .ai-card-icon {
+      width: 40px; height: 40px;
+      margin: 0 auto 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .ai-card-icon svg { width: 32px; height: 32px; }
+    .ai-card-label { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
+
+    .os-selector {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin: 16px 0 32px;
+    }
+    .os-pill {
+      padding: 8px 20px;
+      border-radius: 20px;
+      border: 1px solid var(--border-card);
+      background: transparent;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .os-pill:hover { border-color: rgba(255,255,255,0.2); }
+    .os-pill.selected {
+      background: var(--accent-gold);
+      color: #000;
+      border-color: var(--accent-gold);
+      font-weight: 600;
+    }
+
+    .wizard-panel {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+    .wizard-section {
+      margin-bottom: 32px;
+    }
+    .wizard-section-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .wizard-instructions {
+      display: none;
+      margin-top: 24px;
+    }
+    .wizard-instructions.visible { display: block; }
+    .wizard-step-card {
+      display: flex;
+      gap: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+    }
+    .wizard-step-num {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .wizard-step-content { flex: 1; }
+    .wizard-step-content p {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .copy-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-void);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--accent-glow);
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+    .copy-box code { flex: 1; white-space: pre; }
+    .copy-box .copy-btn {
+      flex-shrink: 0;
+      padding: 4px;
+    }
+
+    .wizard-download-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      background: var(--accent-gold);
+      color: #000;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .wizard-download-btn:hover { background: var(--accent-glow); }
+    .wizard-download-btn svg { width: 16px; height: 16px; }
+
+    .wizard-advanced {
+      text-align: center;
+      margin-top: 32px;
+    }
+    .wizard-advanced a {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+    .wizard-advanced a:hover { color: var(--text-secondary); }
+
+    @media (max-width: 768px) {
+      .ai-selector { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .ai-selector { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================================
        FOOTER
     ============================================================ */
     footer {
@@ -1102,7 +1306,6 @@
 
       .features-grid         { grid-template-columns: 1fr; }
       .how-inner             { grid-template-columns: 1fr; }
-      .quickstart-inner      { grid-template-columns: 1fr; }
       .footer-inner          { grid-template-columns: 1fr 1fr; }
 
       .nav-links             { display: none; }
@@ -1130,8 +1333,8 @@
           Stellar Memory
         </a>
         <ul class="nav-links">
+          <li><a href="#use-cases" data-i18n="nav.usecases">Use Cases</a></li>
           <li><a href="#features" data-i18n="nav.features">Features</a></li>
-          <li><a href="#quickstart" data-i18n="nav.quickstart">Quick Start</a></li>
           <li><a href="#get-started" data-i18n="nav.getstarted">Get Started</a></li>
           <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
           <li class="lang-selector">
@@ -1181,9 +1384,9 @@
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
               <span data-i18n="hero.cta.start">Get Started Free</span>
             </a>
-            <a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="btn-secondary">
-              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-              View on GitHub
+            <a href="#use-cases" class="btn-secondary">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span data-i18n="hero.cta.who">Who Is This For?</span>
             </a>
           </div>
         </div>
@@ -1223,6 +1426,53 @@
               <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-indigo);display:inline-block;"></span>Cloud
             </span>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       USE CASES (4 persona cards)
+  ============================================================ -->
+  <section id="use-cases">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:16px;">
+        <div class="section-label" data-i18n="uc.label">Who Is This For?</div>
+        <h2 class="section-title" data-i18n="uc.title">AI memory for everyone</h2>
+        <p class="section-sub" style="margin:0 auto;" data-i18n="uc.subtitle">Not just for developers — anyone who uses AI can benefit from persistent memory.</p>
+      </div>
+      <div class="use-cases-grid">
+        <!-- Student -->
+        <div class="use-case-card">
+          <div class="use-case-icon" style="background:rgba(99,102,241,0.1);">
+            <svg fill="none" stroke="var(--accent-indigo)" stroke-width="2" viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 1.1 2.7 3 6 3s6-1.9 6-3v-5"/></svg>
+          </div>
+          <h3 data-i18n="uc.student.title">Students &amp; Learners</h3>
+          <p data-i18n="uc.student.desc">Your AI tutor remembers what you studied, where you struggled, and adapts to your learning pace.</p>
+        </div>
+        <!-- Writer -->
+        <div class="use-case-card">
+          <div class="use-case-icon" style="background:rgba(244,63,94,0.1);">
+            <svg fill="none" stroke="var(--accent-rose)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 19l7-7 3 3-7 7-3 0z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+          </div>
+          <h3 data-i18n="uc.writer.title">Writers &amp; Creators</h3>
+          <p data-i18n="uc.writer.desc">Your AI assistant knows your writing style, your characters, your world — across every session.</p>
+        </div>
+        <!-- Business -->
+        <div class="use-case-card">
+          <div class="use-case-icon" style="background:rgba(16,185,129,0.1);">
+            <svg fill="none" stroke="var(--accent-emerald)" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12.01"/></svg>
+          </div>
+          <h3 data-i18n="uc.business.title">Business Professionals</h3>
+          <p data-i18n="uc.business.desc">Your AI remembers your clients, projects, and meeting notes — like a personal assistant that never forgets.</p>
+        </div>
+        <!-- Developer -->
+        <div class="use-case-card">
+          <div class="use-case-icon" style="background:rgba(6,182,212,0.1);">
+            <svg fill="none" stroke="var(--accent-cyan)" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <h3 data-i18n="uc.dev.title">Developers</h3>
+          <p data-i18n="uc.dev.desc">Add persistent memory to any LLM in 3 lines of code. MCP, REST API, and Python SDK included.</p>
         </div>
       </div>
     </div>
@@ -1372,111 +1622,67 @@
   </section>
 
   <!-- ============================================================
-       QUICK START (simplified)
-  ============================================================ -->
-  <section id="quickstart">
-    <div class="container">
-      <div class="quickstart-inner">
-        <div class="quickstart-left">
-          <div class="section-label">Quick Start</div>
-          <h2 class="section-title" data-i18n="qs.title">Up and running in minutes</h2>
-          <p class="section-sub" data-i18n="qs.subtitle">
-            Install from PyPI and give your AI persistent memory.
-          </p>
-
-          <div class="quickstart-feature">
-            <div class="quickstart-feature-icon">
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <p data-i18n="qs.check1">No external database required</p>
-          </div>
-          <div class="quickstart-feature">
-            <div class="quickstart-feature-icon">
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <p data-i18n="qs.check2">Compatible with OpenAI, Anthropic, LangChain</p>
-          </div>
-          <div class="quickstart-feature">
-            <div class="quickstart-feature-icon">
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <p data-i18n="qs.check3">MCP server for Claude Code and Cursor</p>
-          </div>
-
-          <div style="margin-top: 32px; display:flex; gap:12px; flex-wrap:wrap;">
-            <a href="https://stellar-memory.com/docs/" target="_blank" rel="noopener" class="btn-primary" style="font-size:0.875rem; padding:10px 20px;">
-              Full Documentation
-            </a>
-            <a href="https://pypi.org/project/stellar-memory/" target="_blank" rel="noopener" class="btn-secondary" style="font-size:0.875rem; padding:10px 20px;">
-              PyPI Package
-            </a>
-          </div>
-        </div>
-
-        <!-- Simplified quickstart code -->
-        <div class="code-window">
-          <div class="code-window-bar">
-            <div class="window-dot dot-red"></div>
-            <div class="window-dot dot-yellow"></div>
-            <div class="window-dot dot-green"></div>
-            <span class="window-title">quickstart.py</span>
-          </div>
-          <pre class="code-block active"><code><span class="cm"># pip install stellar-memory</span>
-
-<span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
-
-<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
-<span class="pn">memory</span><span class="op">.</span><span class="fn">store</span><span class="op">(</span><span class="st">"User prefers dark mode"</span><span class="op">)</span>
-<span class="pn">results</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">recall</span><span class="op">(</span><span class="st">"user preferences"</span><span class="op">)</span>
-
-<span class="kw">for</span> <span class="pn">mem</span> <span class="kw">in</span> <span class="pn">results</span><span class="op">:</span>
-    <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"[{mem.zone}] {mem.content}"</span><span class="op">)</span></code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       GET STARTED (Local vs Cloud - replaces Pricing)
+       GET STARTED (Setup Wizard)
   ============================================================ -->
   <section id="get-started">
     <div class="container">
       <div style="text-align:center;">
-        <div class="section-label" data-i18n="start.label">Get Started</div>
-        <h2 class="section-title" data-i18n="start.title">Choose how to use Stellar Memory</h2>
-        <p class="section-sub" style="margin:0 auto;" data-i18n="start.subtitle">Both options are 100% free. Choose what works best for you.</p>
+        <div class="section-label" data-i18n="setup.label">Get Started</div>
+        <h2 class="section-title" data-i18n="setup.title">Set up in 3 easy steps</h2>
+        <p class="section-sub" style="margin:0 auto;" data-i18n="setup.subtitle">Choose your AI tool, and we'll guide you through the rest. No coding required.</p>
       </div>
 
-      <div class="pricing-grid">
-        <!-- Local -->
-        <div class="pricing-card pricing-popular">
-          <div class="pricing-badge" data-i18n="start.local.badge">Recommended</div>
-          <div class="pricing-tier" data-i18n="start.local.title">On Your Computer</div>
-          <div class="pricing-price" data-i18n="start.local.price">Free<span></span></div>
-          <div class="pricing-desc" data-i18n="start.local.desc">Install and run locally</div>
-          <ul class="pricing-features">
-            <li class="incl" data-i18n="start.local.f1">100% private — data stays on your PC</li>
-            <li class="incl" data-i18n="start.local.f2">Works offline — no internet needed</li>
-            <li class="incl" data-i18n="start.local.f3">Unlimited memories &amp; agents</li>
-            <li class="incl" data-i18n="start.local.f4">Auto-connects to Claude &amp; Cursor</li>
-            <li class="incl" data-i18n="start.local.f5">30-second setup</li>
-          </ul>
-          <a href="https://github.com/sangjun0000/stellar-memory/releases" target="_blank" rel="noopener" class="pricing-cta pricing-cta-gold" data-i18n="start.local.cta">Download Installer</a>
+      <div class="wizard-panel">
+        <!-- Step 1: AI Tool Selector -->
+        <div class="wizard-section">
+          <div class="wizard-section-title" data-i18n="setup.step1">Which AI do you use?</div>
+          <div class="ai-selector">
+            <div class="ai-card" data-ai="claude" onclick="selectAI('claude')">
+              <div class="ai-card-icon">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M16.98 3.41L12 6.77 7.02 3.41 2 7.26v9.48l10 5.85 10-5.85V7.26l-5.02-3.85z" stroke="var(--accent-gold)" stroke-width="1.5" fill="rgba(240,180,41,0.1)"/></svg>
+              </div>
+              <div class="ai-card-label" data-i18n="setup.ai.claude">Claude Desktop</div>
+            </div>
+            <div class="ai-card" data-ai="cursor" onclick="selectAI('cursor')">
+              <div class="ai-card-icon">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="var(--accent-blue)" stroke-width="1.5" fill="rgba(59,130,246,0.1)"/><path d="M8 12l3 3 5-6" stroke="var(--accent-blue)" stroke-width="2"/></svg>
+              </div>
+              <div class="ai-card-label" data-i18n="setup.ai.cursor">Cursor</div>
+            </div>
+            <div class="ai-card" data-ai="chatgpt" onclick="selectAI('chatgpt')">
+              <div class="ai-card-icon">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--accent-emerald)" stroke-width="1.5" fill="rgba(16,185,129,0.1)"/><path d="M8 12h8M12 8v8" stroke="var(--accent-emerald)" stroke-width="1.5"/></svg>
+              </div>
+              <div class="ai-card-label" data-i18n="setup.ai.chatgpt">ChatGPT</div>
+            </div>
+            <div class="ai-card" data-ai="other" onclick="selectAI('other')">
+              <div class="ai-card-icon">
+                <svg viewBox="0 0 24 24" fill="none"><polyline points="4 17 10 11 4 5" stroke="var(--accent-violet)" stroke-width="1.5" fill="rgba(139,92,246,0.1)"/><line x1="12" y1="19" x2="20" y2="19" stroke="var(--accent-violet)" stroke-width="1.5"/></svg>
+              </div>
+              <div class="ai-card-label" data-i18n="setup.ai.other">Other / Developer</div>
+            </div>
+          </div>
         </div>
 
-        <!-- Cloud -->
-        <div class="pricing-card">
-          <div class="pricing-tier" data-i18n="start.cloud.title">In the Cloud</div>
-          <div class="pricing-price" data-i18n="start.cloud.price">Free<span></span></div>
-          <div class="pricing-desc" data-i18n="start.cloud.desc">Use from any browser</div>
-          <ul class="pricing-features">
-            <li class="incl" data-i18n="start.cloud.f1">No installation needed</li>
-            <li class="incl" data-i18n="start.cloud.f2">Access from any device</li>
-            <li class="incl" data-i18n="start.cloud.f3">Automatic backups</li>
-            <li class="incl" data-i18n="start.cloud.f4">REST API for developers</li>
-            <li class="incl" data-i18n="start.cloud.f5">Remote MCP endpoint</li>
-          </ul>
-          <a href="https://stellar-memory.com/docs/cloud/" target="_blank" rel="noopener" class="pricing-cta" data-i18n="start.cloud.cta">Coming Soon</a>
+        <!-- Step 2: OS Selector (hidden until AI selected) -->
+        <div class="wizard-section" id="wizard-step2" style="display:none;">
+          <div class="wizard-section-title"><span data-i18n="setup.step2">Your system</span> <span style="color:var(--accent-gold);font-weight:400;">(<span data-i18n="setup.step2.auto">auto-detected</span>)</span></div>
+          <div class="os-selector">
+            <button class="os-pill" data-os="windows" onclick="selectOS('windows')">Windows</button>
+            <button class="os-pill" data-os="macos" onclick="selectOS('macos')">macOS</button>
+            <button class="os-pill" data-os="linux" onclick="selectOS('linux')">Linux</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Instructions (hidden until AI selected) -->
+        <div class="wizard-section" id="wizard-step3" style="display:none;">
+          <div class="wizard-section-title" data-i18n="setup.step3">Follow these steps</div>
+          <div class="wizard-instructions visible" id="wizard-instructions"></div>
+        </div>
+
+        <!-- Advanced link -->
+        <div class="wizard-advanced" id="wizard-advanced" style="display:none;">
+          <a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" data-i18n="setup.advanced">Advanced: View on GitHub &rarr;</a>
         </div>
       </div>
     </div>
@@ -1543,9 +1749,21 @@
         "hero.subtitle": "AI remembers you",
         "hero.desc": "Give any AI the ability to remember. Free forever, no programming required. Install on your computer in 30 seconds, or use our cloud service.",
         "hero.cta.start": "Get Started Free",
+        "hero.cta.who": "Who Is This For?",
+        "nav.usecases": "Use Cases",
         "nav.features": "Features",
-        "nav.quickstart": "Quick Start",
         "nav.getstarted": "Get Started",
+        "uc.label": "Who Is This For?",
+        "uc.title": "AI memory for everyone",
+        "uc.subtitle": "Not just for developers — anyone who uses AI can benefit from persistent memory.",
+        "uc.student.title": "Students & Learners",
+        "uc.student.desc": "Your AI tutor remembers what you studied, where you struggled, and adapts to your learning pace.",
+        "uc.writer.title": "Writers & Creators",
+        "uc.writer.desc": "Your AI assistant knows your writing style, your characters, your world — across every session.",
+        "uc.business.title": "Business Professionals",
+        "uc.business.desc": "Your AI remembers your clients, projects, and meeting notes — like a personal assistant that never forgets.",
+        "uc.dev.title": "Developers",
+        "uc.dev.desc": "Add persistent memory to any LLM in 3 lines of code. MCP, REST API, and Python SDK included.",
         "features.title": "Everything a memory system needs",
         "features.subtitle": "Designed from first principles to mirror the way human memory actually works — layered, emotional, and self-organizing.",
         "feat.zones.title": "5-Zone Orbit System",
@@ -1560,33 +1778,32 @@
         "how.store.desc": "Feed any memory into the orbital system. The engine classifies zone placement, assigns emotional weight, and generates embeddings automatically.",
         "how.recall": "Recall",
         "how.recall.desc": "Query with natural language. The retrieval engine traverses orbital zones, applies emotional and temporal weighting, and returns the most contextually relevant memories.",
-        "qs.title": "Up and running in minutes",
-        "qs.subtitle": "Install from PyPI and give your AI persistent memory.",
-        "qs.check1": "No external database required",
-        "qs.check2": "Compatible with OpenAI, Anthropic, LangChain",
-        "qs.check3": "MCP server for Claude Code and Cursor",
-        "start.label": "Get Started",
-        "start.title": "Choose how to use Stellar Memory",
-        "start.subtitle": "Both options are 100% free. Choose what works best for you.",
-        "start.local.badge": "Recommended",
-        "start.local.title": "On Your Computer",
-        "start.local.price": "Free",
-        "start.local.desc": "Install and run locally",
-        "start.local.f1": "100% private — data stays on your PC",
-        "start.local.f2": "Works offline — no internet needed",
-        "start.local.f3": "Unlimited memories & agents",
-        "start.local.f4": "Auto-connects to Claude & Cursor",
-        "start.local.f5": "30-second setup",
-        "start.local.cta": "Download Installer",
-        "start.cloud.title": "In the Cloud",
-        "start.cloud.price": "Free",
-        "start.cloud.desc": "Use from any browser",
-        "start.cloud.f1": "No installation needed",
-        "start.cloud.f2": "Access from any device",
-        "start.cloud.f3": "Automatic backups",
-        "start.cloud.f4": "REST API for developers",
-        "start.cloud.f5": "Remote MCP endpoint",
-        "start.cloud.cta": "Coming Soon",
+        "setup.label": "Get Started",
+        "setup.title": "Set up in 3 easy steps",
+        "setup.subtitle": "Choose your AI tool, and we'll guide you through the rest. No coding required.",
+        "setup.step1": "Which AI do you use?",
+        "setup.step2": "Your system",
+        "setup.step2.auto": "auto-detected",
+        "setup.step3": "Follow these steps",
+        "setup.ai.claude": "Claude Desktop",
+        "setup.ai.cursor": "Cursor",
+        "setup.ai.chatgpt": "ChatGPT",
+        "setup.ai.other": "Other / Developer",
+        "setup.claude.win.s1": "Download the installer",
+        "setup.claude.win.s2": "Double-click the downloaded file to install",
+        "setup.claude.win.s3": "Restart Claude Desktop — done! Stellar Memory is now connected.",
+        "setup.claude.mac.s1": "Open Terminal and paste this command",
+        "setup.claude.mac.s2": "Restart Claude Desktop — done! Stellar Memory is now connected.",
+        "setup.cursor.s1": "Open Cursor Settings (Ctrl+Shift+J) → MCP section",
+        "setup.cursor.s2": "Click '+ Add Server' and paste this config",
+        "setup.cursor.s3": "Save and restart Cursor — done!",
+        "setup.chatgpt.s1": "Install the library",
+        "setup.chatgpt.s2": "Add this middleware to your code",
+        "setup.chatgpt.s3": "ChatGPT now has persistent memory across sessions.",
+        "setup.other.s1": "Install Stellar Memory",
+        "setup.other.s2": "Start the MCP server",
+        "setup.other.s3": "Connect your AI tool to http://localhost:5464",
+        "setup.advanced": "Advanced: View on GitHub",
         "footer.desc": "An intelligent AI memory system inspired by celestial structures."
       },
       ko: {
@@ -1595,9 +1812,21 @@
         "hero.subtitle": "AI가 당신을 기억합니다",
         "hero.desc": "어떤 AI에든 기억 능력을 부여하세요. 영구 무료, 프로그래밍 불필요. 30초 설치 또는 클라우드에서 바로 사용.",
         "hero.cta.start": "무료로 시작하기",
+        "hero.cta.who": "누구를 위한 건가요?",
+        "nav.usecases": "활용 사례",
         "nav.features": "기능",
-        "nav.quickstart": "빠른 시작",
         "nav.getstarted": "시작하기",
+        "uc.label": "누구를 위한 건가요?",
+        "uc.title": "모두를 위한 AI 기억",
+        "uc.subtitle": "개발자만을 위한 것이 아닙니다 — AI를 사용하는 모든 사람이 영구 기억의 혜택을 받을 수 있습니다.",
+        "uc.student.title": "학생 & 학습자",
+        "uc.student.desc": "AI 튜터가 공부한 내용, 어려웠던 부분을 기억하고 학습 속도에 맞춰 도와줍니다.",
+        "uc.writer.title": "작가 & 크리에이터",
+        "uc.writer.desc": "AI 어시스턴트가 당신의 글쓰기 스타일, 캐릭터, 세계관을 모든 세션에서 기억합니다.",
+        "uc.business.title": "비즈니스 전문가",
+        "uc.business.desc": "AI가 고객, 프로젝트, 회의 노트를 기억합니다 — 절대 잊지 않는 개인 비서처럼.",
+        "uc.dev.title": "개발자",
+        "uc.dev.desc": "코드 3줄로 모든 LLM에 영구 기억을 추가하세요. MCP, REST API, Python SDK 포함.",
         "features.title": "기억 시스템에 필요한 모든 것",
         "features.subtitle": "인간의 기억 원리를 모방하여 설계 — 계층적이고, 감정적이며, 스스로 조직하는 시스템.",
         "feat.zones.title": "5-Zone 궤도 시스템",
@@ -1612,33 +1841,32 @@
         "how.store.desc": "기억을 궤도 시스템에 입력하면 자동으로 존 배치, 감정 가중치 할당, 임베딩 생성을 수행합니다.",
         "how.recall": "검색",
         "how.recall.desc": "자연어로 질의하면 관련 기억을 검색. 검색 엔진이 궤도 존을 탐색하고, 감정 및 시간 가중치를 적용하여 가장 관련성 높은 기억을 반환합니다.",
-        "qs.title": "몇 분 만에 시작",
-        "qs.subtitle": "PyPI에서 설치하면 AI에 영구 기억을 부여합니다.",
-        "qs.check1": "외부 데이터베이스 불필요",
-        "qs.check2": "OpenAI, Anthropic, LangChain 호환",
-        "qs.check3": "Claude Code, Cursor용 MCP 서버",
-        "start.label": "시작하기",
-        "start.title": "사용 방법을 선택하세요",
-        "start.subtitle": "두 가지 모두 100% 무료입니다. 원하는 방법을 선택하세요.",
-        "start.local.badge": "추천",
-        "start.local.title": "내 컴퓨터에서",
-        "start.local.price": "무료",
-        "start.local.desc": "로컬에서 설치하고 실행",
-        "start.local.f1": "100% 프라이버시 — 데이터가 내 PC에 저장",
-        "start.local.f2": "오프라인 사용 가능 — 인터넷 불필요",
-        "start.local.f3": "무제한 기억 & 에이전트",
-        "start.local.f4": "Claude & Cursor 자동 연결",
-        "start.local.f5": "30초 설정",
-        "start.local.cta": "설치 파일 다운로드",
-        "start.cloud.title": "클라우드에서",
-        "start.cloud.price": "무료",
-        "start.cloud.desc": "브라우저에서 바로 사용",
-        "start.cloud.f1": "설치 불필요",
-        "start.cloud.f2": "어디서든 접근 가능",
-        "start.cloud.f3": "자동 백업",
-        "start.cloud.f4": "개발자용 REST API",
-        "start.cloud.f5": "원격 MCP 엔드포인트",
-        "start.cloud.cta": "준비 중",
+        "setup.label": "시작하기",
+        "setup.title": "3단계로 간편 설정",
+        "setup.subtitle": "사용하는 AI 도구를 선택하면 나머지는 안내해 드립니다. 코딩이 필요 없습니다.",
+        "setup.step1": "어떤 AI를 사용하시나요?",
+        "setup.step2": "운영체제",
+        "setup.step2.auto": "자동 감지",
+        "setup.step3": "아래 단계를 따라하세요",
+        "setup.ai.claude": "Claude Desktop",
+        "setup.ai.cursor": "Cursor",
+        "setup.ai.chatgpt": "ChatGPT",
+        "setup.ai.other": "기타 / 개발자",
+        "setup.claude.win.s1": "설치 파일을 다운로드하세요",
+        "setup.claude.win.s2": "다운로드한 파일을 더블클릭하여 설치",
+        "setup.claude.win.s3": "Claude Desktop을 재시작하면 완료! Stellar Memory가 연결되었습니다.",
+        "setup.claude.mac.s1": "터미널을 열고 이 명령어를 붙여넣으세요",
+        "setup.claude.mac.s2": "Claude Desktop을 재시작하면 완료! Stellar Memory가 연결되었습니다.",
+        "setup.cursor.s1": "Cursor 설정 (Ctrl+Shift+J) → MCP 섹션을 여세요",
+        "setup.cursor.s2": "'+ 서버 추가'를 클릭하고 이 설정을 붙여넣으세요",
+        "setup.cursor.s3": "저장하고 Cursor를 재시작하면 완료!",
+        "setup.chatgpt.s1": "라이브러리를 설치하세요",
+        "setup.chatgpt.s2": "이 미들웨어를 코드에 추가하세요",
+        "setup.chatgpt.s3": "이제 ChatGPT가 세션 간 영구 기억을 가집니다.",
+        "setup.other.s1": "Stellar Memory를 설치하세요",
+        "setup.other.s2": "MCP 서버를 시작하세요",
+        "setup.other.s3": "AI 도구를 http://localhost:5464에 연결하세요",
+        "setup.advanced": "고급: GitHub에서 보기",
         "footer.desc": "천체 구조에서 영감을 받은 지능형 AI 기억 시스템."
       },
       zh: {
@@ -1647,9 +1875,21 @@
         "hero.subtitle": "AI记住你",
         "hero.desc": "赋予任何AI记忆能力。永久免费，无需编程。30秒安装到电脑，或使用云服务。",
         "hero.cta.start": "免费开始",
+        "hero.cta.who": "适合谁？",
+        "nav.usecases": "使用场景",
         "nav.features": "功能",
-        "nav.quickstart": "快速开始",
         "nav.getstarted": "开始使用",
+        "uc.label": "适合谁？",
+        "uc.title": "人人可用的AI记忆",
+        "uc.subtitle": "不仅适用于开发者 — 任何使用AI的人都能从持久记忆中受益。",
+        "uc.student.title": "学生和学习者",
+        "uc.student.desc": "AI导师记住你学过什么、哪里遇到困难，并根据你的学习节奏进行调整。",
+        "uc.writer.title": "作家和创作者",
+        "uc.writer.desc": "AI助手了解你的写作风格、角色和世界观 — 贯穿每一次对话。",
+        "uc.business.title": "商务人士",
+        "uc.business.desc": "AI记住你的客户、项目和会议笔记 — 就像一个永不遗忘的私人助理。",
+        "uc.dev.title": "开发者",
+        "uc.dev.desc": "3行代码为任何LLM添加持久记忆。包含MCP、REST API和Python SDK。",
         "features.title": "记忆系统所需的一切",
         "features.subtitle": "从第一原理出发设计，模拟人类记忆的真实运作方式 — 分层、情感化、自组织。",
         "feat.zones.title": "5区域轨道系统",
@@ -1664,33 +1904,32 @@
         "how.store.desc": "将任何记忆输入轨道系统。引擎自动进行区域分类、情感权重分配和嵌入生成。",
         "how.recall": "检索",
         "how.recall.desc": "使用自然语言查询。检索引擎遍历轨道区域，应用情感和时间权重，返回最相关的记忆。",
-        "qs.title": "几分钟即可启动",
-        "qs.subtitle": "从PyPI安装，赋予AI持久记忆。",
-        "qs.check1": "无需外部数据库",
-        "qs.check2": "兼容OpenAI、Anthropic、LangChain",
-        "qs.check3": "Claude Code和Cursor的MCP服务器",
-        "start.label": "开始使用",
-        "start.title": "选择使用方式",
-        "start.subtitle": "两种方式都是100%免费。选择最适合您的。",
-        "start.local.badge": "推荐",
-        "start.local.title": "在你的电脑上",
-        "start.local.price": "免费",
-        "start.local.desc": "本地安装运行",
-        "start.local.f1": "100%隐私 — 数据存储在你的电脑",
-        "start.local.f2": "离线使用 — 无需网络",
-        "start.local.f3": "无限记忆和代理",
-        "start.local.f4": "自动连接Claude和Cursor",
-        "start.local.f5": "30秒安装",
-        "start.local.cta": "下载安装程序",
-        "start.cloud.title": "在云端",
-        "start.cloud.price": "免费",
-        "start.cloud.desc": "从任何浏览器使用",
-        "start.cloud.f1": "无需安装",
-        "start.cloud.f2": "任何设备都能访问",
-        "start.cloud.f3": "自动备份",
-        "start.cloud.f4": "开发者REST API",
-        "start.cloud.f5": "远程MCP端点",
-        "start.cloud.cta": "即将推出",
+        "setup.label": "开始使用",
+        "setup.title": "3步轻松设置",
+        "setup.subtitle": "选择你的AI工具，我们将引导你完成其余步骤。无需编程。",
+        "setup.step1": "你使用哪个AI？",
+        "setup.step2": "你的系统",
+        "setup.step2.auto": "自动检测",
+        "setup.step3": "按照以下步骤操作",
+        "setup.ai.claude": "Claude Desktop",
+        "setup.ai.cursor": "Cursor",
+        "setup.ai.chatgpt": "ChatGPT",
+        "setup.ai.other": "其他 / 开发者",
+        "setup.claude.win.s1": "下载安装程序",
+        "setup.claude.win.s2": "双击下载的文件进行安装",
+        "setup.claude.win.s3": "重启Claude Desktop — 完成！Stellar Memory已连接。",
+        "setup.claude.mac.s1": "打开终端并粘贴此命令",
+        "setup.claude.mac.s2": "重启Claude Desktop — 完成！Stellar Memory已连接。",
+        "setup.cursor.s1": "打开Cursor设置 (Ctrl+Shift+J) → MCP部分",
+        "setup.cursor.s2": "点击'+ 添加服务器'并粘贴此配置",
+        "setup.cursor.s3": "保存并重启Cursor — 完成！",
+        "setup.chatgpt.s1": "安装库",
+        "setup.chatgpt.s2": "将此中间件添加到你的代码中",
+        "setup.chatgpt.s3": "ChatGPT现在拥有跨会话的持久记忆。",
+        "setup.other.s1": "安装Stellar Memory",
+        "setup.other.s2": "启动MCP服务器",
+        "setup.other.s3": "将你的AI工具连接到 http://localhost:5464",
+        "setup.advanced": "高级：在GitHub上查看",
         "footer.desc": "受天体结构启发的智能AI记忆系统。"
       },
       es: {
@@ -1699,9 +1938,21 @@
         "hero.subtitle": "La IA te recuerda",
         "hero.desc": "Dale a cualquier IA la capacidad de recordar. Gratis para siempre, sin programación. Instala en 30 segundos o usa nuestro servicio en la nube.",
         "hero.cta.start": "Empezar Gratis",
+        "hero.cta.who": "Para quién es?",
+        "nav.usecases": "Casos de Uso",
         "nav.features": "Características",
-        "nav.quickstart": "Inicio Rápido",
         "nav.getstarted": "Empezar",
+        "uc.label": "Para quién es?",
+        "uc.title": "Memoria AI para todos",
+        "uc.subtitle": "No solo para desarrolladores — cualquiera que use IA puede beneficiarse de la memoria persistente.",
+        "uc.student.title": "Estudiantes",
+        "uc.student.desc": "Tu tutor IA recuerda lo que estudiaste, dónde tuviste dificultades, y se adapta a tu ritmo de aprendizaje.",
+        "uc.writer.title": "Escritores y Creadores",
+        "uc.writer.desc": "Tu asistente IA conoce tu estilo de escritura, tus personajes, tu mundo — en cada sesión.",
+        "uc.business.title": "Profesionales",
+        "uc.business.desc": "Tu IA recuerda tus clientes, proyectos y notas de reuniones — como un asistente personal que nunca olvida.",
+        "uc.dev.title": "Desarrolladores",
+        "uc.dev.desc": "Agrega memoria persistente a cualquier LLM en 3 líneas de código. MCP, REST API y Python SDK incluidos.",
         "features.title": "Todo lo que necesita un sistema de memoria",
         "features.subtitle": "Diseñado desde los principios fundamentales para reflejar cómo funciona realmente la memoria humana — en capas, emocional y autoorganizada.",
         "feat.zones.title": "Sistema Orbital de 5 Zonas",
@@ -1716,33 +1967,32 @@
         "how.store.desc": "Alimenta cualquier memoria al sistema orbital. El motor clasifica la ubicación de zona, asigna peso emocional y genera embeddings automáticamente.",
         "how.recall": "Recordar",
         "how.recall.desc": "Consulta con lenguaje natural. El motor de recuperación recorre las zonas orbitales, aplica pesos emocionales y temporales, y devuelve las memorias más relevantes.",
-        "qs.title": "Listo en minutos",
-        "qs.subtitle": "Instala desde PyPI y dale a tu IA memoria persistente.",
-        "qs.check1": "No requiere base de datos externa",
-        "qs.check2": "Compatible con OpenAI, Anthropic, LangChain",
-        "qs.check3": "Servidor MCP para Claude Code y Cursor",
-        "start.label": "Empezar",
-        "start.title": "Elige cómo usar Stellar Memory",
-        "start.subtitle": "Ambas opciones son 100% gratuitas. Elige lo que funcione mejor para ti.",
-        "start.local.badge": "Recomendado",
-        "start.local.title": "En tu computadora",
-        "start.local.price": "Gratis",
-        "start.local.desc": "Instalar y ejecutar localmente",
-        "start.local.f1": "100% privado — datos en tu PC",
-        "start.local.f2": "Funciona sin internet",
-        "start.local.f3": "Memorias y agentes ilimitados",
-        "start.local.f4": "Auto-conecta con Claude y Cursor",
-        "start.local.f5": "Configuración en 30 segundos",
-        "start.local.cta": "Descargar Instalador",
-        "start.cloud.title": "En la nube",
-        "start.cloud.price": "Gratis",
-        "start.cloud.desc": "Usar desde cualquier navegador",
-        "start.cloud.f1": "Sin instalación",
-        "start.cloud.f2": "Acceso desde cualquier dispositivo",
-        "start.cloud.f3": "Copias de seguridad automáticas",
-        "start.cloud.f4": "REST API para desarrolladores",
-        "start.cloud.f5": "Endpoint MCP remoto",
-        "start.cloud.cta": "Próximamente",
+        "setup.label": "Comenzar",
+        "setup.title": "Configura en 3 pasos fáciles",
+        "setup.subtitle": "Elige tu herramienta de IA y te guiaremos en el resto. Sin necesidad de programar.",
+        "setup.step1": "Qué IA usas?",
+        "setup.step2": "Tu sistema",
+        "setup.step2.auto": "auto-detectado",
+        "setup.step3": "Sigue estos pasos",
+        "setup.ai.claude": "Claude Desktop",
+        "setup.ai.cursor": "Cursor",
+        "setup.ai.chatgpt": "ChatGPT",
+        "setup.ai.other": "Otro / Desarrollador",
+        "setup.claude.win.s1": "Descarga el instalador",
+        "setup.claude.win.s2": "Haz doble clic en el archivo descargado para instalar",
+        "setup.claude.win.s3": "Reinicia Claude Desktop — listo! Stellar Memory está conectado.",
+        "setup.claude.mac.s1": "Abre Terminal y pega este comando",
+        "setup.claude.mac.s2": "Reinicia Claude Desktop — listo! Stellar Memory está conectado.",
+        "setup.cursor.s1": "Abre Configuración de Cursor (Ctrl+Shift+J) → sección MCP",
+        "setup.cursor.s2": "Haz clic en '+ Agregar Servidor' y pega esta configuración",
+        "setup.cursor.s3": "Guarda y reinicia Cursor — listo!",
+        "setup.chatgpt.s1": "Instala la biblioteca",
+        "setup.chatgpt.s2": "Agrega este middleware a tu código",
+        "setup.chatgpt.s3": "ChatGPT ahora tiene memoria persistente entre sesiones.",
+        "setup.other.s1": "Instala Stellar Memory",
+        "setup.other.s2": "Inicia el servidor MCP",
+        "setup.other.s3": "Conecta tu herramienta de IA a http://localhost:5464",
+        "setup.advanced": "Avanzado: Ver en GitHub",
         "footer.desc": "Un sistema de memoria AI inteligente inspirado en estructuras celestiales."
       },
       ja: {
@@ -1751,9 +2001,21 @@
         "hero.subtitle": "AIがあなたを覚えます",
         "hero.desc": "あらゆるAIに記憶能力を。永久無料、プログラミング不要。30秒でインストール、またはクラウドで利用。",
         "hero.cta.start": "無料で始める",
+        "hero.cta.who": "誰のため？",
+        "nav.usecases": "活用例",
         "nav.features": "機能",
-        "nav.quickstart": "クイックスタート",
         "nav.getstarted": "はじめる",
+        "uc.label": "誰のため？",
+        "uc.title": "みんなのためのAI記憶",
+        "uc.subtitle": "開発者だけのものではありません — AIを使う全ての人が永続メモリの恩恵を受けられます。",
+        "uc.student.title": "学生・学習者",
+        "uc.student.desc": "AIチューターがあなたの学習内容、苦手な箇所を覚え、学習ペースに合わせてサポートします。",
+        "uc.writer.title": "作家・クリエイター",
+        "uc.writer.desc": "AIアシスタントがあなたの文体、キャラクター、世界観を全セッションで記憶します。",
+        "uc.business.title": "ビジネスプロフェッショナル",
+        "uc.business.desc": "AIがクライアント、プロジェクト、会議メモを記憶 — 忘れない個人秘書のように。",
+        "uc.dev.title": "開発者",
+        "uc.dev.desc": "3行のコードで任意のLLMに永続メモリを追加。MCP、REST API、Python SDK付属。",
         "features.title": "記憶システムに必要なすべて",
         "features.subtitle": "第一原理から設計された、人間の記憶を模倣するシステム — 階層的で、感情的で、自己組織化する。",
         "feat.zones.title": "5ゾーン軌道システム",
@@ -1768,33 +2030,32 @@
         "how.store.desc": "記憶を軌道システムに入力すると、ゾーン配置の分類、感情の重み付け、エンベディング生成を自動実行。",
         "how.recall": "検索",
         "how.recall.desc": "自然言語で問い合わせると関連記憶を検索。検索エンジンが軌道ゾーンを横断し、感情・時間の重みを適用して最も関連性の高い記憶を返します。",
-        "qs.title": "数分で起動",
-        "qs.subtitle": "PyPIからインストールしてAIに永続的な記憶を。",
-        "qs.check1": "外部データベース不要",
-        "qs.check2": "OpenAI、Anthropic、LangChain対応",
-        "qs.check3": "Claude Code/Cursor用MCPサーバー",
-        "start.label": "はじめる",
-        "start.title": "使い方を選んでください",
-        "start.subtitle": "どちらも100%無料です。最適な方法をお選びください。",
-        "start.local.badge": "おすすめ",
-        "start.local.title": "あなたのPCで",
-        "start.local.price": "無料",
-        "start.local.desc": "ローカルにインストールして実行",
-        "start.local.f1": "100%プライバシー — データはPCに保存",
-        "start.local.f2": "オフライン動作 — ネット不要",
-        "start.local.f3": "無制限のメモリ＆エージェント",
-        "start.local.f4": "Claude＆Cursorに自動接続",
-        "start.local.f5": "30秒セットアップ",
-        "start.local.cta": "インストーラーをダウンロード",
-        "start.cloud.title": "クラウドで",
-        "start.cloud.price": "無料",
-        "start.cloud.desc": "ブラウザから利用",
-        "start.cloud.f1": "インストール不要",
-        "start.cloud.f2": "どのデバイスからもアクセス",
-        "start.cloud.f3": "自動バックアップ",
-        "start.cloud.f4": "開発者向けREST API",
-        "start.cloud.f5": "リモートMCPエンドポイント",
-        "start.cloud.cta": "近日公開",
+        "setup.label": "始める",
+        "setup.title": "3つの簡単ステップで設定",
+        "setup.subtitle": "AIツールを選ぶだけ。あとはガイドします。プログラミング不要。",
+        "setup.step1": "どのAIを使っていますか？",
+        "setup.step2": "お使いのシステム",
+        "setup.step2.auto": "自動検出",
+        "setup.step3": "以下の手順に従ってください",
+        "setup.ai.claude": "Claude Desktop",
+        "setup.ai.cursor": "Cursor",
+        "setup.ai.chatgpt": "ChatGPT",
+        "setup.ai.other": "その他 / 開発者",
+        "setup.claude.win.s1": "インストーラーをダウンロード",
+        "setup.claude.win.s2": "ダウンロードしたファイルをダブルクリックしてインストール",
+        "setup.claude.win.s3": "Claude Desktopを再起動 — 完了！Stellar Memoryが接続されました。",
+        "setup.claude.mac.s1": "ターミナルを開いてこのコマンドを貼り付け",
+        "setup.claude.mac.s2": "Claude Desktopを再起動 — 完了！Stellar Memoryが接続されました。",
+        "setup.cursor.s1": "Cursor設定 (Ctrl+Shift+J) → MCPセクションを開く",
+        "setup.cursor.s2": "'+ サーバー追加'をクリックしてこの設定を貼り付け",
+        "setup.cursor.s3": "保存してCursorを再起動 — 完了！",
+        "setup.chatgpt.s1": "ライブラリをインストール",
+        "setup.chatgpt.s2": "このミドルウェアをコードに追加",
+        "setup.chatgpt.s3": "ChatGPTにセッション間の永続メモリが追加されました。",
+        "setup.other.s1": "Stellar Memoryをインストール",
+        "setup.other.s2": "MCPサーバーを起動",
+        "setup.other.s3": "AIツールをhttp://localhost:5464に接続",
+        "setup.advanced": "上級者向け：GitHubで見る",
         "footer.desc": "天体構造にインスパイアされた知的AI記憶システム。"
       }
     };
@@ -1810,6 +2071,7 @@
 
     function setLang(lang) {
       if (!T[lang]) lang = 'en';
+      currentLang = lang;
       document.querySelectorAll('[data-i18n]').forEach(function(el) {
         var key = el.dataset.i18n;
         if (T[lang][key]) el.textContent = T[lang][key];
@@ -1818,6 +2080,7 @@
       document.documentElement.lang = lang;
       localStorage.setItem('lang', lang);
       closeLangMenu();
+      if (selectedAI && selectedOS) renderInstructions();
     }
 
     function toggleLangMenu() {
@@ -1902,7 +2165,8 @@
 
     var fadeTargets = [].concat(
       Array.from(document.querySelectorAll('.feature-card')),
-      Array.from(document.querySelectorAll('.pricing-card'))
+      Array.from(document.querySelectorAll('.use-case-card')),
+      Array.from(document.querySelectorAll('.ai-card'))
     );
 
     fadeTargets.forEach(function(el, i) {
@@ -1937,8 +2201,157 @@
       });
     }, { passive: true });
 
+    // ── Setup Wizard ──────────────────────────────────────────
+    var selectedAI = null;
+    var selectedOS = null;
+    var currentLang = 'en';
+
+    function detectOS() {
+      var ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf('win') !== -1) return 'windows';
+      if (ua.indexOf('mac') !== -1) return 'macos';
+      return 'linux';
+    }
+
+    var WIZARD_INSTRUCTIONS = {
+      'claude-windows': [
+        { titleKey: 'setup.claude.win.s1', action: 'download', url: 'https://raw.githubusercontent.com/sangjun0000/stellar-memory/main/stellar-memory-setup.bat', filename: 'stellar-memory-setup.bat' },
+        { titleKey: 'setup.claude.win.s2', action: 'text' },
+        { titleKey: 'setup.claude.win.s3', action: 'text' }
+      ],
+      'claude-macos': [
+        { titleKey: 'setup.claude.mac.s1', action: 'copy', command: 'curl -sL https://raw.githubusercontent.com/sangjun0000/stellar-memory/main/stellar-memory-setup.sh | bash' },
+        { titleKey: 'setup.claude.mac.s2', action: 'text' }
+      ],
+      'claude-linux': [
+        { titleKey: 'setup.claude.mac.s1', action: 'copy', command: 'curl -sL https://raw.githubusercontent.com/sangjun0000/stellar-memory/main/stellar-memory-setup.sh | bash' },
+        { titleKey: 'setup.claude.mac.s2', action: 'text' }
+      ],
+      'cursor-windows': [
+        { titleKey: 'setup.cursor.s1', action: 'text' },
+        { titleKey: 'setup.cursor.s2', action: 'copy', command: '{\n  "mcpServers": {\n    "stellar-memory": {\n      "command": "uvx",\n      "args": ["stellar-memory"]\n    }\n  }\n}' },
+        { titleKey: 'setup.cursor.s3', action: 'text' }
+      ],
+      'cursor-macos': [
+        { titleKey: 'setup.cursor.s1', action: 'text' },
+        { titleKey: 'setup.cursor.s2', action: 'copy', command: '{\n  "mcpServers": {\n    "stellar-memory": {\n      "command": "uvx",\n      "args": ["stellar-memory"]\n    }\n  }\n}' },
+        { titleKey: 'setup.cursor.s3', action: 'text' }
+      ],
+      'cursor-linux': [
+        { titleKey: 'setup.cursor.s1', action: 'text' },
+        { titleKey: 'setup.cursor.s2', action: 'copy', command: '{\n  "mcpServers": {\n    "stellar-memory": {\n      "command": "uvx",\n      "args": ["stellar-memory"]\n    }\n  }\n}' },
+        { titleKey: 'setup.cursor.s3', action: 'text' }
+      ],
+      'chatgpt-windows': [
+        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.chatgpt.s2', action: 'copy', command: 'from stellar_memory.middleware import ChatGPTMiddleware\nmiddleware = ChatGPTMiddleware()' },
+        { titleKey: 'setup.chatgpt.s3', action: 'text' }
+      ],
+      'chatgpt-macos': [
+        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.chatgpt.s2', action: 'copy', command: 'from stellar_memory.middleware import ChatGPTMiddleware\nmiddleware = ChatGPTMiddleware()' },
+        { titleKey: 'setup.chatgpt.s3', action: 'text' }
+      ],
+      'chatgpt-linux': [
+        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.chatgpt.s2', action: 'copy', command: 'from stellar_memory.middleware import ChatGPTMiddleware\nmiddleware = ChatGPTMiddleware()' },
+        { titleKey: 'setup.chatgpt.s3', action: 'text' }
+      ],
+      'other-windows': [
+        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.other.s2', action: 'copy', command: 'stellar-memory serve' },
+        { titleKey: 'setup.other.s3', action: 'text' }
+      ],
+      'other-macos': [
+        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.other.s2', action: 'copy', command: 'stellar-memory serve' },
+        { titleKey: 'setup.other.s3', action: 'text' }
+      ],
+      'other-linux': [
+        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.other.s2', action: 'copy', command: 'stellar-memory serve' },
+        { titleKey: 'setup.other.s3', action: 'text' }
+      ]
+    };
+
+    function selectAI(tool) {
+      selectedAI = tool;
+      document.querySelectorAll('.ai-card').forEach(function(c) { c.classList.remove('selected'); });
+      document.querySelector('[data-ai="' + tool + '"]').classList.add('selected');
+      document.getElementById('wizard-step2').style.display = 'block';
+      document.getElementById('wizard-step3').style.display = 'block';
+      document.getElementById('wizard-advanced').style.display = 'block';
+      if (!selectedOS) {
+        selectedOS = detectOS();
+        document.querySelectorAll('.os-pill').forEach(function(p) { p.classList.remove('selected'); });
+        var osPill = document.querySelector('[data-os="' + selectedOS + '"]');
+        if (osPill) osPill.classList.add('selected');
+      }
+      renderInstructions();
+    }
+
+    function selectOS(os) {
+      selectedOS = os;
+      document.querySelectorAll('.os-pill').forEach(function(p) { p.classList.remove('selected'); });
+      document.querySelector('[data-os="' + os + '"]').classList.add('selected');
+      renderInstructions();
+    }
+
+    function getI18nText(key) {
+      var lang = currentLang || 'en';
+      return (T[lang] && T[lang][key]) || (T.en && T.en[key]) || key;
+    }
+
+    function renderInstructions() {
+      if (!selectedAI || !selectedOS) return;
+      var key = selectedAI + '-' + selectedOS;
+      var steps = WIZARD_INSTRUCTIONS[key];
+      if (!steps) return;
+
+      var container = document.getElementById('wizard-instructions');
+      var html = '';
+      for (var i = 0; i < steps.length; i++) {
+        var step = steps[i];
+        var title = getI18nText(step.titleKey);
+        html += '<div class="wizard-step-card">';
+        html += '<div class="wizard-step-num">' + (i + 1) + '</div>';
+        html += '<div class="wizard-step-content">';
+        html += '<p>' + title + '</p>';
+        if (step.action === 'download') {
+          html += '<a href="' + step.url + '" download="' + step.filename + '" class="wizard-download-btn">';
+          html += '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
+          html += step.filename + '</a>';
+        } else if (step.action === 'copy') {
+          var escapedCmd = step.command.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          html += '<div class="copy-box">';
+          html += '<code>' + escapedCmd + '</code>';
+          html += '<button class="copy-btn" onclick="copyWizardCmd(this)" title="Copy">';
+          html += '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+          html += '</button></div>';
+        }
+        html += '</div></div>';
+      }
+      container.innerHTML = html;
+    }
+
+    function copyWizardCmd(btn) {
+      var code = btn.parentElement.querySelector('code');
+      var text = code.textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        showToast('Copied to clipboard!');
+      });
+    }
+
+    // Initialize OS detection on load
+    selectedOS = detectOS();
+    document.addEventListener('DOMContentLoaded', function() {
+      var osPill = document.querySelector('[data-os="' + selectedOS + '"]');
+      if (osPill) osPill.classList.add('selected');
+    });
+
     // ── Initialize language ────────────────────────────────────
-    setLang(detectLang());
+    currentLang = detectLang();
+    setLang(currentLang);
   </script>
 </body>
 </html>
