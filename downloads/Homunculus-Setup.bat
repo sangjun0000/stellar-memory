@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 chcp 65001 >nul 2>&1
 title Homunculus Setup
 setlocal enabledelayedexpansion
@@ -10,7 +10,7 @@ echo  ║     Autonomous AI Agent               ║
 echo  ╚═══════════════════════════════════════╝
 echo.
 
-:: ── Step 0: Check Python ──
+:: -- Step 0: Check Python --
 where python >nul 2>&1
 if %ERRORLEVEL% neq 0 (
     echo  [ERROR] Python not found.
@@ -23,7 +23,7 @@ for /f "tokens=2 delims= " %%v in ('python --version 2^>^&1') do set PYVER=%%v
 echo  Python %PYVER% found.
 echo.
 
-:: ── Step 1: Download ──
+:: -- Step 1: Download --
 set "DOWNLOAD_URL=https://sangjun0000.github.io/stellar-memory/downloads/homunculus-v0.2.0.zip"
 set "TEMP_DIR=%TEMP%\homunculus-setup"
 set "ZIP_FILE=%TEMP_DIR%\homunculus-v0.2.0.zip"
@@ -40,7 +40,7 @@ if %ERRORLEVEL% neq 0 (
 echo  -^> Downloaded.
 echo.
 
-:: ── Step 2: Extract ──
+:: -- Step 2: Extract --
 echo  Extracting...
 powershell -ExecutionPolicy Bypass -Command "Expand-Archive -Path '%ZIP_FILE%' -DestinationPath '%TEMP_DIR%' -Force"
 if %ERRORLEVEL% neq 0 (
@@ -50,7 +50,7 @@ if %ERRORLEVEL% neq 0 (
 echo  -^> Extracted.
 echo.
 
-:: ── Step 3: Run installer ──
+:: -- Step 3: Run installer --
 set "SOURCE_DIR=%TEMP_DIR%\homunculus-v0.2.0"
 if not exist "%SOURCE_DIR%\src\homunculus\installer.py" (
     echo  [ERROR] Invalid package. installer.py not found.
@@ -59,7 +59,7 @@ if not exist "%SOURCE_DIR%\src\homunculus\installer.py" (
 
 python "%SOURCE_DIR%\src\homunculus\installer.py" "%SOURCE_DIR%"
 
-:: ── Cleanup ──
+:: -- Cleanup --
 rmdir /s /q "%TEMP_DIR%" >nul 2>&1
 
 :end
