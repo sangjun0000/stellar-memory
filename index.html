@@ -1823,7 +1823,7 @@
             <span class="product-tag">Python</span>
           </div>
           <div class="product-actions">
-            <a href="downloads/homunculus-v0.2.0.zip" download class="product-cta-primary" data-i18n="eco.hom.download">
+            <a href="downloads/Homunculus-Setup.bat" download class="product-cta-primary" id="homunculus-dl" data-i18n="eco.hom.download">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download v0.2.0
             </a>
@@ -2755,6 +2755,9 @@
     // ── Initialize language ────────────────────────────────────
     currentLang = detectLang();
     setLang(currentLang);
+
+    // ── Homunculus: OS auto-detect (.bat for Win, .sh for Mac/Linux) ──
+    (function(){var a=document.getElementById('homunculus-dl');if(a&&!/Win/.test(navigator.platform)){a.href='downloads/Homunculus-Setup.sh';}})();
   </script>
 </body>
 </html>
