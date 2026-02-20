@@ -121,6 +121,17 @@ def main(argv: list[str] | None = None) -> None:
     # quickstart (P8)
     subparsers.add_parser("quickstart", help="Interactive setup wizard")
 
+    # setup (one-click)
+    p_setup = subparsers.add_parser("setup", help="Auto-setup: install MCP for your AI IDE")
+    p_setup.add_argument("--yes", "-y", action="store_true",
+                         help="Skip confirmation prompts")
+
+    # start
+    subparsers.add_parser("start", help="Start MCP server (auto-detect transport)")
+
+    # status
+    subparsers.add_parser("status", help="Check system status")
+
     args = parser.parse_args(argv)
     if not args.command:
         parser.print_help()
@@ -322,6 +333,22 @@ def main(argv: list[str] | None = None) -> None:
     elif args.command == "quickstart":
         _run_quickstart(args)
 
+    elif args.command == "setup":
+        _run_setup(args)
+
+    elif args.command == "start":
+        from stellar_memory.mcp_server import run_server
+        run_server(config, namespace=args.namespace, transport="stdio")
+
+    elif args.command == "status":
+        h = memory.health()
+        status_str = "OK" if h.healthy else "PROBLEM"
+        print(f"Stellar Memory: {status_str}")
+        print(f"Memories stored: {h.total_memories}")
+        if not h.healthy:
+            for w in h.warnings:
+                print(f"  Warning: {w}")
+
 
 def _claude_config_path() -> str:
     """Get Claude Desktop config path by platform."""
@@ -401,59 +428,113 @@ def _run_init_mcp(args) -> None:
 
 
 def _run_quickstart(args) -> None:
-    """Interactive quickstart wizard."""
+    """Interactive quickstart wizard — simplified for non-developers."""
     print("=" * 50)
-    print("  Welcome to Stellar Memory!")
-    print("  Celestial-structure AI memory system")
+    print("  Stellar Memory")
+    print("  Give your AI the ability to remember")
     print("=" * 50)
     print()
-    print("How will you use Stellar Memory?")
-    print("  1. Python library (import in your code)")
-    print("  2. REST API server (HTTP endpoints)")
-    print("  3. MCP server (Claude Code / Cursor)")
-    print("  4. Docker container")
+    print("Choose how to use Stellar Memory:")
+    print()
+    print("  1. With AI IDE (Claude Desktop / Cursor)")
+    print("     → Your AI will automatically remember things")
+    print()
+    print("  2. As a Python library (for developers)")
+    print("     → Use in your own code")
+    print()
 
     try:
-        choice = input("\nSelect [1-4, default=1]: ").strip() or "1"
+        choice = input("Select [1-2, default=1]: ").strip() or "1"
     except (EOFError, KeyboardInterrupt):
         choice = "1"
 
-    db_path = args.db
-
-    try:
-        enable_emotion = input("Enable emotion analysis? [y/N]: ").strip().lower() == "y"
-    except (EOFError, KeyboardInterrupt):
-        enable_emotion = False
-
-    from stellar_memory import StellarMemory, StellarConfig, EmotionConfig
-    config = StellarConfig(
-        db_path=db_path,
-        emotion=EmotionConfig(enabled=enable_emotion),
-    )
-    mem = StellarMemory(config)
-    item = mem.store("Hello, Stellar Memory! This is my first memory.", importance=0.9)
-
-    print(f"\nYour first memory is stored!")
-    print(f"  ID:   {item.id[:8]}...")
-    print(f"  Zone: {item.zone} ({'Core' if item.zone == 0 else 'Inner' if item.zone == 1 else 'Outer'})")
-    if item.emotion:
-        print(f"  Emotion: {item.emotion.dominant} ({item.emotion.intensity:.2f})")
-
-    if choice == "2":
-        print(f"\nStart REST API server:")
-        print(f"  stellar-memory serve-api --db {db_path}")
-        print(f"  Open http://localhost:9000/docs for Swagger UI")
-    elif choice == "3":
-        print(f"\nSetup MCP for Claude Code:")
-        print(f"  stellar-memory init-mcp --db-path {db_path}")
-    elif choice == "4":
-        print(f"\nRun with Docker:")
-        print(f"  docker-compose up stellar")
+    if choice == "1":
+        class SetupArgs:
+            yes = False
+            db = args.db
+        _run_setup(SetupArgs())
     else:
-        print(f"\nTry recalling your memory:")
-        print(f'  stellar-memory recall "hello" --db {db_path}')
+        db_path = args.db
+        from stellar_memory import StellarMemory, StellarConfig
+        config = StellarConfig(db_path=db_path)
+        mem = StellarMemory(config)
+        item = mem.store("Hello, Stellar Memory! This is my first memory.", importance=0.9)
 
-    mem.stop()
+        print(f"\nYour first memory is stored!")
+        print(f"  ID:   {item.id[:8]}...")
+        print(f"  Zone: {item.zone}")
+        print()
+        print("Try recalling:")
+        print(f'  stellar-memory recall "hello" --db {db_path}')
+        mem.stop()
+
+
+def _run_setup(args) -> None:
+    """One-click setup: detect IDE and configure MCP."""
+    from pathlib import Path
+
+    print("Stellar Memory - Auto Setup")
+    print("=" * 40)
+    print()
+
+    # Detect available IDEs
+    claude_path = Path(_claude_config_path())
+    cursor_path = Path(_cursor_config_path())
+
+    claude_exists = claude_path.parent.exists()
+    cursor_exists = cursor_path.parent.exists()
+
+    if not claude_exists and not cursor_exists:
+        print("No AI IDE detected (Claude Desktop or Cursor).")
+        print()
+        print("Install one of these:")
+        print("  - Claude Desktop: https://claude.ai/download")
+        print("  - Cursor: https://cursor.sh")
+        print()
+        print("After installing, run this command again.")
+        return
+
+    targets = []
+    if claude_exists:
+        targets.append(("Claude Desktop", "claude"))
+    if cursor_exists:
+        targets.append(("Cursor", "cursor"))
+
+    print(f"Detected: {', '.join(name for name, _ in targets)}")
+
+    if not args.yes:
+        try:
+            confirm = input(f"\nSet up MCP for {', '.join(name for name, _ in targets)}? [Y/n]: ").strip().lower()
+            if confirm == 'n':
+                print("Setup cancelled.")
+                return
+        except (EOFError, KeyboardInterrupt):
+            return
+
+    db_path = str(Path("~/.stellar/memory.db").expanduser())
+    config_content = {
+        "mcpServers": {
+            "stellar-memory": {
+                "command": "stellar-memory",
+                "args": ["serve", "--transport", "stdio"],
+                "env": {
+                    "STELLAR_DB_PATH": db_path,
+                },
+            }
+        }
+    }
+
+    for name, ide in targets:
+        config_path = _get_mcp_config_path(ide)
+        _merge_mcp_config(config_path, config_content)
+        print(f"  {name}: configured")
+
+    print()
+    print("Setup complete!")
+    print(f"Database: {db_path}")
+    print()
+    print("Restart your AI IDE to activate Stellar Memory.")
+    print('Try saying: "Remember my name is ___"')
 
 
 if __name__ == "__main__":

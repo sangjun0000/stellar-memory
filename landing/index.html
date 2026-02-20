@@ -3,32 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Give any AI human-like memory. Celestial-structure-based memory system with 5 orbital zones, emotion engine, metacognition, and self-learning." />
-  <meta property="og:title" content="Stellar Memory — Give any AI human-like memory" />
-  <meta property="og:description" content="Celestial-structure-based AI memory management system. 5 orbital zones, emotion engine, metacognition, self-learning, and MCP integration." />
+  <meta name="description" content="Free &amp; open-source AI memory system. Give any AI the ability to remember — install in 30 seconds or use in the cloud." />
+  <meta property="og:title" content="Stellar Memory — Free AI Memory for Everyone" />
+  <meta property="og:description" content="100% free, open-source AI memory. Install locally in 30 seconds or use our cloud service. No programming required." />
   <meta property="og:url" content="https://stellar-memory.com/" />
   <meta property="og:type" content="website" />
   <meta property="og:image" content="https://stellar-memory.com/social-preview.svg" />
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Stellar Memory — Give any AI human-like memory" />
-  <meta name="twitter:description" content="Celestial-structure-based AI memory management. 5 orbital zones, emotion engine, metacognition, and self-learning." />
+  <meta name="twitter:title" content="Stellar Memory — Free AI Memory for Everyone" />
+  <meta name="twitter:description" content="100% free, open-source AI memory. No programming required. Install in 30 seconds." />
   <link rel="canonical" href="https://stellar-memory.com/" />
   <meta name="robots" content="index, follow" />
-  <meta name="keywords" content="AI memory, LLM memory, stellar memory, celestial memory, MCP, AI agent memory, Python AI library, memory management, emotion AI, metacognition" />
+  <meta name="keywords" content="AI memory, LLM memory, stellar memory, celestial memory, MCP, AI agent memory, Python AI library, memory management" />
   <meta name="author" content="sangjun0000" />
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "Stellar Memory",
-    "description": "Celestial-structure-based AI memory management system. Give any AI human-like memory with 5 orbital zones, emotion engine, metacognition, and self-learning.",
+    "description": "Celestial-structure-based AI memory management system. Give any AI human-like memory with 5 orbital zones, self-learning, and multimodal support.",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Cross-platform",
     "offers": [
-      {"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "5,000 memories, 1 agent, SQLite, Local MCP"},
-      {"@type": "Offer", "name": "Pro", "price": "29", "priceCurrency": "USD", "description": "50,000 memories, 5 agents, PostgreSQL, Cloud MCP, Dashboard"},
-      {"@type": "Offer", "name": "Team", "price": "99", "priceCurrency": "USD", "description": "500,000 memories, 20 agents, Team Sync, RBAC, Audit Logs"},
-      {"@type": "Offer", "name": "Enterprise", "price": "0", "priceCurrency": "USD", "description": "Unlimited memories and agents, On-premise, SLA, Custom pricing"}
+      {"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "Unlimited memories, unlimited agents, all features included. 100% free & open source."}
     ],
     "author": {
       "@type": "Person",
@@ -38,12 +35,12 @@
     "codeRepository": "https://github.com/sangjun0000/stellar-memory",
     "programmingLanguage": "Python",
     "license": "https://opensource.org/licenses/MIT",
-    "softwareVersion": "1.0.0",
+    "softwareVersion": "2.0.0",
     "downloadUrl": "https://pypi.org/project/stellar-memory/",
     "url": "https://stellar-memory.com/"
   }
   </script>
-  <title>Stellar Memory — Give any AI human-like memory</title>
+  <title>Stellar Memory — Free AI Memory for Everyone</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -258,6 +255,29 @@
       transition: 0.3s;
     }
 
+    /* Language Selector */
+    .lang-selector { position: relative; }
+    .lang-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px; padding: 6px 12px; color: var(--text-secondary);
+      cursor: pointer; font-size: 0.8rem; font-weight: 600;
+    }
+    .lang-btn:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+    .lang-menu {
+      display: none; position: absolute; top: 100%; right: 0; margin-top: 8px;
+      background: rgba(3,7,18,0.95); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;
+      padding: 8px 0; min-width: 140px; z-index: 100;
+      list-style: none;
+    }
+    .lang-menu.open { display: block; }
+    .lang-menu li {
+      padding: 8px 16px; cursor: pointer; font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+    .lang-menu li:hover { background: rgba(255,255,255,0.06); color: var(--text-primary); }
+
     /* ============================================================
        HERO
     ============================================================ */
@@ -319,15 +339,19 @@
 
     .hero-tagline {
       font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
       color: var(--text-secondary);
       margin-bottom: 36px;
       font-weight: 300;
-      line-height: 1.5;
-    }
-
-    .hero-tagline strong {
-      color: var(--text-primary);
-      font-weight: 600;
+      line-height: 1.6;
+      max-width: 480px;
     }
 
     .hero-actions {
@@ -430,7 +454,6 @@
       margin: 0 auto;
     }
 
-    /* Sun — Core memory */
     .sun {
       position: absolute;
       top: 50%; left: 50%;
@@ -452,7 +475,6 @@
       50%       { box-shadow: 0 0 30px rgba(240,180,41,1),   0 0 70px rgba(240,180,41,0.5), 0 0 120px rgba(240,180,41,0.2); }
     }
 
-    /* Orbit rings */
     .orbit {
       position: absolute;
       top: 50%; left: 50%;
@@ -467,7 +489,6 @@
     .orbit-4 { width: 286px; height: 286px; }
     .orbit-5 { width: 360px; height: 360px; border-style: dashed; border-color: rgba(148,163,184,0.07); }
 
-    /* Planet wrapper — rotates around sun */
     .planet-orbit {
       position: absolute;
       top: 50%; left: 50%;
@@ -475,14 +496,12 @@
       border-radius: 50%;
     }
 
-    /* Planet dot */
     .planet {
       position: absolute;
       border-radius: 50%;
       transform: translate(-50%, -50%);
     }
 
-    /* Zone 1 — Core (red/rose) */
     .planet-orbit-1 {
       width: 100px; height: 100px;
       margin: -50px 0 0 -50px;
@@ -495,7 +514,6 @@
       box-shadow: 0 0 8px rgba(244,63,94,0.7);
     }
 
-    /* Zone 2 — Inner (blue) */
     .planet-orbit-2a {
       width: 158px; height: 158px;
       margin: -79px 0 0 -79px;
@@ -520,7 +538,6 @@
       box-shadow: 0 0 8px rgba(139,92,246,0.6);
     }
 
-    /* Zone 3 — Outer (cyan) */
     .planet-orbit-3 {
       width: 220px; height: 220px;
       margin: -110px 0 0 -110px;
@@ -533,7 +550,6 @@
       box-shadow: 0 0 12px rgba(6,182,212,0.7);
     }
 
-    /* Zone 4 — Belt (emerald/green) */
     .planet-orbit-4a {
       width: 286px; height: 286px;
       margin: -143px 0 0 -143px;
@@ -570,7 +586,6 @@
       box-shadow: 0 0 6px rgba(245,158,11,0.5);
     }
 
-    /* Zone 5 — Cloud (indigo/distant) */
     .planet-orbit-5 {
       width: 360px; height: 360px;
       margin: -180px 0 0 -180px;
@@ -589,7 +604,6 @@
       to   { transform: rotate(360deg); }
     }
 
-    /* Zone labels inside solar system */
     .zone-label {
       position: absolute;
       font-size: 0.6rem;
@@ -599,53 +613,6 @@
       color: var(--text-muted);
       pointer-events: none;
       white-space: nowrap;
-    }
-
-    /* ============================================================
-       STATS BAR
-    ============================================================ */
-    #stats {
-      padding: 28px 0;
-      border-top: 1px solid var(--border-subtle);
-      border-bottom: 1px solid var(--border-subtle);
-      background: rgba(12, 26, 53, 0.5);
-    }
-
-    .stats-inner {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 24px;
-    }
-
-    .stat-item {
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 1.75rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--accent-gold), var(--accent-amber));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .stat-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 500;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .stat-divider {
-      width: 1px;
-      height: 40px;
-      background: var(--border-subtle);
     }
 
     /* ============================================================
@@ -829,134 +796,14 @@
     .code-block.active { display: block; }
 
     /* Python syntax highlighting */
-    .kw  { color: #c792ea; }   /* keywords */
-    .fn  { color: #82aaff; }   /* functions/methods */
-    .st  { color: #c3e88d; }   /* strings */
-    .cm  { color: #546e7a; font-style: italic; } /* comments */
-    .nb  { color: #ffcb6b; }   /* numbers/builtins */
-    .cl  { color: #f07178; }   /* class names */
-    .op  { color: #89ddff; }   /* operators/punctuation */
-    .pn  { color: var(--text-secondary); } /* plain */
-
-    /* ============================================================
-       ARCHITECTURE
-    ============================================================ */
-    #architecture {
-      padding: 100px 0;
-    }
-
-    .arch-inner {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 64px;
-      align-items: center;
-    }
-
-    .arch-zones {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .arch-zone {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: var(--radius-md);
-      padding: 18px 20px;
-      transition: border-color 0.2s, transform 0.2s;
-    }
-    .arch-zone:hover {
-      border-color: rgba(148,163,184,0.2);
-      transform: translateX(4px);
-    }
-
-    .arch-zone-dot {
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .arch-zone-info h4 {
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-bottom: 3px;
-      color: var(--text-primary);
-    }
-    .arch-zone-info p {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-    }
-
-    .arch-zone-badge {
-      margin-left: auto;
-      font-size: 0.7rem;
-      font-weight: 600;
-      padding: 3px 8px;
-      border-radius: 999px;
-      white-space: nowrap;
-    }
-
-    /* Mini solar system for arch section */
-    .arch-solar {
-      position: relative;
-      width: 320px;
-      height: 320px;
-      margin: 0 auto;
-    }
-
-    .arch-orbit {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      border: 1px solid rgba(148,163,184,0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .arch-sun {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #fff7cd, var(--accent-gold) 45%, #b45309 80%);
-      box-shadow: 0 0 16px rgba(240,180,41,0.7), 0 0 40px rgba(240,180,41,0.3);
-      animation: sun-pulse 4s ease-in-out infinite;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.45rem;
-      font-weight: 700;
-      color: rgba(0,0,0,0.6);
-      z-index: 10;
-    }
-
-    .arch-ring {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      border: 1px solid;
-      display: flex;
-      align-items: flex-start;
-      justify-content: center;
-    }
-    .arch-ring-label {
-      margin-top: -10px;
-      font-size: 0.55rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      background: var(--bg-void);
-      padding: 0 4px;
-    }
+    .kw  { color: #c792ea; }
+    .fn  { color: #82aaff; }
+    .st  { color: #c3e88d; }
+    .cm  { color: #546e7a; font-style: italic; }
+    .nb  { color: #ffcb6b; }
+    .cl  { color: #f07178; }
+    .op  { color: #89ddff; }
+    .pn  { color: var(--text-secondary); }
 
     /* ============================================================
        QUICK START
@@ -1001,65 +848,13 @@
     }
 
     /* ============================================================
-       INTEGRATIONS
-    ============================================================ */
-    #integrations {
-      padding: 100px 0;
-    }
-
-    .integrations-header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-    .integrations-header .section-label { justify-content: center; }
-    .integrations-header .section-sub { margin: 0 auto; text-align: center; }
-
-    .integrations-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 16px;
-      margin-bottom: 48px;
-    }
-
-    .integration-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-card);
-      border-radius: var(--radius-md);
-      padding: 28px 20px;
-      text-align: center;
-      transition: border-color 0.2s, background 0.2s, transform 0.2s;
-      cursor: default;
-    }
-    .integration-card:hover {
-      border-color: rgba(148,163,184,0.2);
-      background: var(--bg-card-hover);
-      transform: translateY(-3px);
-    }
-
-    .integration-icon {
-      font-size: 1.8rem;
-      margin-bottom: 12px;
-      display: block;
-    }
-    .integration-name {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 4px;
-    }
-    .integration-type {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-
-    /* ============================================================
        PRICING
     ============================================================ */
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
-      max-width: 1100px;
+      max-width: 900px;
       margin: 48px auto 0;
     }
     .pricing-card {
@@ -1186,7 +981,7 @@
 
     .footer-inner {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      grid-template-columns: 1.5fr 1fr 1fr;
       gap: 48px;
       margin-bottom: 48px;
     }
@@ -1305,26 +1100,19 @@
       .orbit-1           { width: 78px; height: 78px; }
       .planet-orbit-1    { width:78px;height:78px;margin:-39px 0 0 -39px; }
 
-      .features-grid         { grid-template-columns: repeat(2, 1fr); }
+      .features-grid         { grid-template-columns: 1fr; }
       .how-inner             { grid-template-columns: 1fr; }
-      .arch-inner            { grid-template-columns: 1fr; }
-      .arch-solar            { order: -1; }
       .quickstart-inner      { grid-template-columns: 1fr; }
-      .integrations-grid     { grid-template-columns: repeat(3, 1fr); }
       .footer-inner          { grid-template-columns: 1fr 1fr; }
 
       .nav-links             { display: none; }
       .nav-hamburger         { display: flex; }
-
-      .stat-divider          { display: none; }
     }
 
     @media (max-width: 600px) {
       .features-grid     { grid-template-columns: 1fr; }
-      .integrations-grid { grid-template-columns: repeat(2, 1fr); }
       .footer-inner      { grid-template-columns: 1fr; }
       .footer-bottom     { flex-direction: column; gap: 16px; text-align: center; }
-      .stats-inner       { gap: 16px; }
       .hero-actions      { flex-direction: column; align-items: flex-start; }
     }
   </style>
@@ -1342,13 +1130,27 @@
           Stellar Memory
         </a>
         <ul class="nav-links">
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How It Works</a></li>
-          <li><a href="#architecture">Architecture</a></li>
-          <li><a href="#quickstart">Quick Start</a></li>
-          <li><a href="#integrations">Integrations</a></li>
-          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#features" data-i18n="nav.features">Features</a></li>
+          <li><a href="#quickstart" data-i18n="nav.quickstart">Quick Start</a></li>
+          <li><a href="#get-started" data-i18n="nav.getstarted">Get Started</a></li>
           <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
+          <li class="lang-selector">
+            <button class="lang-btn" onclick="toggleLangMenu()">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span id="current-lang">EN</span>
+            </button>
+            <ul class="lang-menu" id="lang-menu">
+              <li onclick="setLang('en')">English</li>
+              <li onclick="setLang('ko')">한국어</li>
+              <li onclick="setLang('zh')">中文</li>
+              <li onclick="setLang('es')">Español</li>
+              <li onclick="setLang('ja')">日本語</li>
+            </ul>
+          </li>
         </ul>
         <button class="nav-hamburger" aria-label="Menu" onclick="toggleMobileMenu()">
           <span></span><span></span><span></span>
@@ -1367,51 +1169,34 @@
         <div class="hero-text">
           <div class="hero-badge">
             <span class="hero-badge-dot"></span>
-            v1.0.0 — Now Available on PyPI
+            <span data-i18n="hero.badge">100% Free &amp; Open Source</span>
           </div>
           <h1 class="hero-title">
-            <span class="hero-title-gradient">Stellar Memory</span>
+            <span class="hero-title-gradient" data-i18n="hero.title">Stellar Memory</span>
           </h1>
-          <p class="hero-tagline">
-            Give any AI <strong>human-like memory.</strong><br />
-            An intelligent memory system inspired by celestial structures — 5 orbital zones, emotion-aware, self-learning.
-          </p>
+          <p class="hero-tagline" data-i18n="hero.subtitle">AI remembers you</p>
+          <p class="hero-desc" data-i18n="hero.desc">Give any AI the ability to remember. Free forever, no programming required. Install on your computer in 30 seconds, or use our cloud service.</p>
           <div class="hero-actions">
-            <a href="#quickstart" class="btn-primary">
+            <a href="#get-started" class="btn-primary">
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              Get Started
+              <span data-i18n="hero.cta.start">Get Started Free</span>
             </a>
             <a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="btn-secondary">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.579.688.481C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
               View on GitHub
             </a>
           </div>
-          <div class="hero-install">
-            <span class="install-prefix">$</span>
-            <span class="install-cmd" id="install-text">pip install stellar-memory</span>
-            <button class="copy-btn" onclick="copyInstall()" title="Copy to clipboard" aria-label="Copy install command">
-              <svg id="copy-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
-            </button>
-          </div>
         </div>
 
         <!-- Right: solar system -->
         <div class="hero-right">
           <div class="solar-system">
-            <!-- Orbit rings -->
             <div class="orbit orbit-5"></div>
             <div class="orbit orbit-4"></div>
             <div class="orbit orbit-3"></div>
             <div class="orbit orbit-2"></div>
             <div class="orbit orbit-1"></div>
-
-            <!-- Sun (Core memory) -->
             <div class="sun"></div>
-
-            <!-- Orbiting planets -->
             <div class="planet-orbit planet-orbit-1"><div class="planet"></div></div>
             <div class="planet-orbit planet-orbit-2a"><div class="planet"></div></div>
             <div class="planet-orbit planet-orbit-2b"><div class="planet"></div></div>
@@ -1421,8 +1206,6 @@
             <div class="planet-orbit planet-orbit-4c"><div class="planet"></div></div>
             <div class="planet-orbit planet-orbit-5"><div class="planet"></div></div>
           </div>
-
-          <!-- Legend -->
           <div style="text-align:center; margin-top: 20px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
             <span style="font-size:0.7rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;">
               <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-rose);display:inline-block;"></span>Core
@@ -1446,59 +1229,20 @@
   </section>
 
   <!-- ============================================================
-       STATS BAR
-  ============================================================ -->
-  <section id="stats">
-    <div class="container">
-      <div class="stats-inner">
-        <div class="stat-item">
-          <div class="stat-number">603</div>
-          <div class="stat-label">Tests Passing</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <div class="stat-number">60</div>
-          <div class="stat-label">Modules</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <div class="stat-number">44</div>
-          <div class="stat-label">Features</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <div class="stat-number">96.8%</div>
-          <div class="stat-label">Design Match</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <div class="stat-number">v1.0.0</div>
-          <div class="stat-label">Stable Release</div>
-        </div>
-        <div class="stat-divider"></div>
-        <div class="stat-item">
-          <div class="stat-number">5</div>
-          <div class="stat-label">Orbital Zones</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       FEATURES
+       FEATURES (3 cards)
   ============================================================ -->
   <section id="features">
     <div class="container">
       <div class="features-header">
         <div class="section-label">Capabilities</div>
-        <h2 class="section-title">Everything a memory system needs</h2>
-        <p class="section-sub">
+        <h2 class="section-title" data-i18n="features.title">Everything a memory system needs</h2>
+        <p class="section-sub" data-i18n="features.subtitle">
           Designed from first principles to mirror the way human memory actually works — layered, emotional, and self-organizing.
         </p>
       </div>
 
       <div class="features-grid">
-        <!-- Card 1 -->
+        <!-- Card 1: 5-Zone Orbit System -->
         <div class="feature-card" style="--card-accent: rgba(240,180,41,0.5);">
           <div class="feature-icon" style="background: rgba(240,180,41,0.1);">
             <svg width="24" height="24" fill="none" stroke="var(--accent-gold)" stroke-width="2" viewBox="0 0 24 24">
@@ -1511,41 +1255,13 @@
               <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
             </svg>
           </div>
-          <h3 class="feature-title">5-Zone Orbit System</h3>
-          <p class="feature-desc">
-            Memories are organized across five concentric zones — Core, Inner, Outer, Belt, and Cloud — each with distinct retention behavior, priority, and access speed. Just like the solar system.
+          <h3 class="feature-title" data-i18n="feat.zones.title">5-Zone Orbit System</h3>
+          <p class="feature-desc" data-i18n="feat.zones.desc">
+            Memories organized across five concentric zones — Core, Inner, Outer, Belt, and Cloud — each with distinct retention behavior, priority, and access speed.
           </p>
         </div>
 
-        <!-- Card 2 -->
-        <div class="feature-card" style="--card-accent: rgba(244,63,94,0.4);">
-          <div class="feature-icon" style="background: rgba(244,63,94,0.1);">
-            <svg width="24" height="24" fill="none" stroke="var(--accent-rose)" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">Emotion Engine</h3>
-          <p class="feature-desc">
-            Attaches emotional valence and intensity to every memory. High-emotion events are retained longer and recalled with higher priority — exactly like human episodic memory.
-          </p>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="feature-card" style="--card-accent: rgba(99,102,241,0.4);">
-          <div class="feature-icon" style="background: rgba(99,102,241,0.1);">
-            <svg width="24" height="24" fill="none" stroke="var(--accent-indigo)" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="12" y1="17" x2="12.01" y2="17"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">Metacognition</h3>
-          <p class="feature-desc">
-            The system monitors its own memory state — detecting gaps, contradictions, and knowledge boundaries. It knows what it knows, and what it doesn't.
-          </p>
-        </div>
-
-        <!-- Card 4 -->
+        <!-- Card 2: Self-Learning -->
         <div class="feature-card" style="--card-accent: rgba(16,185,129,0.4);">
           <div class="feature-icon" style="background: rgba(16,185,129,0.1);">
             <svg width="24" height="24" fill="none" stroke="var(--accent-emerald)" stroke-width="2" viewBox="0 0 24 24">
@@ -1553,13 +1269,13 @@
               <polyline points="17 6 23 6 23 12"/>
             </svg>
           </div>
-          <h3 class="feature-title">Self-Learning</h3>
-          <p class="feature-desc">
-            Continuously refines its own memory organization based on usage patterns. Frequently accessed memories migrate inward; rarely used ones drift to the outer zones or are pruned.
+          <h3 class="feature-title" data-i18n="feat.learn.title">Self-Learning</h3>
+          <p class="feature-desc" data-i18n="feat.learn.desc">
+            Continuously refines its own memory organization based on usage patterns. Frequently accessed memories migrate inward; rarely used ones drift to outer zones.
           </p>
         </div>
 
-        <!-- Card 5 -->
+        <!-- Card 3: Multimodal Memory -->
         <div class="feature-card" style="--card-accent: rgba(6,182,212,0.4);">
           <div class="feature-icon" style="background: rgba(6,182,212,0.1);">
             <svg width="24" height="24" fill="none" stroke="var(--accent-cyan)" stroke-width="2" viewBox="0 0 24 24">
@@ -1568,24 +1284,9 @@
               <polyline points="21 15 16 10 5 21"/>
             </svg>
           </div>
-          <h3 class="feature-title">Multimodal Memory</h3>
-          <p class="feature-desc">
-            Store and recall not just text, but structured data, code snippets, conversation history, and references to external documents — all within a unified memory graph.
-          </p>
-        </div>
-
-        <!-- Card 6 -->
-        <div class="feature-card" style="--card-accent: rgba(139,92,246,0.4);">
-          <div class="feature-icon" style="background: rgba(139,92,246,0.1);">
-            <svg width="24" height="24" fill="none" stroke="var(--accent-violet)" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"/>
-              <line x1="2" y1="12" x2="22" y2="12"/>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            </svg>
-          </div>
-          <h3 class="feature-title">Memory Reasoning</h3>
-          <p class="feature-desc">
-            Before responding, the system reasons over its stored memories — connecting relevant facts, detecting temporal relationships, and synthesizing coherent context for the AI.
+          <h3 class="feature-title" data-i18n="feat.multi.title">Multimodal Memory</h3>
+          <p class="feature-desc" data-i18n="feat.multi.desc">
+            Store and recall text, code, structured data, and conversation history — all within a unified memory graph.
           </p>
         </div>
       </div>
@@ -1593,14 +1294,14 @@
   </section>
 
   <!-- ============================================================
-       HOW IT WORKS
+       HOW IT WORKS (2 steps)
   ============================================================ -->
   <section id="how-it-works">
     <div class="container">
       <div style="margin-bottom:60px;">
         <div class="section-label">Workflow</div>
-        <h2 class="section-title">Simple by design, powerful in practice</h2>
-        <p class="section-sub">Three operations. Infinite memory depth.</p>
+        <h2 class="section-title" data-i18n="how.title">Simple by design, powerful in practice</h2>
+        <p class="section-sub" data-i18n="how.subtitle">Two operations. Infinite memory depth.</p>
       </div>
 
       <div class="how-inner">
@@ -1609,22 +1310,15 @@
           <div class="how-step active" id="step-0" onclick="setStep(0)">
             <div class="step-num">1</div>
             <div class="step-info">
-              <h3>Store</h3>
-              <p>Feed any memory — conversations, facts, experiences — into the orbital system. The engine classifies zone placement, assigns emotional weight, and generates embeddings automatically.</p>
+              <h3 data-i18n="how.store">Store</h3>
+              <p data-i18n="how.store.desc">Feed any memory into the orbital system. The engine classifies zone placement, assigns emotional weight, and generates embeddings automatically.</p>
             </div>
           </div>
           <div class="how-step inactive" id="step-1" onclick="setStep(1)">
             <div class="step-num">2</div>
             <div class="step-info">
-              <h3>Manage</h3>
-              <p>The system autonomously consolidates, prunes, and reorganizes memories over time. You can also manually promote, archive, or link memories to build knowledge graphs.</p>
-            </div>
-          </div>
-          <div class="how-step inactive" id="step-2" onclick="setStep(2)">
-            <div class="step-num">3</div>
-            <div class="step-info">
-              <h3>Recall</h3>
-              <p>Query with natural language or structured filters. The retrieval engine traverses orbital zones, applies emotional and temporal weighting, and returns the most contextually relevant memories.</p>
+              <h3 data-i18n="how.recall">Recall</h3>
+              <p data-i18n="how.recall.desc">Query with natural language. The retrieval engine traverses orbital zones, applies emotional and temporal weighting, and returns the most contextually relevant memories.</p>
             </div>
           </div>
         </div>
@@ -1657,26 +1351,8 @@
   <span class="st">"The project deadline is March 15th, 2026"</span>
 <span class="op">)</span></code></pre>
 
-          <!-- Step 1: Manage -->
+          <!-- Step 1: Recall -->
           <pre class="code-block" id="code-1"><code><span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
-
-<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
-
-<span class="cm"># Promote a memory to a higher-priority zone</span>
-<span class="pn">memory</span><span class="op">.</span><span class="fn">promote</span><span class="op">(</span><span class="pn">memory_id</span><span class="op">=</span><span class="st">"mem_abc123"</span><span class="op">,</span> <span class="pn">to_zone</span><span class="op">=</span><span class="st">"core"</span><span class="op">)</span>
-
-<span class="cm"># Link two related memories</span>
-<span class="pn">memory</span><span class="op">.</span><span class="fn">link</span><span class="op">(</span><span class="st">"mem_abc123"</span><span class="op">,</span> <span class="st">"mem_def456"</span><span class="op">,</span> <span class="pn">relation</span><span class="op">=</span><span class="st">"caused_by"</span><span class="op">)</span>
-
-<span class="cm"># Run autonomous consolidation</span>
-<span class="pn">report</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">consolidate</span><span class="op">()</span>
-<span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"Pruned: {report.pruned}, Merged: {report.merged}"</span><span class="op">)</span>
-
-<span class="cm"># Archive old cloud-zone memories</span>
-<span class="pn">memory</span><span class="op">.</span><span class="fn">archive_zone</span><span class="op">(</span><span class="st">"cloud"</span><span class="op">,</span> <span class="pn">older_than_days</span><span class="op">=</span><span class="nb">90</span><span class="op">)</span></code></pre>
-
-          <!-- Step 2: Recall -->
-          <pre class="code-block" id="code-2"><code><span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
 
 <span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
 
@@ -1689,147 +1365,42 @@
 
 <span class="kw">for</span> <span class="pn">mem</span> <span class="kw">in</span> <span class="pn">results</span><span class="op">:</span>
   <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"[{mem.zone}] {mem.content}"</span><span class="op">)</span>
-  <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"  Score: {mem.relevance:.2f} | Emotion: {mem.emotion}"</span><span class="op">)</span>
-
-<span class="cm"># Build full context for an LLM prompt</span>
-<span class="pn">context</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">build_context</span><span class="op">(</span><span class="pn">query</span><span class="op">=</span><span class="st">"user preferences"</span><span class="op">)</span></code></pre>
+  <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"  Score: {mem.relevance:.2f} | Emotion: {mem.emotion}"</span><span class="op">)</span></code></pre>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-       ARCHITECTURE
-  ============================================================ -->
-  <section id="architecture">
-    <div class="container">
-      <div class="arch-inner">
-        <!-- Left: description -->
-        <div>
-          <div class="section-label">Architecture</div>
-          <h2 class="section-title">The Celestial Zone System</h2>
-          <p class="section-sub" style="margin-bottom:36px;">
-            Five concentric orbital zones model memory priority, retention duration, and access frequency — from the blazing core to the distant cloud.
-          </p>
-
-          <div class="arch-zones">
-            <div class="arch-zone">
-              <div class="arch-zone-dot" style="background:var(--accent-gold); box-shadow:0 0 8px rgba(240,180,41,0.6);"></div>
-              <div class="arch-zone-info">
-                <h4>Core</h4>
-                <p>Permanent, highest-priority memories. Identity, critical facts, irreplaceable knowledge. Never pruned.</p>
-              </div>
-              <span class="arch-zone-badge" style="background:rgba(240,180,41,0.1);color:var(--accent-gold);border:1px solid rgba(240,180,41,0.2);">Zone 1</span>
-            </div>
-            <div class="arch-zone">
-              <div class="arch-zone-dot" style="background:var(--accent-blue); box-shadow:0 0 8px rgba(59,130,246,0.5);"></div>
-              <div class="arch-zone-info">
-                <h4>Inner</h4>
-                <p>Frequently accessed working memories. Recent conversations, active project context, user preferences.</p>
-              </div>
-              <span class="arch-zone-badge" style="background:rgba(59,130,246,0.1);color:var(--accent-blue);border:1px solid rgba(59,130,246,0.2);">Zone 2</span>
-            </div>
-            <div class="arch-zone">
-              <div class="arch-zone-dot" style="background:var(--accent-cyan); box-shadow:0 0 8px rgba(6,182,212,0.5);"></div>
-              <div class="arch-zone-info">
-                <h4>Outer</h4>
-                <p>Moderately accessed episodic memories. Past sessions, historical context, secondary associations.</p>
-              </div>
-              <span class="arch-zone-badge" style="background:rgba(6,182,212,0.1);color:var(--accent-cyan);border:1px solid rgba(6,182,212,0.2);">Zone 3</span>
-            </div>
-            <div class="arch-zone">
-              <div class="arch-zone-dot" style="background:var(--accent-emerald); box-shadow:0 0 8px rgba(16,185,129,0.5);"></div>
-              <div class="arch-zone-info">
-                <h4>Belt</h4>
-                <p>Fragmented, rarely accessed memories. Older sessions, peripheral knowledge, low-confidence facts.</p>
-              </div>
-              <span class="arch-zone-badge" style="background:rgba(16,185,129,0.1);color:var(--accent-emerald);border:1px solid rgba(16,185,129,0.2);">Zone 4</span>
-            </div>
-            <div class="arch-zone">
-              <div class="arch-zone-dot" style="background:var(--accent-indigo); box-shadow:0 0 8px rgba(99,102,241,0.4);"></div>
-              <div class="arch-zone-info">
-                <h4>Cloud</h4>
-                <p>Distant, archival memories. Rarely recalled, candidate for consolidation or permanent archival.</p>
-              </div>
-              <span class="arch-zone-badge" style="background:rgba(99,102,241,0.1);color:var(--accent-indigo);border:1px solid rgba(99,102,241,0.2);">Zone 5</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: arch diagram -->
-        <div class="arch-solar">
-          <div class="arch-sun">CORE</div>
-
-          <!-- Ring 2: Inner -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:100px;height:100px;border-radius:50%;border:1px solid rgba(59,130,246,0.25);"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-50deg);width:100px;height:100px;">
-            <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(59,130,246,0.7);background:var(--bg-void);padding:0 4px;white-space:nowrap;">Inner</span>
-          </div>
-
-          <!-- Ring 3: Outer -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160px;height:160px;border-radius:50%;border:1px solid rgba(6,182,212,0.2);"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-60deg);width:160px;height:160px;">
-            <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(6,182,212,0.6);background:var(--bg-void);padding:0 4px;white-space:nowrap;">Outer</span>
-          </div>
-
-          <!-- Ring 4: Belt -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:224px;height:224px;border-radius:50%;border:1px solid rgba(16,185,129,0.18);border-style:dashed;"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-40deg);width:224px;height:224px;">
-            <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(16,185,129,0.55);background:var(--bg-void);padding:0 4px;white-space:nowrap;">Belt</span>
-          </div>
-
-          <!-- Ring 5: Cloud -->
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:296px;height:296px;border-radius:50%;border:1px solid rgba(99,102,241,0.12);border-style:dashed;"></div>
-          <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-45deg);width:296px;height:296px;">
-            <span style="position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:0.5rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:rgba(99,102,241,0.5);background:var(--bg-void);padding:0 4px;white-space:nowrap;">Cloud</span>
-          </div>
-
-          <!-- Orbiting dots for arch diagram -->
-          <div class="planet-orbit planet-orbit-1" style="width:100px;height:100px;margin:-50px 0 0 -50px;animation-duration:8s;"><div class="planet" style="width:9px;height:9px;top:0;left:50%;background:radial-gradient(circle at 35% 35%,#93c5fd,var(--accent-blue));box-shadow:0 0 8px rgba(59,130,246,0.7);"></div></div>
-          <div class="planet-orbit planet-orbit-2a" style="width:160px;height:160px;margin:-80px 0 0 -80px;animation-duration:15s;"><div class="planet" style="width:9px;height:9px;top:0;left:50%;background:radial-gradient(circle at 35% 35%,#a5f3fc,var(--accent-cyan));box-shadow:0 0 8px rgba(6,182,212,0.7);"></div></div>
-          <div class="planet-orbit planet-orbit-4a" style="width:224px;height:224px;margin:-112px 0 0 -112px;animation-duration:24s;"><div class="planet" style="width:7px;height:7px;top:0;left:50%;background:radial-gradient(circle at 35% 35%,#6ee7b7,var(--accent-emerald));box-shadow:0 0 6px rgba(16,185,129,0.6);"></div></div>
-          <div class="planet-orbit planet-orbit-5" style="width:296px;height:296px;margin:-148px 0 0 -148px;animation-duration:40s;"><div class="planet" style="width:6px;height:6px;top:0;left:50%;background:radial-gradient(circle at 35% 35%,#a5b4fc,var(--accent-indigo));box-shadow:0 0 6px rgba(99,102,241,0.5);opacity:0.7;"></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       QUICK START
+       QUICK START (simplified)
   ============================================================ -->
   <section id="quickstart">
     <div class="container">
       <div class="quickstart-inner">
         <div class="quickstart-left">
           <div class="section-label">Quick Start</div>
-          <h2 class="section-title">Up and running in minutes</h2>
-          <p class="section-sub">
-            Install from PyPI, initialize the system, and your AI has persistent, structured memory from the very first interaction.
+          <h2 class="section-title" data-i18n="qs.title">Up and running in minutes</h2>
+          <p class="section-sub" data-i18n="qs.subtitle">
+            Install from PyPI and give your AI persistent memory.
           </p>
 
           <div class="quickstart-feature">
             <div class="quickstart-feature-icon">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <p>No external database required — SQLite by default, PostgreSQL in production</p>
+            <p data-i18n="qs.check1">No external database required</p>
           </div>
           <div class="quickstart-feature">
             <div class="quickstart-feature-icon">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <p>Drop-in compatible with OpenAI, Anthropic, LangChain, and any LLM</p>
+            <p data-i18n="qs.check2">Compatible with OpenAI, Anthropic, LangChain</p>
           </div>
           <div class="quickstart-feature">
             <div class="quickstart-feature-icon">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
             </div>
-            <p>MCP server mode for Claude Code and Cursor integration</p>
-          </div>
-          <div class="quickstart-feature">
-            <div class="quickstart-feature-icon">
-              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <p>REST API with Docker support for scalable deployment</p>
+            <p data-i18n="qs.check3">MCP server for Claude Code and Cursor</p>
           </div>
 
           <div style="margin-top: 32px; display:flex; gap:12px; flex-wrap:wrap;">
@@ -1842,7 +1413,7 @@
           </div>
         </div>
 
-        <!-- Full quickstart code -->
+        <!-- Simplified quickstart code -->
         <div class="code-window">
           <div class="code-window-bar">
             <div class="window-dot dot-red"></div>
@@ -1850,222 +1421,69 @@
             <div class="window-dot dot-green"></div>
             <span class="window-title">quickstart.py</span>
           </div>
-          <pre class="code-block active"><code><span class="cm"># 1. Install</span>
-<span class="cm"># pip install stellar-memory</span>
+          <pre class="code-block active"><code><span class="cm"># pip install stellar-memory</span>
 
 <span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
-<span class="kw">from</span> <span class="pn">openai</span> <span class="kw">import</span> <span class="cl">OpenAI</span>
 
-<span class="cm"># 2. Initialize</span>
-<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">(</span>
-  <span class="pn">storage</span><span class="op">=</span><span class="st">"sqlite:///my_ai.db"</span><span class="op">,</span>
-  <span class="pn">embedding_model</span><span class="op">=</span><span class="st">"text-embedding-3-small"</span>
-<span class="op">)</span>
-<span class="pn">client</span> <span class="op">=</span> <span class="cl">OpenAI</span><span class="op">()</span>
+<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
+<span class="pn">memory</span><span class="op">.</span><span class="fn">store</span><span class="op">(</span><span class="st">"User prefers dark mode"</span><span class="op">)</span>
+<span class="pn">results</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">recall</span><span class="op">(</span><span class="st">"user preferences"</span><span class="op">)</span>
 
-<span class="kw">def</span> <span class="fn">chat_with_memory</span><span class="op">(</span><span class="pn">user_message</span><span class="op">:</span> <span class="pn">str</span><span class="op">)</span> <span class="op">-></span> <span class="pn">str</span><span class="op">:</span>
-  <span class="cm"># 3. Recall relevant memories</span>
-  <span class="pn">context</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">build_context</span><span class="op">(</span><span class="pn">user_message</span><span class="op">)</span>
-
-  <span class="cm"># 4. Use memories as system context</span>
-  <span class="pn">response</span> <span class="op">=</span> <span class="pn">client</span><span class="op">.</span><span class="pn">chat</span><span class="op">.</span><span class="pn">completions</span><span class="op">.</span><span class="fn">create</span><span class="op">(</span>
-    <span class="pn">model</span><span class="op">=</span><span class="st">"gpt-4o"</span><span class="op">,</span>
-    <span class="pn">messages</span><span class="op">=</span><span class="op">[</span>
-      <span class="op">{</span><span class="st">"role"</span><span class="op">:</span> <span class="st">"system"</span><span class="op">,</span> <span class="st">"content"</span><span class="op">:</span> <span class="pn">context</span><span class="op">},</span>
-      <span class="op">{</span><span class="st">"role"</span><span class="op">:</span> <span class="st">"user"</span><span class="op">,</span>   <span class="st">"content"</span><span class="op">:</span> <span class="pn">user_message</span><span class="op">}</span>
-    <span class="op">]</span>
-  <span class="op">)</span>
-  <span class="pn">answer</span> <span class="op">=</span> <span class="pn">response</span><span class="op">.</span><span class="pn">choices</span><span class="op">[</span><span class="nb">0</span><span class="op">].</span><span class="pn">message</span><span class="op">.</span><span class="pn">content</span>
-
-  <span class="cm"># 5. Store the new exchange</span>
-  <span class="pn">memory</span><span class="op">.</span><span class="fn">store_auto</span><span class="op">(</span><span class="nb">f</span><span class="st">"Q: {user_message}\nA: {answer}"</span><span class="op">)</span>
-  <span class="kw">return</span> <span class="pn">answer</span>
-
-<span class="cm"># That's it. Your AI now remembers.</span>
-<span class="fn">print</span><span class="op">(</span><span class="fn">chat_with_memory</span><span class="op">(</span><span class="st">"What did we discuss last week?"</span><span class="op">))</span></code></pre>
+<span class="kw">for</span> <span class="pn">mem</span> <span class="kw">in</span> <span class="pn">results</span><span class="op">:</span>
+    <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"[{mem.zone}] {mem.content}"</span><span class="op">)</span></code></pre>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-       INTEGRATIONS
+       GET STARTED (Local vs Cloud - replaces Pricing)
   ============================================================ -->
-  <section id="integrations">
-    <div class="container">
-      <div class="integrations-header">
-        <div class="section-label">Integrations</div>
-        <h2 class="section-title">Works with your existing stack</h2>
-        <p class="section-sub">
-          Drop Stellar Memory into any AI workflow. Native support for the tools you already use.
-        </p>
-      </div>
-
-      <div class="integrations-grid">
-        <div class="integration-card">
-          <span class="integration-icon">
-            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
-              <circle cx="50" cy="50" r="48" fill="#CC785C"/>
-              <text x="50" y="68" text-anchor="middle" font-size="42" font-weight="800" fill="white" font-family="serif">C</text>
-            </svg>
-          </span>
-          <div class="integration-name">Claude Code</div>
-          <div class="integration-type">MCP Server</div>
-        </div>
-        <div class="integration-card">
-          <span class="integration-icon">
-            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
-              <rect width="100" height="100" rx="16" fill="#1e1e2e"/>
-              <text x="50" y="68" text-anchor="middle" font-size="38" font-weight="700" fill="#00d1ff" font-family="monospace">{'>'}_</text>
-            </svg>
-          </span>
-          <div class="integration-name">Cursor</div>
-          <div class="integration-type">MCP Server</div>
-        </div>
-        <div class="integration-card">
-          <span class="integration-icon">
-            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
-              <rect width="100" height="100" rx="16" fill="#1564C0"/>
-              <text x="50" y="68" text-anchor="middle" font-size="32" font-weight="800" fill="white" font-family="sans-serif">API</text>
-            </svg>
-          </span>
-          <div class="integration-name">REST API</div>
-          <div class="integration-type">HTTP / JSON</div>
-        </div>
-        <div class="integration-card">
-          <span class="integration-icon">
-            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
-              <rect width="100" height="100" rx="16" fill="#1C3A6A"/>
-              <text x="50" y="62" text-anchor="middle" font-size="24" font-weight="700" fill="#4AABE8" font-family="monospace">LC</text>
-              <text x="50" y="82" text-anchor="middle" font-size="14" fill="rgba(255,255,255,0.4)" font-family="sans-serif">chain</text>
-            </svg>
-          </span>
-          <div class="integration-name">LangChain</div>
-          <div class="integration-type">Python SDK</div>
-        </div>
-        <div class="integration-card">
-          <span class="integration-icon">
-            <svg width="36" height="36" viewBox="0 0 100 100" fill="none">
-              <rect width="100" height="100" rx="16" fill="#10a37f"/>
-              <text x="50" y="68" text-anchor="middle" font-size="28" font-weight="800" fill="white" font-family="sans-serif">OAI</text>
-            </svg>
-          </span>
-          <div class="integration-name">OpenAI SDK</div>
-          <div class="integration-type">Python / JS</div>
-        </div>
-      </div>
-
-      <!-- Docker snippet -->
-      <div style="max-width: 680px; margin: 0 auto;">
-        <div class="code-window">
-          <div class="code-window-bar">
-            <div class="window-dot dot-red"></div>
-            <div class="window-dot dot-yellow"></div>
-            <div class="window-dot dot-green"></div>
-            <span class="window-title">Docker deployment</span>
-          </div>
-          <pre class="code-block active" style="display:block;"><code><span class="cm"># Pull and run the Stellar Memory REST server</span>
-<span class="pn">docker pull</span> <span class="st">sangjun0000/stellar-memory:latest</span>
-
-<span class="pn">docker run</span> <span class="op">-d</span> <span class="op">\</span>
-  <span class="op">-p</span> <span class="nb">8080</span><span class="op">:</span><span class="nb">8080</span> <span class="op">\</span>
-  <span class="op">-v</span> <span class="pn">stellar_data</span><span class="op">:/</span><span class="pn">data</span> <span class="op">\</span>
-  <span class="op">-e</span> <span class="pn">OPENAI_API_KEY</span><span class="op">=</span><span class="st">your_key</span> <span class="op">\</span>
-  <span class="pn">sangjun0000/stellar-memory:latest</span>
-
-<span class="cm"># Health check</span>
-<span class="pn">curl</span> <span class="pn">http://localhost:8080/health</span></code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
-       PRICING
-  ============================================================ -->
-  <section id="pricing">
+  <section id="get-started">
     <div class="container">
       <div style="text-align:center;">
-        <div class="section-label">Pricing</div>
-        <h2 class="section-title">Simple, transparent pricing</h2>
-        <p class="section-sub">Start free. Scale when you need to.</p>
+        <div class="section-label" data-i18n="start.label">Get Started</div>
+        <h2 class="section-title" data-i18n="start.title">Choose how to use Stellar Memory</h2>
+        <p class="section-sub" style="margin:0 auto;" data-i18n="start.subtitle">Both options are 100% free. Choose what works best for you.</p>
       </div>
 
       <div class="pricing-grid">
-        <!-- Free -->
-        <div class="pricing-card">
-          <div class="pricing-tier">Free</div>
-          <div class="pricing-price">$0<span>/mo</span></div>
-          <div class="pricing-desc">For personal projects</div>
-          <ul class="pricing-features">
-            <li class="incl">5,000 memories</li>
-            <li class="incl">1 agent</li>
-            <li class="incl">SQLite storage</li>
-            <li class="incl">Local MCP server</li>
-            <li class="incl">CLI interface</li>
-            <li class="excl">Cloud sync</li>
-            <li class="excl">Web dashboard</li>
-          </ul>
-          <a href="https://pypi.org/project/stellar-memory/" target="_blank" rel="noopener" class="pricing-cta">Get Started</a>
-        </div>
-
-        <!-- Pro (Popular) -->
+        <!-- Local -->
         <div class="pricing-card pricing-popular">
-          <div class="pricing-badge">Most Popular</div>
-          <div class="pricing-tier">Pro</div>
-          <div class="pricing-price">$29<span>/mo</span></div>
-          <div class="pricing-desc">For serious builders</div>
+          <div class="pricing-badge" data-i18n="start.local.badge">Recommended</div>
+          <div class="pricing-tier" data-i18n="start.local.title">On Your Computer</div>
+          <div class="pricing-price" data-i18n="start.local.price">Free<span></span></div>
+          <div class="pricing-desc" data-i18n="start.local.desc">Install and run locally</div>
           <ul class="pricing-features">
-            <li class="incl">50,000 memories</li>
-            <li class="incl">5 agents</li>
-            <li class="incl">PostgreSQL + pgvector</li>
-            <li class="incl">Cloud MCP endpoint</li>
-            <li class="incl">Web dashboard</li>
-            <li class="incl">Email support</li>
-            <li class="excl">Team sync</li>
+            <li class="incl" data-i18n="start.local.f1">100% private — data stays on your PC</li>
+            <li class="incl" data-i18n="start.local.f2">Works offline — no internet needed</li>
+            <li class="incl" data-i18n="start.local.f3">Unlimited memories &amp; agents</li>
+            <li class="incl" data-i18n="start.local.f4">Auto-connects to Claude &amp; Cursor</li>
+            <li class="incl" data-i18n="start.local.f5">30-second setup</li>
           </ul>
-          <a href="#" class="pricing-cta pricing-cta-gold">Coming Soon</a>
+          <a href="https://github.com/sangjun0000/stellar-memory/releases" target="_blank" rel="noopener" class="pricing-cta pricing-cta-gold" data-i18n="start.local.cta">Download Installer</a>
         </div>
 
-        <!-- Team -->
+        <!-- Cloud -->
         <div class="pricing-card">
-          <div class="pricing-tier">Team</div>
-          <div class="pricing-price">$99<span>/mo</span></div>
-          <div class="pricing-desc">For growing teams</div>
+          <div class="pricing-tier" data-i18n="start.cloud.title">In the Cloud</div>
+          <div class="pricing-price" data-i18n="start.cloud.price">Free<span></span></div>
+          <div class="pricing-desc" data-i18n="start.cloud.desc">Use from any browser</div>
           <ul class="pricing-features">
-            <li class="incl">500,000 memories</li>
-            <li class="incl">20 agents</li>
-            <li class="incl">Everything in Pro</li>
-            <li class="incl">CRDT team sync</li>
-            <li class="incl">RBAC + audit logs</li>
-            <li class="incl">Priority support</li>
-            <li class="incl">SSO</li>
+            <li class="incl" data-i18n="start.cloud.f1">No installation needed</li>
+            <li class="incl" data-i18n="start.cloud.f2">Access from any device</li>
+            <li class="incl" data-i18n="start.cloud.f3">Automatic backups</li>
+            <li class="incl" data-i18n="start.cloud.f4">REST API for developers</li>
+            <li class="incl" data-i18n="start.cloud.f5">Remote MCP endpoint</li>
           </ul>
-          <a href="#" class="pricing-cta">Coming Soon</a>
-        </div>
-
-        <!-- Enterprise -->
-        <div class="pricing-card">
-          <div class="pricing-tier">Enterprise</div>
-          <div class="pricing-price">Custom</div>
-          <div class="pricing-desc">For organizations</div>
-          <ul class="pricing-features">
-            <li class="incl">Unlimited memories</li>
-            <li class="incl">Unlimited agents</li>
-            <li class="incl">Everything in Team</li>
-            <li class="incl">On-premise deployment</li>
-            <li class="incl">Dedicated support</li>
-            <li class="incl">SLA guarantee</li>
-            <li class="incl">Custom integrations</li>
-          </ul>
-          <a href="mailto:contact@stellar-memory.com" class="pricing-cta">Contact Us</a>
+          <a href="https://stellar-memory.com/docs/cloud/" target="_blank" rel="noopener" class="pricing-cta" data-i18n="start.cloud.cta">Coming Soon</a>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ============================================================
-       FOOTER
+       FOOTER (2 columns)
   ============================================================ -->
   <footer>
     <div class="container">
@@ -2075,7 +1493,7 @@
             <div class="nav-logo-icon" style="width:28px;height:28px;"></div>
             <h3>Stellar Memory</h3>
           </div>
-          <p>An intelligent AI memory system inspired by celestial structures. Give any AI the gift of human-like, persistent, emotional memory.</p>
+          <p data-i18n="footer.desc">An intelligent AI memory system inspired by celestial structures.</p>
         </div>
 
         <div class="footer-col">
@@ -2097,22 +1515,12 @@
             <li><a href="https://github.com/sangjun0000/stellar-memory/blob/main/CONTRIBUTING.md" target="_blank" rel="noopener">Contributing</a></li>
           </ul>
         </div>
-
-        <div class="footer-col">
-          <h4>Community</h4>
-          <ul class="footer-links">
-            <li><a href="https://github.com/sangjun0000/stellar-memory/discussions" target="_blank" rel="noopener">Discussions</a></li>
-            <li><a href="https://github.com/sangjun0000/stellar-memory/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog</a></li>
-            <li><a href="https://github.com/sangjun0000/stellar-memory/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a></li>
-            <li><a href="https://github.com/sangjun0000" target="_blank" rel="noopener">Author</a></li>
-          </ul>
-        </div>
       </div>
 
       <div class="footer-bottom">
         <p>Built with care by <a href="https://github.com/sangjun0000" target="_blank" rel="noopener" style="color:var(--accent-gold);text-decoration:none;">sangjun0000</a>. MIT Licensed. Open source forever.</p>
         <div class="footer-badges">
-          <span class="badge"><span class="badge-dot" style="background:var(--accent-emerald);"></span>v1.0.0 Stable</span>
+          <span class="badge"><span class="badge-dot" style="background:var(--accent-emerald);"></span>v2.0.0 Stable</span>
           <span class="badge"><span class="badge-dot" style="background:var(--accent-gold);"></span>MIT License</span>
           <span class="badge"><span class="badge-dot" style="background:var(--accent-blue);"></span>Python 3.9+</span>
         </div>
@@ -2127,99 +1535,383 @@
        JAVASCRIPT
   ============================================================ -->
   <script>
+    // ── i18n Translations ────────────────────────────────────────
+    const T = {
+      en: {
+        "hero.badge": "100% Free & Open Source",
+        "hero.title": "Stellar Memory",
+        "hero.subtitle": "AI remembers you",
+        "hero.desc": "Give any AI the ability to remember. Free forever, no programming required. Install on your computer in 30 seconds, or use our cloud service.",
+        "hero.cta.start": "Get Started Free",
+        "nav.features": "Features",
+        "nav.quickstart": "Quick Start",
+        "nav.getstarted": "Get Started",
+        "features.title": "Everything a memory system needs",
+        "features.subtitle": "Designed from first principles to mirror the way human memory actually works — layered, emotional, and self-organizing.",
+        "feat.zones.title": "5-Zone Orbit System",
+        "feat.zones.desc": "Memories organized across five concentric zones — Core, Inner, Outer, Belt, and Cloud — each with distinct retention behavior, priority, and access speed.",
+        "feat.learn.title": "Self-Learning",
+        "feat.learn.desc": "Continuously refines its own memory organization based on usage patterns. Frequently accessed memories migrate inward; rarely used ones drift to outer zones.",
+        "feat.multi.title": "Multimodal Memory",
+        "feat.multi.desc": "Store and recall text, code, structured data, and conversation history — all within a unified memory graph.",
+        "how.title": "Simple by design, powerful in practice",
+        "how.subtitle": "Two operations. Infinite memory depth.",
+        "how.store": "Store",
+        "how.store.desc": "Feed any memory into the orbital system. The engine classifies zone placement, assigns emotional weight, and generates embeddings automatically.",
+        "how.recall": "Recall",
+        "how.recall.desc": "Query with natural language. The retrieval engine traverses orbital zones, applies emotional and temporal weighting, and returns the most contextually relevant memories.",
+        "qs.title": "Up and running in minutes",
+        "qs.subtitle": "Install from PyPI and give your AI persistent memory.",
+        "qs.check1": "No external database required",
+        "qs.check2": "Compatible with OpenAI, Anthropic, LangChain",
+        "qs.check3": "MCP server for Claude Code and Cursor",
+        "start.label": "Get Started",
+        "start.title": "Choose how to use Stellar Memory",
+        "start.subtitle": "Both options are 100% free. Choose what works best for you.",
+        "start.local.badge": "Recommended",
+        "start.local.title": "On Your Computer",
+        "start.local.price": "Free",
+        "start.local.desc": "Install and run locally",
+        "start.local.f1": "100% private — data stays on your PC",
+        "start.local.f2": "Works offline — no internet needed",
+        "start.local.f3": "Unlimited memories & agents",
+        "start.local.f4": "Auto-connects to Claude & Cursor",
+        "start.local.f5": "30-second setup",
+        "start.local.cta": "Download Installer",
+        "start.cloud.title": "In the Cloud",
+        "start.cloud.price": "Free",
+        "start.cloud.desc": "Use from any browser",
+        "start.cloud.f1": "No installation needed",
+        "start.cloud.f2": "Access from any device",
+        "start.cloud.f3": "Automatic backups",
+        "start.cloud.f4": "REST API for developers",
+        "start.cloud.f5": "Remote MCP endpoint",
+        "start.cloud.cta": "Coming Soon",
+        "footer.desc": "An intelligent AI memory system inspired by celestial structures."
+      },
+      ko: {
+        "hero.badge": "100% 무료 & 오픈소스",
+        "hero.title": "Stellar Memory",
+        "hero.subtitle": "AI가 당신을 기억합니다",
+        "hero.desc": "어떤 AI에든 기억 능력을 부여하세요. 영구 무료, 프로그래밍 불필요. 30초 설치 또는 클라우드에서 바로 사용.",
+        "hero.cta.start": "무료로 시작하기",
+        "nav.features": "기능",
+        "nav.quickstart": "빠른 시작",
+        "nav.getstarted": "시작하기",
+        "features.title": "기억 시스템에 필요한 모든 것",
+        "features.subtitle": "인간의 기억 원리를 모방하여 설계 — 계층적이고, 감정적이며, 스스로 조직하는 시스템.",
+        "feat.zones.title": "5-Zone 궤도 시스템",
+        "feat.zones.desc": "기억이 5개 동심원 궤도에 배치 — Core, Inner, Outer, Belt, Cloud — 각각 다른 보존 기간, 우선순위, 접근 속도를 가집니다.",
+        "feat.learn.title": "자율 학습",
+        "feat.learn.desc": "사용 패턴을 분석하여 기억을 자동 재배치. 자주 접근하는 기억은 안쪽으로, 드물게 쓰이는 기억은 바깥으로 이동합니다.",
+        "feat.multi.title": "멀티모달 기억",
+        "feat.multi.desc": "텍스트, 코드, 구조화 데이터, 대화 기록을 저장하고 검색 — 통합된 기억 그래프 안에서 모두 관리됩니다.",
+        "how.title": "설계는 단순하게, 실행은 강력하게",
+        "how.subtitle": "두 가지 동작으로 무한한 기억",
+        "how.store": "저장",
+        "how.store.desc": "기억을 궤도 시스템에 입력하면 자동으로 존 배치, 감정 가중치 할당, 임베딩 생성을 수행합니다.",
+        "how.recall": "검색",
+        "how.recall.desc": "자연어로 질의하면 관련 기억을 검색. 검색 엔진이 궤도 존을 탐색하고, 감정 및 시간 가중치를 적용하여 가장 관련성 높은 기억을 반환합니다.",
+        "qs.title": "몇 분 만에 시작",
+        "qs.subtitle": "PyPI에서 설치하면 AI에 영구 기억을 부여합니다.",
+        "qs.check1": "외부 데이터베이스 불필요",
+        "qs.check2": "OpenAI, Anthropic, LangChain 호환",
+        "qs.check3": "Claude Code, Cursor용 MCP 서버",
+        "start.label": "시작하기",
+        "start.title": "사용 방법을 선택하세요",
+        "start.subtitle": "두 가지 모두 100% 무료입니다. 원하는 방법을 선택하세요.",
+        "start.local.badge": "추천",
+        "start.local.title": "내 컴퓨터에서",
+        "start.local.price": "무료",
+        "start.local.desc": "로컬에서 설치하고 실행",
+        "start.local.f1": "100% 프라이버시 — 데이터가 내 PC에 저장",
+        "start.local.f2": "오프라인 사용 가능 — 인터넷 불필요",
+        "start.local.f3": "무제한 기억 & 에이전트",
+        "start.local.f4": "Claude & Cursor 자동 연결",
+        "start.local.f5": "30초 설정",
+        "start.local.cta": "설치 파일 다운로드",
+        "start.cloud.title": "클라우드에서",
+        "start.cloud.price": "무료",
+        "start.cloud.desc": "브라우저에서 바로 사용",
+        "start.cloud.f1": "설치 불필요",
+        "start.cloud.f2": "어디서든 접근 가능",
+        "start.cloud.f3": "자동 백업",
+        "start.cloud.f4": "개발자용 REST API",
+        "start.cloud.f5": "원격 MCP 엔드포인트",
+        "start.cloud.cta": "준비 중",
+        "footer.desc": "천체 구조에서 영감을 받은 지능형 AI 기억 시스템."
+      },
+      zh: {
+        "hero.badge": "100% 免费 & 开源",
+        "hero.title": "Stellar Memory",
+        "hero.subtitle": "AI记住你",
+        "hero.desc": "赋予任何AI记忆能力。永久免费，无需编程。30秒安装到电脑，或使用云服务。",
+        "hero.cta.start": "免费开始",
+        "nav.features": "功能",
+        "nav.quickstart": "快速开始",
+        "nav.getstarted": "开始使用",
+        "features.title": "记忆系统所需的一切",
+        "features.subtitle": "从第一原理出发设计，模拟人类记忆的真实运作方式 — 分层、情感化、自组织。",
+        "feat.zones.title": "5区域轨道系统",
+        "feat.zones.desc": "记忆分布在五个同心区域 — Core、Inner、Outer、Belt和Cloud — 每个区域具有不同的保留行为、优先级和访问速度。",
+        "feat.learn.title": "自主学习",
+        "feat.learn.desc": "根据使用模式持续优化记忆组织。频繁访问的记忆向内迁移，很少使用的记忆漂移到外部区域。",
+        "feat.multi.title": "多模态记忆",
+        "feat.multi.desc": "存储和检索文本、代码、结构化数据和对话历史 — 全部在统一的记忆图中管理。",
+        "how.title": "设计简洁，功能强大",
+        "how.subtitle": "两步操作，无限记忆深度",
+        "how.store": "存储",
+        "how.store.desc": "将任何记忆输入轨道系统。引擎自动进行区域分类、情感权重分配和嵌入生成。",
+        "how.recall": "检索",
+        "how.recall.desc": "使用自然语言查询。检索引擎遍历轨道区域，应用情感和时间权重，返回最相关的记忆。",
+        "qs.title": "几分钟即可启动",
+        "qs.subtitle": "从PyPI安装，赋予AI持久记忆。",
+        "qs.check1": "无需外部数据库",
+        "qs.check2": "兼容OpenAI、Anthropic、LangChain",
+        "qs.check3": "Claude Code和Cursor的MCP服务器",
+        "start.label": "开始使用",
+        "start.title": "选择使用方式",
+        "start.subtitle": "两种方式都是100%免费。选择最适合您的。",
+        "start.local.badge": "推荐",
+        "start.local.title": "在你的电脑上",
+        "start.local.price": "免费",
+        "start.local.desc": "本地安装运行",
+        "start.local.f1": "100%隐私 — 数据存储在你的电脑",
+        "start.local.f2": "离线使用 — 无需网络",
+        "start.local.f3": "无限记忆和代理",
+        "start.local.f4": "自动连接Claude和Cursor",
+        "start.local.f5": "30秒安装",
+        "start.local.cta": "下载安装程序",
+        "start.cloud.title": "在云端",
+        "start.cloud.price": "免费",
+        "start.cloud.desc": "从任何浏览器使用",
+        "start.cloud.f1": "无需安装",
+        "start.cloud.f2": "任何设备都能访问",
+        "start.cloud.f3": "自动备份",
+        "start.cloud.f4": "开发者REST API",
+        "start.cloud.f5": "远程MCP端点",
+        "start.cloud.cta": "即将推出",
+        "footer.desc": "受天体结构启发的智能AI记忆系统。"
+      },
+      es: {
+        "hero.badge": "100% Gratis y Open Source",
+        "hero.title": "Stellar Memory",
+        "hero.subtitle": "La IA te recuerda",
+        "hero.desc": "Dale a cualquier IA la capacidad de recordar. Gratis para siempre, sin programación. Instala en 30 segundos o usa nuestro servicio en la nube.",
+        "hero.cta.start": "Empezar Gratis",
+        "nav.features": "Características",
+        "nav.quickstart": "Inicio Rápido",
+        "nav.getstarted": "Empezar",
+        "features.title": "Todo lo que necesita un sistema de memoria",
+        "features.subtitle": "Diseñado desde los principios fundamentales para reflejar cómo funciona realmente la memoria humana — en capas, emocional y autoorganizada.",
+        "feat.zones.title": "Sistema Orbital de 5 Zonas",
+        "feat.zones.desc": "Memorias organizadas en cinco zonas concéntricas — Core, Inner, Outer, Belt y Cloud — cada una con distinto comportamiento de retención, prioridad y velocidad de acceso.",
+        "feat.learn.title": "Autoaprendizaje",
+        "feat.learn.desc": "Refina continuamente su organización de memoria según patrones de uso. Las memorias frecuentes migran hacia adentro; las poco usadas se alejan.",
+        "feat.multi.title": "Memoria Multimodal",
+        "feat.multi.desc": "Almacena y recupera texto, código, datos estructurados e historial de conversaciones — todo en un grafo de memoria unificado.",
+        "how.title": "Simple por diseño, potente en práctica",
+        "how.subtitle": "Dos operaciones. Profundidad de memoria infinita.",
+        "how.store": "Almacenar",
+        "how.store.desc": "Alimenta cualquier memoria al sistema orbital. El motor clasifica la ubicación de zona, asigna peso emocional y genera embeddings automáticamente.",
+        "how.recall": "Recordar",
+        "how.recall.desc": "Consulta con lenguaje natural. El motor de recuperación recorre las zonas orbitales, aplica pesos emocionales y temporales, y devuelve las memorias más relevantes.",
+        "qs.title": "Listo en minutos",
+        "qs.subtitle": "Instala desde PyPI y dale a tu IA memoria persistente.",
+        "qs.check1": "No requiere base de datos externa",
+        "qs.check2": "Compatible con OpenAI, Anthropic, LangChain",
+        "qs.check3": "Servidor MCP para Claude Code y Cursor",
+        "start.label": "Empezar",
+        "start.title": "Elige cómo usar Stellar Memory",
+        "start.subtitle": "Ambas opciones son 100% gratuitas. Elige lo que funcione mejor para ti.",
+        "start.local.badge": "Recomendado",
+        "start.local.title": "En tu computadora",
+        "start.local.price": "Gratis",
+        "start.local.desc": "Instalar y ejecutar localmente",
+        "start.local.f1": "100% privado — datos en tu PC",
+        "start.local.f2": "Funciona sin internet",
+        "start.local.f3": "Memorias y agentes ilimitados",
+        "start.local.f4": "Auto-conecta con Claude y Cursor",
+        "start.local.f5": "Configuración en 30 segundos",
+        "start.local.cta": "Descargar Instalador",
+        "start.cloud.title": "En la nube",
+        "start.cloud.price": "Gratis",
+        "start.cloud.desc": "Usar desde cualquier navegador",
+        "start.cloud.f1": "Sin instalación",
+        "start.cloud.f2": "Acceso desde cualquier dispositivo",
+        "start.cloud.f3": "Copias de seguridad automáticas",
+        "start.cloud.f4": "REST API para desarrolladores",
+        "start.cloud.f5": "Endpoint MCP remoto",
+        "start.cloud.cta": "Próximamente",
+        "footer.desc": "Un sistema de memoria AI inteligente inspirado en estructuras celestiales."
+      },
+      ja: {
+        "hero.badge": "100% 無料 & オープンソース",
+        "hero.title": "Stellar Memory",
+        "hero.subtitle": "AIがあなたを覚えます",
+        "hero.desc": "あらゆるAIに記憶能力を。永久無料、プログラミング不要。30秒でインストール、またはクラウドで利用。",
+        "hero.cta.start": "無料で始める",
+        "nav.features": "機能",
+        "nav.quickstart": "クイックスタート",
+        "nav.getstarted": "はじめる",
+        "features.title": "記憶システムに必要なすべて",
+        "features.subtitle": "第一原理から設計された、人間の記憶を模倣するシステム — 階層的で、感情的で、自己組織化する。",
+        "feat.zones.title": "5ゾーン軌道システム",
+        "feat.zones.desc": "5つの同心円ゾーンに記憶を配置 — Core、Inner、Outer、Belt、Cloud — それぞれ異なる保持期間、優先度、アクセス速度。",
+        "feat.learn.title": "自律学習",
+        "feat.learn.desc": "使用パターンに基づき記憶を自動再編成。頻繁にアクセスされる記憶は内側へ、使われない記憶は外側へ移動。",
+        "feat.multi.title": "マルチモーダル記憶",
+        "feat.multi.desc": "テキスト、コード、構造化データ、会話履歴を保存・検索 — 統合された記憶グラフで管理。",
+        "how.title": "シンプルな設計、強力な実践",
+        "how.subtitle": "2つの操作で無限の記憶",
+        "how.store": "保存",
+        "how.store.desc": "記憶を軌道システムに入力すると、ゾーン配置の分類、感情の重み付け、エンベディング生成を自動実行。",
+        "how.recall": "検索",
+        "how.recall.desc": "自然言語で問い合わせると関連記憶を検索。検索エンジンが軌道ゾーンを横断し、感情・時間の重みを適用して最も関連性の高い記憶を返します。",
+        "qs.title": "数分で起動",
+        "qs.subtitle": "PyPIからインストールしてAIに永続的な記憶を。",
+        "qs.check1": "外部データベース不要",
+        "qs.check2": "OpenAI、Anthropic、LangChain対応",
+        "qs.check3": "Claude Code/Cursor用MCPサーバー",
+        "start.label": "はじめる",
+        "start.title": "使い方を選んでください",
+        "start.subtitle": "どちらも100%無料です。最適な方法をお選びください。",
+        "start.local.badge": "おすすめ",
+        "start.local.title": "あなたのPCで",
+        "start.local.price": "無料",
+        "start.local.desc": "ローカルにインストールして実行",
+        "start.local.f1": "100%プライバシー — データはPCに保存",
+        "start.local.f2": "オフライン動作 — ネット不要",
+        "start.local.f3": "無制限のメモリ＆エージェント",
+        "start.local.f4": "Claude＆Cursorに自動接続",
+        "start.local.f5": "30秒セットアップ",
+        "start.local.cta": "インストーラーをダウンロード",
+        "start.cloud.title": "クラウドで",
+        "start.cloud.price": "無料",
+        "start.cloud.desc": "ブラウザから利用",
+        "start.cloud.f1": "インストール不要",
+        "start.cloud.f2": "どのデバイスからもアクセス",
+        "start.cloud.f3": "自動バックアップ",
+        "start.cloud.f4": "開発者向けREST API",
+        "start.cloud.f5": "リモートMCPエンドポイント",
+        "start.cloud.cta": "近日公開",
+        "footer.desc": "天体構造にインスパイアされた知的AI記憶システム。"
+      }
+    };
+
+    const LANG_LABELS = { en:'EN', ko:'KO', zh:'ZH', es:'ES', ja:'JA' };
+
+    function detectLang() {
+      var saved = localStorage.getItem('lang');
+      if (saved && T[saved]) return saved;
+      var browser = (navigator.language || 'en').slice(0, 2).toLowerCase();
+      return T[browser] ? browser : 'en';
+    }
+
+    function setLang(lang) {
+      if (!T[lang]) lang = 'en';
+      document.querySelectorAll('[data-i18n]').forEach(function(el) {
+        var key = el.dataset.i18n;
+        if (T[lang][key]) el.textContent = T[lang][key];
+      });
+      document.getElementById('current-lang').textContent = LANG_LABELS[lang];
+      document.documentElement.lang = lang;
+      localStorage.setItem('lang', lang);
+      closeLangMenu();
+    }
+
+    function toggleLangMenu() {
+      document.getElementById('lang-menu').classList.toggle('open');
+    }
+
+    function closeLangMenu() {
+      document.getElementById('lang-menu').classList.remove('open');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.lang-selector')) closeLangMenu();
+    });
+
     // ── Nav scroll effect ──────────────────────────────────────
-    const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => {
+    var nav = document.getElementById('nav');
+    window.addEventListener('scroll', function() {
       nav.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
 
     // ── Mobile menu ────────────────────────────────────────────
     function toggleMobileMenu() {
-      const links = document.querySelector('.nav-links');
+      var links = document.querySelector('.nav-links');
       if (links.style.display === 'flex') {
         links.style.display = '';
       } else {
         links.style.cssText = 'display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(3,7,18,0.97);backdrop-filter:blur(16px);padding:24px;gap:20px;border-bottom:1px solid rgba(148,163,184,0.08);z-index:99;';
-        links.querySelectorAll('a').forEach(a => {
-          a.addEventListener('click', () => { links.style.display = ''; }, { once: true });
+        links.querySelectorAll('a').forEach(function(a) {
+          a.addEventListener('click', function() { links.style.display = ''; }, { once: true });
         });
       }
     }
 
+    // ── Checkout (Lemon Squeezy direct links) ──────────────────
+
     // ── Copy install command ───────────────────────────────────
     function copyInstall() {
-      const text = document.getElementById('install-text').textContent;
-      navigator.clipboard.writeText(text).then(() => showToast('Copied to clipboard!'));
+      var text = document.getElementById('install-text').textContent;
+      navigator.clipboard.writeText(text).then(function() { showToast('Copied to clipboard!'); });
     }
 
     function showToast(msg) {
-      const toast = document.getElementById('toast');
+      var toast = document.getElementById('toast');
       toast.textContent = msg;
       toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2200);
+      setTimeout(function() { toast.classList.remove('show'); }, 2200);
     }
 
-    // ── How it works step switcher ─────────────────────────────
+    // ── How it works step switcher (2 steps) ────────────────────
     function setStep(idx) {
-      for (let i = 0; i < 3; i++) {
-        const step = document.getElementById('step-' + i);
-        const code = document.getElementById('code-' + i);
+      for (var i = 0; i < 2; i++) {
+        var step = document.getElementById('step-' + i);
+        var code = document.getElementById('code-' + i);
         step.classList.toggle('active', i === idx);
         step.classList.toggle('inactive', i !== idx);
         code.classList.toggle('active', i === idx);
       }
     }
 
-    // Auto-cycle steps
-    let currentStep = 0;
-    let autoCycle = setInterval(() => {
-      currentStep = (currentStep + 1) % 3;
+    var currentStep = 0;
+    var autoCycle = setInterval(function() {
+      currentStep = (currentStep + 1) % 2;
       setStep(currentStep);
     }, 4000);
 
-    // Pause auto-cycle on manual interaction
-    document.querySelectorAll('.how-step').forEach((el, i) => {
-      el.addEventListener('click', () => {
+    document.querySelectorAll('.how-step').forEach(function(el, i) {
+      el.addEventListener('click', function() {
         clearInterval(autoCycle);
         setStep(i);
         currentStep = i;
-        // Resume after 8s of inactivity
-        autoCycle = setInterval(() => {
-          currentStep = (currentStep + 1) % 3;
+        autoCycle = setInterval(function() {
+          currentStep = (currentStep + 1) % 2;
           setStep(currentStep);
         }, 4000);
       });
     });
 
     // ── Intersection observer for fade-in ─────────────────────
-    const observerStyle = document.createElement('style');
-    observerStyle.textContent = `
-      .fade-up {
-        opacity: 0;
-        transform: translateY(24px);
-        transition: opacity 0.6s ease, transform 0.6s ease;
-      }
-      .fade-up.visible {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    `;
+    var observerStyle = document.createElement('style');
+    observerStyle.textContent = '.fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease;}.fade-up.visible{opacity:1;transform:translateY(0);}';
     document.head.appendChild(observerStyle);
 
-    const fadeTargets = [
-      ...document.querySelectorAll('.feature-card'),
-      ...document.querySelectorAll('.arch-zone'),
-      ...document.querySelectorAll('.integration-card'),
-      ...document.querySelectorAll('.stat-item'),
-    ];
+    var fadeTargets = [].concat(
+      Array.from(document.querySelectorAll('.feature-card')),
+      Array.from(document.querySelectorAll('.pricing-card'))
+    );
 
-    fadeTargets.forEach((el, i) => {
+    fadeTargets.forEach(function(el, i) {
       el.classList.add('fade-up');
       el.style.transitionDelay = (i % 6) * 0.07 + 's';
     });
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
         if (e.isIntersecting) {
           e.target.classList.add('visible');
           observer.unobserve(e.target);
@@ -2227,23 +1919,26 @@
       });
     }, { threshold: 0.12 });
 
-    fadeTargets.forEach(el => observer.observe(el));
+    fadeTargets.forEach(function(el) { observer.observe(el); });
 
     // ── Smooth active nav link highlighting ────────────────────
-    const sections = document.querySelectorAll('section[id]');
-    const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+    var sections = document.querySelectorAll('section[id]');
+    var navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
 
-    window.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(sec => {
+    window.addEventListener('scroll', function() {
+      var current = '';
+      sections.forEach(function(sec) {
         if (window.scrollY >= sec.offsetTop - 120) current = sec.id;
       });
-      navAnchors.forEach(a => {
+      navAnchors.forEach(function(a) {
         a.style.color = a.getAttribute('href') === '#' + current
           ? 'var(--text-primary)'
           : '';
       });
     }, { passive: true });
+
+    // ── Initialize language ────────────────────────────────────
+    setLang(detectLang());
   </script>
 </body>
 </html>
