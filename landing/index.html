@@ -695,115 +695,116 @@
       background: linear-gradient(180deg, transparent 0%, rgba(6,13,31,0.6) 50%, transparent 100%);
     }
 
-    .how-inner {
+    /* Pain Point Section */
+    .pain-grid {
       display: grid;
-      grid-template-columns: 1fr 1.3fr;
-      gap: 80px;
-      align-items: start;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 48px;
+    }
+    .pain-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 32px 24px;
+      text-align: center;
+    }
+    .pain-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .pain-card h3 { margin-bottom: 20px; font-size: 1.1rem; }
+    .pain-chat { text-align: left; margin-top: 16px; }
+    .chat-bubble {
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    .chat-bubble.user {
+      background: var(--accent-blue);
+      color: white;
+      border-bottom-right-radius: 4px;
+      margin-left: 20px;
+    }
+    .chat-bubble.ai {
+      background: var(--bg-surface);
+      color: var(--text-secondary);
+      border-bottom-left-radius: 4px;
+      margin-right: 20px;
+    }
+    .chat-label {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-style: italic;
+      margin-top: 8px;
+    }
+    .pain-solution {
+      text-align: center;
+      margin-top: 48px;
+      font-size: 1.2rem;
+      color: var(--accent-gold);
+      font-weight: 600;
     }
 
-    .how-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 0;
+    /* How It Works — new 3-step layout */
+    .how-steps-new {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
     }
-
-    .how-step {
-      display: flex;
-      gap: 20px;
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border-subtle);
-      cursor: pointer;
-      transition: opacity 0.2s;
+    .how-step-card {
+      text-align: center;
+      padding: 32px 24px;
     }
-    .how-step:last-child { border-bottom: none; }
-    .how-step.inactive { opacity: 0.5; }
-
-    .step-num {
-      flex-shrink: 0;
-      width: 40px;
-      height: 40px;
+    .how-step-num {
+      width: 48px; height: 48px;
       border-radius: 50%;
+      background: var(--accent-gold);
+      color: var(--bg-void);
+      font-weight: 700;
+      font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+    }
+    .how-step-visual {
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
-      font-size: 0.9rem;
+      margin-bottom: 20px;
+    }
+    .how-step-card h3 { margin-bottom: 12px; }
+    .how-step-card p { color: var(--text-secondary); font-size: 0.95rem; }
+
+    /* Before/After Demo */
+    .how-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-top: 56px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .how-demo-before, .how-demo-after {
+      background: var(--bg-card);
       border: 1px solid var(--border-card);
-      color: var(--text-secondary);
-      transition: background 0.2s, border-color 0.2s, color 0.2s;
-    }
-    .how-step.active .step-num {
-      background: var(--accent-gold);
-      border-color: var(--accent-gold);
-      color: #000;
-    }
-
-    .step-info h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-primary);
-    }
-    .step-info p {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    /* Code window */
-    .code-window {
-      background: #0a0f1e;
-      border: 1px solid var(--border-card);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      box-shadow: var(--shadow-card);
-    }
-
-    .code-window-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 16px;
-      background: rgba(255,255,255,0.03);
-      border-bottom: 1px solid var(--border-subtle);
-    }
-
-    .window-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-    }
-    .dot-red    { background: #ff5f57; }
-    .dot-yellow { background: #febc2e; }
-    .dot-green  { background: #28c840; }
-
-    .window-title {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-left: 8px;
-    }
-
-    .code-block {
+      border-radius: var(--radius-md);
       padding: 24px;
-      font-family: var(--font-mono);
-      font-size: 0.82rem;
-      line-height: 1.75;
-      overflow-x: auto;
-      display: none;
     }
-    .code-block.active { display: block; }
-
-    /* Python syntax highlighting */
-    .kw  { color: #c792ea; }
-    .fn  { color: #82aaff; }
-    .st  { color: #c3e88d; }
-    .cm  { color: #546e7a; font-style: italic; }
-    .nb  { color: #ffcb6b; }
-    .cl  { color: #f07178; }
-    .op  { color: #89ddff; }
-    .pn  { color: var(--text-secondary); }
+    .how-demo-before { opacity: 0.6; }
+    .how-demo-after {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 20px rgba(240,180,41,0.1);
+    }
+    .demo-label {
+      font-weight: 600;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+    .how-demo-before .demo-label { color: var(--text-muted); }
+    .how-demo-after .demo-label { color: var(--accent-gold); }
 
     /* ============================================================
        QUICK START
@@ -1305,7 +1306,9 @@
       .planet-orbit-1    { width:78px;height:78px;margin:-39px 0 0 -39px; }
 
       .features-grid         { grid-template-columns: 1fr; }
-      .how-inner             { grid-template-columns: 1fr; }
+      .pain-grid             { grid-template-columns: 1fr; }
+      .how-steps-new         { grid-template-columns: 1fr; }
+      .how-demo              { grid-template-columns: 1fr; }
       .footer-inner          { grid-template-columns: 1fr 1fr; }
 
       .nav-links             { display: none; }
@@ -1472,9 +1475,9 @@
           Stellar Memory
         </a>
         <ul class="nav-links">
+          <li><a href="#pain-point" data-i18n="nav.why">Why?</a></li>
           <li><a href="#use-cases" data-i18n="nav.usecases">Use Cases</a></li>
-          <li><a href="#features" data-i18n="nav.features">Features</a></li>
-          <li><a href="#ecosystem" data-i18n="nav.ecosystem">Ecosystem</a></li>
+          <li><a href="#how-it-works" data-i18n="nav.howitworks">How It Works</a></li>
           <li><a href="#get-started" data-i18n="nav.getstarted">Get Started</a></li>
           <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
           <li class="lang-selector">
@@ -1520,13 +1523,13 @@
           <p class="hero-tagline" data-i18n="hero.subtitle">AI remembers you</p>
           <p class="hero-desc" data-i18n="hero.desc">Give any AI the ability to remember. Free forever, no programming required. Install on your computer in 30 seconds, or use our cloud service.</p>
           <div class="hero-actions">
-            <a href="#get-started" class="btn-primary">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              <span data-i18n="hero.cta.start">Get Started Free</span>
-            </a>
-            <a href="#use-cases" class="btn-secondary">
+            <a href="#how-it-works" class="btn-primary">
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span data-i18n="hero.cta.who">Who Is This For?</span>
+              <span data-i18n="hero.cta.start">How does it work?</span>
+            </a>
+            <a href="#get-started" class="btn-secondary">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span data-i18n="hero.cta.who">Get Started Free</span>
             </a>
           </div>
         </div>
@@ -1572,6 +1575,52 @@
   </section>
 
   <!-- ============================================================
+       PAIN POINT (Why you need this)
+  ============================================================ -->
+  <section id="pain-point" style="padding:100px 0;">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:16px;">
+        <div class="section-label" data-i18n="pain.label">The Problem</div>
+        <h2 class="section-title" data-i18n="pain.title">Tired of repeating yourself to AI?</h2>
+        <p class="section-sub" style="margin:0 auto;" data-i18n="pain.subtitle">Every new conversation starts from zero. Your AI has no idea who you are.</p>
+      </div>
+
+      <div class="pain-grid">
+        <div class="pain-card">
+          <div class="pain-icon">&#x1F504;</div>
+          <h3 data-i18n="pain.repeat.title">Explaining from scratch, every time</h3>
+          <div class="pain-chat">
+            <div class="chat-bubble user" data-i18n="pain.repeat.before">"I'm a frontend dev, I use React, I prefer TypeScript..."</div>
+            <div class="chat-bubble ai" data-i18n="pain.repeat.ai">"Got it! How can I help you?"</div>
+            <div class="chat-label" data-i18n="pain.repeat.label">...next conversation, same thing again</div>
+          </div>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-icon">&#x1F4A8;</div>
+          <h3 data-i18n="pain.forget.title">New chat = blank slate</h3>
+          <div class="pain-chat">
+            <div class="chat-bubble user" data-i18n="pain.forget.before">"Remember the project structure we discussed?"</div>
+            <div class="chat-bubble ai" data-i18n="pain.forget.ai">"I'm sorry, I can't access previous conversations."</div>
+          </div>
+        </div>
+
+        <div class="pain-card">
+          <div class="pain-icon">&#x1F937;</div>
+          <h3 data-i18n="pain.context.title">AI that doesn't know you</h3>
+          <div class="pain-chat">
+            <div class="chat-bubble user" data-i18n="pain.context.before">"Review my code"</div>
+            <div class="chat-bubble ai" data-i18n="pain.context.ai">"What language and framework are you using?"</div>
+            <div class="chat-label" data-i18n="pain.context.label">...I've told you a hundred times</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="pain-solution" data-i18n="pain.solution">With Stellar Memory, your AI remembers all of this.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================
        USE CASES (4 persona cards)
   ============================================================ -->
   <section id="use-cases">
@@ -1613,6 +1662,63 @@
           </div>
           <h3 data-i18n="uc.dev.title">Developers</h3>
           <p data-i18n="uc.dev.desc">Add persistent memory to any LLM in 3 lines of code. MCP, REST API, and Python SDK included.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       HOW IT WORKS (3 steps — persuasion-focused)
+  ============================================================ -->
+  <section id="how-it-works" style="padding:100px 0;">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:16px;">
+        <div class="section-label" data-i18n="how.label">How It Works</div>
+        <h2 class="section-title" data-i18n="how.title">A memory plugin for your existing AI</h2>
+        <p class="section-sub" style="margin:0 auto;" data-i18n="how.subtitle">No need to switch AI tools. Just connect Stellar Memory to the one you already use.</p>
+      </div>
+
+      <div class="how-steps-new">
+        <div class="how-step-card">
+          <div class="how-step-num">1</div>
+          <div class="how-step-visual">
+            <svg width="64" height="64" fill="none" stroke="var(--accent-blue)" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 10h2m2 0h2" stroke="var(--accent-gold)" stroke-width="2"/></svg>
+          </div>
+          <h3 data-i18n="how.s1.title">Connect to your AI</h3>
+          <p data-i18n="how.s1.desc">Claude, ChatGPT, Cursor, or any AI tool — connect Stellar Memory in 30 seconds. One command, done.</p>
+        </div>
+
+        <div class="how-step-card">
+          <div class="how-step-num">2</div>
+          <div class="how-step-visual">
+            <svg width="64" height="64" fill="none" stroke="var(--accent-gold)" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4m0 12v4M2 12h4m12 0h4" stroke-dasharray="2 2"/></svg>
+          </div>
+          <h3 data-i18n="how.s2.title">It remembers automatically</h3>
+          <p data-i18n="how.s2.desc">You don't need to say "remember this." Your AI decides what's important and stores it on its own.</p>
+        </div>
+
+        <div class="how-step-card">
+          <div class="how-step-num">3</div>
+          <div class="how-step-visual">
+            <svg width="64" height="64" fill="none" stroke="var(--accent-emerald)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><polyline points="9 11 12 14 16 9" stroke-width="2"/></svg>
+          </div>
+          <h3 data-i18n="how.s3.title">Next conversation, it knows you</h3>
+          <p data-i18n="how.s3.desc">Start a new chat and your AI already knows your name, preferences, and project context. No more repeating yourself.</p>
+        </div>
+      </div>
+
+      <div class="how-demo">
+        <div class="how-demo-before">
+          <div class="demo-label" data-i18n="how.before.label">Without Stellar Memory</div>
+          <div class="chat-bubble user" data-i18n="how.before.user1">"I'm a React developer using TypeScript..."</div>
+          <div class="chat-bubble ai" data-i18n="how.before.ai1">"Got it! How can I help?"</div>
+          <div class="chat-label">--- new chat ---</div>
+          <div class="chat-bubble user" data-i18n="how.before.user2">"I'm a React developer using TypeScript..."</div>
+        </div>
+        <div class="how-demo-after">
+          <div class="demo-label" data-i18n="how.after.label">With Stellar Memory</div>
+          <div class="chat-bubble user" data-i18n="how.after.user1">"Review this component"</div>
+          <div class="chat-bubble ai" data-i18n="how.after.ai1">"Since you prefer functional components with TypeScript, I'll review it with that in mind."</div>
         </div>
       </div>
     </div>
@@ -1684,84 +1790,6 @@
   </section>
 
   <!-- ============================================================
-       HOW IT WORKS (2 steps)
-  ============================================================ -->
-  <section id="how-it-works">
-    <div class="container">
-      <div style="margin-bottom:60px;">
-        <div class="section-label">Workflow</div>
-        <h2 class="section-title" data-i18n="how.title">Simple by design, powerful in practice</h2>
-        <p class="section-sub" data-i18n="how.subtitle">Two operations. Infinite memory depth.</p>
-      </div>
-
-      <div class="how-inner">
-        <!-- Steps -->
-        <div class="how-steps">
-          <div class="how-step active" id="step-0" onclick="setStep(0)">
-            <div class="step-num">1</div>
-            <div class="step-info">
-              <h3 data-i18n="how.store">Store</h3>
-              <p data-i18n="how.store.desc">Feed any memory into the orbital system. The engine classifies zone placement, assigns emotional weight, and generates embeddings automatically.</p>
-            </div>
-          </div>
-          <div class="how-step inactive" id="step-1" onclick="setStep(1)">
-            <div class="step-num">2</div>
-            <div class="step-info">
-              <h3 data-i18n="how.recall">Recall</h3>
-              <p data-i18n="how.recall.desc">Query with natural language. The retrieval engine traverses orbital zones, applies emotional and temporal weighting, and returns the most contextually relevant memories.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Code examples -->
-        <div class="code-window">
-          <div class="code-window-bar">
-            <div class="window-dot dot-red"></div>
-            <div class="window-dot dot-yellow"></div>
-            <div class="window-dot dot-green"></div>
-            <span class="window-title">stellar_memory_demo.py</span>
-          </div>
-
-          <!-- Step 0: Store -->
-          <pre class="code-block active" id="code-0"><code><span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
-
-<span class="cm"># Initialize the memory system</span>
-<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
-
-<span class="cm"># Store a conversational memory</span>
-<span class="pn">memory</span><span class="op">.</span><span class="fn">store</span><span class="op">(</span>
-  <span class="pn">content</span><span class="op">=</span><span class="st">"User prefers dark mode and concise answers"</span><span class="op">,</span>
-  <span class="pn">zone</span><span class="op">=</span><span class="st">"inner"</span><span class="op">,</span>
-  <span class="pn">emotion</span><span class="op">=</span><span class="op">{</span><span class="st">"valence"</span><span class="op">:</span> <span class="st">"positive"</span><span class="op">,</span> <span class="st">"intensity"</span><span class="op">:</span> <span class="nb">0.6</span><span class="op">},</span>
-  <span class="pn">tags</span><span class="op">=</span><span class="op">[</span><span class="st">"preference"</span><span class="op">,</span> <span class="st">"ui"</span><span class="op">]</span>
-<span class="op">)</span>
-
-<span class="cm"># Auto-classify zone from content alone</span>
-<span class="pn">memory</span><span class="op">.</span><span class="fn">store_auto</span><span class="op">(</span>
-  <span class="st">"The project deadline is March 15th, 2026"</span>
-<span class="op">)</span></code></pre>
-
-          <!-- Step 1: Recall -->
-          <pre class="code-block" id="code-1"><code><span class="kw">from</span> <span class="pn">stellar_memory</span> <span class="kw">import</span> <span class="cl">StellarMemory</span>
-
-<span class="pn">memory</span> <span class="op">=</span> <span class="cl">StellarMemory</span><span class="op">()</span>
-
-<span class="cm"># Natural language recall</span>
-<span class="pn">results</span> <span class="op">=</span> <span class="pn">memory</span><span class="op">.</span><span class="fn">recall</span><span class="op">(</span>
-  <span class="pn">query</span><span class="op">=</span><span class="st">"What are the user's display preferences?"</span><span class="op">,</span>
-  <span class="pn">top_k</span><span class="op">=</span><span class="nb">5</span><span class="op">,</span>
-  <span class="pn">zones</span><span class="op">=</span><span class="op">[</span><span class="st">"core"</span><span class="op">,</span> <span class="st">"inner"</span><span class="op">]</span>
-<span class="op">)</span>
-
-<span class="kw">for</span> <span class="pn">mem</span> <span class="kw">in</span> <span class="pn">results</span><span class="op">:</span>
-  <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"[{mem.zone}] {mem.content}"</span><span class="op">)</span>
-  <span class="fn">print</span><span class="op">(</span><span class="nb">f</span><span class="st">"  Score: {mem.relevance:.2f} | Emotion: {mem.emotion}"</span><span class="op">)</span></code></pre>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============================================================
        ECOSYSTEM (Built with Stellar Memory)
   ============================================================ -->
   <section id="ecosystem">
@@ -1795,7 +1823,7 @@
             <span class="product-tag">Python</span>
           </div>
           <div class="product-actions">
-            <a href="https://github.com/sangjun0000/homunculus/releases" target="_blank" rel="noopener" class="product-cta-primary" data-i18n="eco.hom.download">
+            <a href="downloads/homunculus-v0.2.0.zip" download class="product-cta-primary" data-i18n="eco.hom.download">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Download v0.2.0
             </a>
@@ -1959,10 +1987,11 @@
         "hero.title": "Stellar Memory",
         "hero.subtitle": "AI remembers you",
         "hero.desc": "Give any AI the ability to remember. Free forever, no programming required. Install on your computer in 30 seconds, or use our cloud service.",
-        "hero.cta.start": "Get Started Free",
-        "hero.cta.who": "Who Is This For?",
+        "hero.cta.start": "How does it work?",
+        "hero.cta.who": "Get Started Free",
+        "nav.why": "Why?",
         "nav.usecases": "Use Cases",
-        "nav.features": "Features",
+        "nav.howitworks": "How It Works",
         "nav.getstarted": "Get Started",
         "uc.label": "Who Is This For?",
         "uc.title": "AI memory for everyone",
@@ -1983,12 +2012,37 @@
         "feat.learn.desc": "Continuously refines its own memory organization based on usage patterns. Frequently accessed memories migrate inward; rarely used ones drift to outer zones.",
         "feat.multi.title": "Multimodal Memory",
         "feat.multi.desc": "Store and recall text, code, structured data, and conversation history — all within a unified memory graph.",
-        "how.title": "Simple by design, powerful in practice",
-        "how.subtitle": "Two operations. Infinite memory depth.",
-        "how.store": "Store",
-        "how.store.desc": "Feed any memory into the orbital system. The engine classifies zone placement, assigns emotional weight, and generates embeddings automatically.",
-        "how.recall": "Recall",
-        "how.recall.desc": "Query with natural language. The retrieval engine traverses orbital zones, applies emotional and temporal weighting, and returns the most contextually relevant memories.",
+        "pain.label": "The Problem",
+        "pain.title": "Tired of repeating yourself to AI?",
+        "pain.subtitle": "Every new conversation starts from zero. Your AI has no idea who you are.",
+        "pain.repeat.title": "Explaining from scratch, every time",
+        "pain.repeat.before": "\"I'm a frontend dev, I use React, I prefer TypeScript...\"",
+        "pain.repeat.ai": "\"Got it! How can I help you?\"",
+        "pain.repeat.label": "...next conversation, same thing again",
+        "pain.forget.title": "New chat = blank slate",
+        "pain.forget.before": "\"Remember the project structure we discussed?\"",
+        "pain.forget.ai": "\"I'm sorry, I can't access previous conversations.\"",
+        "pain.context.title": "AI that doesn't know you",
+        "pain.context.before": "\"Review my code\"",
+        "pain.context.ai": "\"What language and framework are you using?\"",
+        "pain.context.label": "...I've told you a hundred times",
+        "pain.solution": "With Stellar Memory, your AI remembers all of this.",
+        "how.label": "How It Works",
+        "how.title": "A memory plugin for your existing AI",
+        "how.subtitle": "No need to switch AI tools. Just connect Stellar Memory to the one you already use.",
+        "how.s1.title": "Connect to your AI",
+        "how.s1.desc": "Claude, ChatGPT, Cursor, or any AI tool \u2014 connect Stellar Memory in 30 seconds. One command, done.",
+        "how.s2.title": "It remembers automatically",
+        "how.s2.desc": "You don't need to say \"remember this.\" Your AI decides what's important and stores it on its own.",
+        "how.s3.title": "Next conversation, it knows you",
+        "how.s3.desc": "Start a new chat and your AI already knows your name, preferences, and project context. No more repeating yourself.",
+        "how.before.label": "Without Stellar Memory",
+        "how.before.user1": "\"I'm a React developer using TypeScript...\"",
+        "how.before.ai1": "\"Got it! How can I help?\"",
+        "how.before.user2": "\"I'm a React developer using TypeScript...\"",
+        "how.after.label": "With Stellar Memory",
+        "how.after.user1": "\"Review this component\"",
+        "how.after.ai1": "\"Since you prefer functional components with TypeScript, I'll review it with that in mind.\"",
         "setup.label": "Get Started",
         "setup.title": "Set up in 3 easy steps",
         "setup.subtitle": "Choose your AI tool, and we'll guide you through the rest. No coding required.",
@@ -2034,10 +2088,11 @@
         "hero.title": "Stellar Memory",
         "hero.subtitle": "AI가 당신을 기억합니다",
         "hero.desc": "어떤 AI에든 기억 능력을 부여하세요. 영구 무료, 프로그래밍 불필요. 30초 설치 또는 클라우드에서 바로 사용.",
-        "hero.cta.start": "무료로 시작하기",
-        "hero.cta.who": "누구를 위한 건가요?",
+        "hero.cta.start": "어떻게 동작하나요?",
+        "hero.cta.who": "무료로 시작하기",
+        "nav.why": "왜 필요한가요?",
         "nav.usecases": "활용 사례",
-        "nav.features": "기능",
+        "nav.howitworks": "동작 방식",
         "nav.getstarted": "시작하기",
         "uc.label": "누구를 위한 건가요?",
         "uc.title": "모두를 위한 AI 기억",
@@ -2058,12 +2113,37 @@
         "feat.learn.desc": "사용 패턴을 분석하여 기억을 자동 재배치. 자주 접근하는 기억은 안쪽으로, 드물게 쓰이는 기억은 바깥으로 이동합니다.",
         "feat.multi.title": "멀티모달 기억",
         "feat.multi.desc": "텍스트, 코드, 구조화 데이터, 대화 기록을 저장하고 검색 — 통합된 기억 그래프 안에서 모두 관리됩니다.",
-        "how.title": "설계는 단순하게, 실행은 강력하게",
-        "how.subtitle": "두 가지 동작으로 무한한 기억",
-        "how.store": "저장",
-        "how.store.desc": "기억을 궤도 시스템에 입력하면 자동으로 존 배치, 감정 가중치 할당, 임베딩 생성을 수행합니다.",
-        "how.recall": "검색",
-        "how.recall.desc": "자연어로 질의하면 관련 기억을 검색. 검색 엔진이 궤도 존을 탐색하고, 감정 및 시간 가중치를 적용하여 가장 관련성 높은 기억을 반환합니다.",
+        "pain.label": "문제점",
+        "pain.title": "AI에게 매번 같은 말을 반복하고 있지 않나요?",
+        "pain.subtitle": "새 대화를 시작할 때마다 AI는 당신이 누구인지 모릅니다.",
+        "pain.repeat.title": "매번 처음부터 설명",
+        "pain.repeat.before": "\"나는 프론트엔드 개발자이고, React를 쓰고, TypeScript를 선호해...\"",
+        "pain.repeat.ai": "\"알겠습니다! 어떤 도움이 필요하신가요?\"",
+        "pain.repeat.label": "...다음 대화에서 또 반복",
+        "pain.forget.title": "새 대화 = 백지 상태",
+        "pain.forget.before": "\"지난번에 말한 프로젝트 구조 기억나?\"",
+        "pain.forget.ai": "\"죄송합니다, 이전 대화 내용을 확인할 수 없습니다.\"",
+        "pain.context.title": "내가 누군지 모르는 AI",
+        "pain.context.before": "\"코드 리뷰 해줘\"",
+        "pain.context.ai": "\"어떤 언어와 프레임워크를 사용하시나요?\"",
+        "pain.context.label": "...이미 100번 말했는데",
+        "pain.solution": "Stellar Memory를 설치하면, AI가 이 모든 것을 기억합니다.",
+        "how.label": "동작 방식",
+        "how.title": "기존 AI에 기억력을 추가하는 플러그인",
+        "how.subtitle": "AI를 바꿀 필요 없습니다. 지금 쓰는 AI에 연결만 하세요.",
+        "how.s1.title": "AI에 연결",
+        "how.s1.desc": "Claude, ChatGPT, Cursor 등 \u2014 당신이 이미 사용하는 AI에 Stellar Memory를 연결합니다. 30초면 됩니다.",
+        "how.s2.title": "대화하면 자동으로 기억",
+        "how.s2.desc": "\"기억해\"라고 말하지 않아도 됩니다. AI가 대화 중 중요한 정보를 스스로 판단해서 기억합니다.",
+        "how.s3.title": "다음 대화부터 달라집니다",
+        "how.s3.desc": "새 대화를 시작해도 AI가 당신을 이미 알고 있습니다. 이름, 취향, 프로젝트 맥락 \u2014 더 이상 반복할 필요 없습니다.",
+        "how.before.label": "Stellar Memory 없이",
+        "how.before.user1": "\"나는 React 개발자인데...\"",
+        "how.before.ai1": "\"알겠습니다! 어떤 도움이 필요하신가요?\"",
+        "how.before.user2": "\"나는 React 개발자인데...\"",
+        "how.after.label": "Stellar Memory 사용 시",
+        "how.after.user1": "\"이 컴포넌트 리뷰해줘\"",
+        "how.after.ai1": "\"React + TypeScript 프로젝트시죠. 함수형 컴포넌트 선호하시니까 그 기준으로 리뷰할게요.\"",
         "setup.label": "시작하기",
         "setup.title": "3단계로 간편 설정",
         "setup.subtitle": "사용하는 AI 도구를 선택하면 나머지는 안내해 드립니다. 코딩이 필요 없습니다.",
@@ -2109,10 +2189,11 @@
         "hero.title": "Stellar Memory",
         "hero.subtitle": "AI记住你",
         "hero.desc": "赋予任何AI记忆能力。永久免费，无需编程。30秒安装到电脑，或使用云服务。",
-        "hero.cta.start": "免费开始",
-        "hero.cta.who": "适合谁？",
+        "hero.cta.start": "如何运作？",
+        "hero.cta.who": "免费开始",
+        "nav.why": "为什么？",
         "nav.usecases": "使用场景",
-        "nav.features": "功能",
+        "nav.howitworks": "如何运作",
         "nav.getstarted": "开始使用",
         "uc.label": "适合谁？",
         "uc.title": "人人可用的AI记忆",
@@ -2133,12 +2214,32 @@
         "feat.learn.desc": "根据使用模式持续优化记忆组织。频繁访问的记忆向内迁移，很少使用的记忆漂移到外部区域。",
         "feat.multi.title": "多模态记忆",
         "feat.multi.desc": "存储和检索文本、代码、结构化数据和对话历史 — 全部在统一的记忆图中管理。",
-        "how.title": "设计简洁，功能强大",
-        "how.subtitle": "两步操作，无限记忆深度",
-        "how.store": "存储",
-        "how.store.desc": "将任何记忆输入轨道系统。引擎自动进行区域分类、情感权重分配和嵌入生成。",
-        "how.recall": "检索",
-        "how.recall.desc": "使用自然语言查询。检索引擎遍历轨道区域，应用情感和时间权重，返回最相关的记忆。",
+        "pain.label": "问题",
+        "pain.title": "还在每次都向AI重复同样的话吗？",
+        "pain.subtitle": "每次新对话都从零开始。AI完全不知道你是谁。",
+        "pain.repeat.title": "每次都从头解释",
+        "pain.repeat.before": "\"我是前端开发者，用React，偏好TypeScript...\"",
+        "pain.repeat.ai": "\"明白了！需要什么帮助？\"",
+        "pain.repeat.label": "...下次对话又要重复",
+        "pain.forget.title": "新对话 = 白纸一张",
+        "pain.forget.before": "\"还记得我们讨论的项目结构吗？\"",
+        "pain.forget.ai": "\"抱歉，我无法访问之前的对话。\"",
+        "pain.context.title": "不认识你的AI",
+        "pain.context.before": "\"帮我审查代码\"",
+        "pain.context.ai": "\"你使用什么语言和框架？\"",
+        "pain.context.label": "...已经说了一百遍了",
+        "pain.solution": "安装Stellar Memory后，AI会记住这一切。",
+        "how.label": "如何运作",
+        "how.title": "为现有AI添加记忆的插件",
+        "how.subtitle": "无需更换AI工具。只需连接到你已有的AI。",
+        "how.s1.title": "连接你的AI",
+        "how.s1.desc": "Claude、ChatGPT、Cursor等 \u2014 30秒连接Stellar Memory。一条命令搞定。",
+        "how.s2.title": "自动记忆",
+        "how.s2.desc": "不需要说\"记住这个\"。AI自动判断重要信息并存储。",
+        "how.s3.title": "下次对话就不一样了",
+        "how.s3.desc": "开始新对话时，AI已经知道你的名字、偏好和项目背景。无需再重复。",
+        "how.before.label": "没有Stellar Memory",
+        "how.after.label": "使用Stellar Memory",
         "setup.label": "开始使用",
         "setup.title": "3步轻松设置",
         "setup.subtitle": "选择你的AI工具，我们将引导你完成其余步骤。无需编程。",
@@ -2184,10 +2285,11 @@
         "hero.title": "Stellar Memory",
         "hero.subtitle": "La IA te recuerda",
         "hero.desc": "Dale a cualquier IA la capacidad de recordar. Gratis para siempre, sin programación. Instala en 30 segundos o usa nuestro servicio en la nube.",
-        "hero.cta.start": "Empezar Gratis",
-        "hero.cta.who": "Para quién es?",
+        "hero.cta.start": "Como funciona?",
+        "hero.cta.who": "Empezar Gratis",
+        "nav.why": "Por que?",
         "nav.usecases": "Casos de Uso",
-        "nav.features": "Características",
+        "nav.howitworks": "Como Funciona",
         "nav.getstarted": "Empezar",
         "uc.label": "Para quién es?",
         "uc.title": "Memoria AI para todos",
@@ -2283,12 +2385,32 @@
         "feat.learn.desc": "使用パターンに基づき記憶を自動再編成。頻繁にアクセスされる記憶は内側へ、使われない記憶は外側へ移動。",
         "feat.multi.title": "マルチモーダル記憶",
         "feat.multi.desc": "テキスト、コード、構造化データ、会話履歴を保存・検索 — 統合された記憶グラフで管理。",
-        "how.title": "シンプルな設計、強力な実践",
-        "how.subtitle": "2つの操作で無限の記憶",
-        "how.store": "保存",
-        "how.store.desc": "記憶を軌道システムに入力すると、ゾーン配置の分類、感情の重み付け、エンベディング生成を自動実行。",
-        "how.recall": "検索",
-        "how.recall.desc": "自然言語で問い合わせると関連記憶を検索。検索エンジンが軌道ゾーンを横断し、感情・時間の重みを適用して最も関連性の高い記憶を返します。",
+        "pain.label": "問題点",
+        "pain.title": "AIに毎回同じことを繰り返していませんか？",
+        "pain.subtitle": "新しい会話を始めるたびに、AIはあなたが誰か分かりません。",
+        "pain.repeat.title": "毎回ゼロから説明",
+        "pain.repeat.before": "\"フロントエンド開発者で、Reactを使い、TypeScriptが好みで...\"",
+        "pain.repeat.ai": "\"分かりました！何をお手伝いしましょう？\"",
+        "pain.repeat.label": "...次の会話でまた繰り返し",
+        "pain.forget.title": "新しいチャット = 白紙状態",
+        "pain.forget.before": "\"前に話したプロジェクト構造覚えてる？\"",
+        "pain.forget.ai": "\"申し訳ございません、以前の会話にアクセスできません。\"",
+        "pain.context.title": "あなたを知らないAI",
+        "pain.context.before": "\"コードレビューして\"",
+        "pain.context.ai": "\"どの言語とフレームワークをお使いですか？\"",
+        "pain.context.label": "...もう100回言ったのに",
+        "pain.solution": "Stellar Memoryを入れれば、AIがこれを全部覚えます。",
+        "how.label": "仕組み",
+        "how.title": "既存のAIに記憶力を追加するプラグイン",
+        "how.subtitle": "AIを変える必要はありません。今使っているAIに接続するだけ。",
+        "how.s1.title": "AIに接続",
+        "how.s1.desc": "Claude、ChatGPT、Cursorなど — 30秒でStellar Memoryを接続。コマンド1つで完了。",
+        "how.s2.title": "自動で記憶",
+        "how.s2.desc": "「覚えて」と言わなくても大丈夫。AIが重要な情報を自分で判断して記憶します。",
+        "how.s3.title": "次の会話から変わります",
+        "how.s3.desc": "新しいチャットを始めても、AIがあなたの名前、好み、プロジェクトの文脈を既に知っています。",
+        "how.before.label": "Stellar Memoryなし",
+        "how.after.label": "Stellar Memoryあり",
         "setup.label": "始める",
         "setup.title": "3つの簡単ステップで設定",
         "setup.subtitle": "AIツールを選ぶだけ。あとはガイドします。プログラミング不要。",
@@ -2400,22 +2522,7 @@
       setTimeout(function() { toast.classList.remove('show'); }, 2200);
     }
 
-    // ── How it works step switcher (2 steps) ────────────────────
-    function setStep(idx) {
-      for (var i = 0; i < 2; i++) {
-        var step = document.getElementById('step-' + i);
-        var code = document.getElementById('code-' + i);
-        step.classList.toggle('active', i === idx);
-        step.classList.toggle('inactive', i !== idx);
-        code.classList.toggle('active', i === idx);
-      }
-    }
-
-    var currentStep = 0;
-    var autoCycle = setInterval(function() {
-      currentStep = (currentStep + 1) % 2;
-      setStep(currentStep);
-    }, 4000);
+    // ── How it works (step switcher removed — now static 3-step layout) ──
 
     document.querySelectorAll('.how-step').forEach(function(el, i) {
       el.addEventListener('click', function() {
