@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import logging
 import os
@@ -33,6 +34,14 @@ def create_api_app(config=None, namespace: str | None = None):
     cfg = config or StellarConfig()
     memory = StellarMemory(cfg, namespace=namespace)
 
+    # ── Billing system initialization ──
+    _billing_enabled = cfg.billing.enabled
+    _db_pool = None
+    _auth_mgr = None
+    _lemon_provider = None
+    _stripe_provider = None
+    _toss_provider = None
+
     app = FastAPI(
         title="Stellar Memory API",
         version=__version__,
@@ -63,6 +72,9 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
             {"name": "Memories", "description": "Store, recall, and manage memories"},
             {"name": "Timeline", "description": "Time-based memory access and narratives"},
             {"name": "System", "description": "Health checks, statistics, and event streams"},
+            {"name": "Auth", "description": "User registration and API key management"},
+            {"name": "Billing", "description": "Subscription checkout and management"},
+            {"name": "Webhooks", "description": "Payment provider webhook handlers"},
         ],
         docs_url="/docs",
         redoc_url="/redoc",
@@ -75,13 +87,19 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         allow_headers=["*"],
     )
 
-    # Rate limiting (simple in-memory)
+    # Rate limiting (simple in-memory, tier-aware)
     _rate_store: dict[str, list[float]] = {}
-    rate_limit = cfg.server.rate_limit
+    _default_rate_limit = cfg.server.rate_limit
     RATE_WINDOW = 60
 
     async def check_rate_limit(request: Request):
         client_ip = request.client.host if request.client else "unknown"
+        # Use tier-based rate limit if user is authenticated
+        rate_limit = _default_rate_limit
+        if hasattr(request.state, "user_tier") and _billing_enabled:
+            from stellar_memory.billing.tiers import get_tier_limits
+            rate_limit = get_tier_limits(request.state.user_tier)["rate_limit"]
+
         now = time.time()
         times = _rate_store.get(client_ip, [])
         times = [t for t in times if now - t < RATE_WINDOW]
@@ -95,18 +113,32 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         request.state.rate_remaining = max(0, remaining)
         request.state.rate_reset = int(now + RATE_WINDOW)
 
-    # API key auth (optional)
+    # API key auth (supports both env-var mode and DB-backed mode)
     API_KEY = os.environ.get(cfg.server.api_key_env)
 
     async def check_api_key(request: Request):
-        if API_KEY is None:
-            return
+        """Authenticate via API key. Supports legacy env-var and DB-backed modes."""
         key = request.headers.get("X-API-Key") or ""
         if not key:
             auth = request.headers.get("Authorization", "")
             if auth.startswith("Bearer "):
                 key = auth[7:]
-        if key != API_KEY:
+
+        # DB-backed auth (billing enabled)
+        if _billing_enabled and _auth_mgr and key:
+            key_hash = hashlib.sha256(key.encode()).hexdigest()
+            user = await _auth_mgr.get_user_by_api_key(key_hash)
+            if user:
+                request.state.user_id = user.id
+                request.state.user_tier = user.tier
+                request.state.user_email = user.email
+                return
+            raise HTTPException(401, "Invalid API key")
+
+        # Legacy env-var auth
+        if API_KEY is None:
+            return
+        if not key or key != API_KEY:
             raise HTTPException(401, "Invalid API key")
 
     # Rate limit header middleware
@@ -219,10 +251,12 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         tags=["Memories"],
         dependencies=[Depends(check_api_key), Depends(check_rate_limit)],
     )
-    async def store(req: StoreRequest):
+    async def store(req: StoreRequest, request: Request):
+        user_id = getattr(request.state, "user_id", None)
         item = memory.store(
             req.content, importance=req.importance,
             metadata=req.metadata, auto_evaluate=req.auto_evaluate,
+            user_id=user_id,
         )
         return StoreResponse(
             id=item.id, zone=item.zone,
@@ -238,8 +272,11 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         tags=["Memories"],
         dependencies=[Depends(check_api_key), Depends(check_rate_limit)],
     )
-    async def recall(q: str, limit: int = 5, emotion: str | None = None):
-        results = memory.recall(q, limit=min(limit, 50), emotion=emotion)
+    async def recall(q: str, limit: int = 5, emotion: str | None = None,
+                     request: Request = None):
+        user_id = getattr(request.state, "user_id", None) if request else None
+        results = memory.recall(q, limit=min(limit, 50), emotion=emotion,
+                                user_id=user_id)
         return [RecallItem(
             id=item.id, content=item.content,
             zone=item.zone,
@@ -256,8 +293,9 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         tags=["Memories"],
         dependencies=[Depends(check_api_key), Depends(check_rate_limit)],
     )
-    async def forget(memory_id: str):
-        removed = memory.forget(memory_id)
+    async def forget(memory_id: str, request: Request):
+        user_id = getattr(request.state, "user_id", None)
+        removed = memory.forget(memory_id, user_id=user_id)
         if not removed:
             raise HTTPException(404, "Memory not found")
         return {"removed": True}
@@ -271,8 +309,9 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         dependencies=[Depends(check_api_key), Depends(check_rate_limit)],
     )
     async def memories(zone: int | None = None, limit: int = 50,
-                       offset: int = 0):
-        all_items = memory._orbit_mgr.get_all_items()
+                       offset: int = 0, request: Request = None):
+        user_id = getattr(request.state, "user_id", None) if request else None
+        all_items = memory._orbit_mgr.get_all_items(user_id=user_id)
         if zone is not None:
             all_items = [i for i in all_items if i.zone == zone]
         all_items.sort(key=lambda x: x.total_score, reverse=True)
@@ -298,8 +337,9 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         dependencies=[Depends(check_api_key), Depends(check_rate_limit)],
     )
     async def timeline(start: str | None = None, end: str | None = None,
-                       limit: int = 100):
-        entries = memory.timeline(start, end, limit)
+                       limit: int = 100, request: Request = None):
+        user_id = getattr(request.state, "user_id", None) if request else None
+        entries = memory.timeline(start, end, limit, user_id=user_id)
         return [TimelineItem(
             timestamp=e.timestamp,
             memory_id=e.memory_id,
@@ -317,8 +357,9 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         tags=["Timeline"],
         dependencies=[Depends(check_api_key), Depends(check_rate_limit)],
     )
-    async def narrate(req: NarrateRequest):
-        text = memory.narrate(req.topic, req.limit)
+    async def narrate(req: NarrateRequest, request: Request = None):
+        user_id = getattr(request.state, "user_id", None) if request else None
+        text = memory.narrate(req.topic, req.limit, user_id=user_id)
         return NarrateResponse(narrative=text)
 
     @app.get(
@@ -329,7 +370,20 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
         tags=["System"],
         dependencies=[Depends(check_api_key)],
     )
-    async def stats():
+    async def stats(request: Request = None):
+        user_id = getattr(request.state, "user_id", None) if request else None
+        if user_id:
+            # Tenant-scoped stats: count only this user's memories
+            all_items = memory._orbit_mgr.get_all_items(user_id=user_id)
+            zone_counts: dict[int, int] = {}
+            for item in all_items:
+                zone_counts[item.zone] = zone_counts.get(item.zone, 0) + 1
+            s = memory.stats()
+            return StatsResponse(
+                total_memories=len(all_items),
+                zones={str(k): v for k, v in zone_counts.items()},
+                capacities={str(k): v for k, v in s.zone_capacities.items()},
+            )
         s = memory.stats()
         return StatsResponse(
             total_memories=s.total_memories,
@@ -594,12 +648,385 @@ Response headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Res
             queries_run=report.queries_run,
         )
 
+    # ── Auth & Billing Routes (only when billing enabled) ──
+
+    if _billing_enabled:
+
+        class RegisterRequest(BaseModel):
+            email: str = Field(..., description="User email address")
+
+        class RegisterResponse(BaseModel):
+            user_id: str
+            email: str
+            tier: str
+            api_key: str = Field(description="API key (shown only once)")
+
+        class CreateKeyRequest(BaseModel):
+            name: str = Field("Unnamed", description="Key name")
+
+        class CreateKeyResponse(BaseModel):
+            id: str
+            prefix: str
+            name: str
+            api_key: str = Field(description="Full API key (shown only once)")
+            created_at: str
+
+        class CheckoutRequest(BaseModel):
+            tier: str = Field(..., description="Plan tier: pro or promax")
+            email: str = Field(..., description="Customer email")
+
+        class TossConfirmRequest(BaseModel):
+            customer_key: str
+            auth_key: str
+            tier: str = Field("pro")
+            email: str
+
+        # POST /auth/register
+        @app.post(
+            "/auth/register",
+            response_model=RegisterResponse,
+            summary="Register user",
+            description="Register a new user and receive an API key.",
+            tags=["Auth"],
+        )
+        async def register(req: RegisterRequest):
+            if not _auth_mgr:
+                raise HTTPException(503, "Billing not initialized")
+            user_info, raw_key = await _auth_mgr.register_user(req.email)
+            return RegisterResponse(
+                user_id=user_info["user_id"],
+                email=user_info["email"],
+                tier=user_info["tier"],
+                api_key=raw_key,
+            )
+
+        # GET /auth/api-keys
+        @app.get(
+            "/auth/api-keys",
+            summary="List API keys",
+            description="List all API keys for the authenticated user.",
+            tags=["Auth"],
+            dependencies=[Depends(check_api_key)],
+        )
+        async def list_api_keys(request: Request):
+            if not hasattr(request.state, "user_id"):
+                raise HTTPException(401, "Authentication required")
+            keys = await _auth_mgr.list_api_keys(request.state.user_id)
+            return {"keys": keys}
+
+        # POST /auth/api-keys
+        @app.post(
+            "/auth/api-keys",
+            response_model=CreateKeyResponse,
+            summary="Create API key",
+            description="Create a new API key. Full key shown only in this response.",
+            tags=["Auth"],
+            dependencies=[Depends(check_api_key)],
+        )
+        async def create_key(request: Request, req: CreateKeyRequest):
+            if not hasattr(request.state, "user_id"):
+                raise HTTPException(401, "Authentication required")
+            try:
+                key_info, raw_key = await _auth_mgr.create_api_key(
+                    request.state.user_id, req.name
+                )
+            except ValueError as e:
+                raise HTTPException(403, str(e))
+            return CreateKeyResponse(
+                id=key_info["id"],
+                prefix=key_info["prefix"],
+                name=key_info["name"],
+                api_key=raw_key,
+                created_at=key_info["created_at"],
+            )
+
+        # DELETE /auth/api-keys/{key_id}
+        @app.delete(
+            "/auth/api-keys/{key_id}",
+            summary="Revoke API key",
+            description="Deactivate an API key.",
+            tags=["Auth"],
+            dependencies=[Depends(check_api_key)],
+        )
+        async def revoke_key(request: Request, key_id: str):
+            if not hasattr(request.state, "user_id"):
+                raise HTTPException(401, "Authentication required")
+            ok = await _auth_mgr.revoke_api_key(
+                request.state.user_id, key_id
+            )
+            if not ok:
+                raise HTTPException(404, "Key not found or already revoked")
+            return {"deleted": True}
+
+        # GET /auth/usage
+        @app.get(
+            "/auth/usage",
+            summary="Usage statistics",
+            description="Get current usage for the authenticated user.",
+            tags=["Auth"],
+            dependencies=[Depends(check_api_key)],
+        )
+        async def usage(request: Request):
+            if not hasattr(request.state, "user_id"):
+                raise HTTPException(401, "Authentication required")
+            from stellar_memory.billing.tiers import get_tier_limits
+
+            tier = getattr(request.state, "user_tier", "free")
+            limits = get_tier_limits(tier)
+            memory_count = await _auth_mgr.get_memory_count(
+                request.state.user_id
+            )
+            return {
+                "tier": tier,
+                "memories": {"used": memory_count, "limit": limits["max_memories"]},
+                "rate_limit": limits["rate_limit"],
+                "max_api_keys": limits["max_api_keys"],
+            }
+
+        # ── Billing checkout endpoints ──
+
+        # POST /billing/stripe/checkout
+        @app.post(
+            "/billing/stripe/checkout",
+            summary="Create Stripe checkout",
+            tags=["Billing"],
+        )
+        async def stripe_checkout(req: CheckoutRequest):
+            if not _stripe_provider:
+                raise HTTPException(503, "Stripe not configured")
+            result = await _stripe_provider.create_checkout(
+                tier=req.tier,
+                customer_email=req.email,
+                success_url="https://stellar-memory.com/?checkout=success",
+                cancel_url="https://stellar-memory.com/#pricing",
+            )
+            return {"checkout_url": result.checkout_url, "session_id": result.session_id}
+
+        # POST /billing/lemonsqueezy/checkout
+        @app.post(
+            "/billing/lemonsqueezy/checkout",
+            summary="Create Lemon Squeezy checkout",
+            tags=["Billing"],
+        )
+        async def lemon_checkout(req: CheckoutRequest):
+            if not _lemon_provider:
+                raise HTTPException(503, "Lemon Squeezy not configured")
+            result = await _lemon_provider.create_checkout(
+                tier=req.tier,
+                customer_email=req.email,
+                success_url="https://stellar-memory.com/?checkout=success",
+                cancel_url="https://stellar-memory.com/#pricing",
+            )
+            return {"checkout_url": result.checkout_url, "session_id": result.session_id}
+
+        # POST /billing/toss/checkout
+        @app.post(
+            "/billing/toss/checkout",
+            summary="Create Toss checkout session",
+            tags=["Billing"],
+        )
+        async def toss_checkout(req: CheckoutRequest):
+            if not _toss_provider:
+                raise HTTPException(503, "TossPayments not configured")
+            result = await _toss_provider.create_checkout(
+                tier=req.tier,
+                customer_email=req.email,
+                success_url="https://stellar-memory.com/?checkout=success",
+                cancel_url="https://stellar-memory.com/#pricing",
+            )
+            return {
+                "customer_key": result.session_id,
+                "client_key": result.client_key,
+            }
+
+        # POST /billing/toss/confirm - Confirm Toss billing key
+        @app.post(
+            "/billing/toss/confirm",
+            summary="Confirm Toss billing key",
+            tags=["Billing"],
+        )
+        async def toss_confirm(req: TossConfirmRequest):
+            if not _toss_provider:
+                raise HTTPException(503, "TossPayments not configured")
+            billing_key = await _toss_provider.issue_billing_key(
+                req.customer_key, req.auth_key
+            )
+            # Create/update user with billing key
+            user = await _auth_mgr.get_or_create_user(
+                req.email, provider="toss"
+            )
+            await _auth_mgr.update_user_tier(
+                email=req.email,
+                tier=req.tier,
+                provider="toss",
+                provider_subscription_id=billing_key,
+            )
+            return {"billing_key_issued": True, "tier": req.tier}
+
+        # GET /billing/portal
+        @app.get(
+            "/billing/portal",
+            summary="Billing portal redirect",
+            tags=["Billing"],
+            dependencies=[Depends(check_api_key)],
+        )
+        async def billing_portal(request: Request):
+            if not hasattr(request.state, "user_id"):
+                raise HTTPException(401, "Authentication required")
+            async with _db_pool.acquire() as conn:
+                user = await conn.fetchrow(
+                    "SELECT provider, provider_customer_id, provider_subscription_id FROM users WHERE id = $1",
+                    request.state.user_id,
+                )
+            if not user or not user["provider"]:
+                raise HTTPException(404, "No active subscription")
+
+            provider_name = user["provider"]
+            customer_id = user["provider_customer_id"] or user["provider_subscription_id"]
+
+            if provider_name == "stripe" and _stripe_provider:
+                url = await _stripe_provider.get_portal_url(customer_id)
+            elif provider_name == "lemonsqueezy" and _lemon_provider:
+                url = await _lemon_provider.get_portal_url(customer_id)
+            elif provider_name == "toss" and _toss_provider:
+                url = await _toss_provider.get_portal_url(customer_id)
+            else:
+                raise HTTPException(404, "Provider not available")
+
+            return {"portal_url": url}
+
+        # ── Webhook endpoints ──
+
+        @app.post("/webhook/lemonsqueezy", tags=["Webhooks"])
+        async def lemon_webhook(request: Request):
+            if not _lemon_provider:
+                raise HTTPException(503, "Lemon Squeezy not configured")
+            payload = await request.body()
+            sig = request.headers.get("X-Signature", "")
+            from stellar_memory.billing.webhooks import handle_subscription_event
+
+            event = await _lemon_provider.verify_webhook(payload, sig)
+            await handle_subscription_event(event, _auth_mgr)
+            return {"ok": True}
+
+        @app.post("/webhook/stripe", tags=["Webhooks"])
+        async def stripe_webhook(request: Request):
+            if not _stripe_provider:
+                raise HTTPException(503, "Stripe not configured")
+            payload = await request.body()
+            sig = request.headers.get("Stripe-Signature", "")
+            from stellar_memory.billing.webhooks import handle_subscription_event
+
+            event = await _stripe_provider.verify_webhook(payload, sig)
+            await handle_subscription_event(event, _auth_mgr)
+            return {"ok": True}
+
+        @app.post("/webhook/toss", tags=["Webhooks"])
+        async def toss_webhook(request: Request):
+            if not _toss_provider:
+                raise HTTPException(503, "TossPayments not configured")
+            payload = await request.body()
+            sig = request.headers.get("Toss-Signature", "")
+            from stellar_memory.billing.webhooks import handle_subscription_event
+
+            event = await _toss_provider.verify_webhook(payload, sig)
+            await handle_subscription_event(event, _auth_mgr)
+            return {"ok": True}
+
+    # ── Memory count enforcement middleware ──
+
+    if _billing_enabled:
+        @app.middleware("http")
+        async def enforce_memory_limits(request: Request, call_next):
+            """Check memory limits on store endpoints."""
+            if (
+                request.url.path.endswith("/store")
+                and request.method == "POST"
+                and hasattr(request.state, "user_id")
+                and _auth_mgr
+            ):
+                from stellar_memory.billing.tiers import get_tier_limits, next_tier
+
+                tier = getattr(request.state, "user_tier", "free")
+                limits = get_tier_limits(tier)
+                count = await _auth_mgr.get_memory_count(request.state.user_id)
+                if count >= limits["max_memories"]:
+                    upgrade = next_tier(tier)
+                    msg = (
+                        f"Memory limit reached ({count}/{limits['max_memories']}). "
+                    )
+                    if upgrade:
+                        msg += f"Upgrade to {upgrade} for more."
+                    from starlette.responses import JSONResponse
+                    return JSONResponse(
+                        status_code=403, content={"detail": msg}
+                    )
+            return await call_next(request)
+
+    # ── Startup / Shutdown ──
+
     @app.on_event("startup")
     async def startup():
+        nonlocal _db_pool, _auth_mgr
+        nonlocal _lemon_provider, _stripe_provider, _toss_provider
+
         memory.start()
+
+        if _billing_enabled:
+            db_url = os.environ.get(cfg.billing.db_url_env)
+            if db_url:
+                try:
+                    import asyncpg
+                    _db_pool = await asyncpg.create_pool(db_url, min_size=2, max_size=10)
+
+                    from stellar_memory.auth import AuthManager
+                    _auth_mgr = AuthManager(_db_pool)
+                    await _auth_mgr.init_schema()
+                    logger.info("Billing DB initialized")
+                except Exception as e:
+                    logger.error(f"Failed to initialize billing DB: {e}")
+
+            # Initialize payment providers from env vars
+            lemon_key = os.environ.get(cfg.billing.lemon_api_key_env)
+            if lemon_key:
+                from stellar_memory.billing.lemonsqueezy import LemonSqueezyProvider
+                _lemon_provider = LemonSqueezyProvider(
+                    api_key=lemon_key,
+                    store_id=os.environ.get(cfg.billing.lemon_store_id_env, ""),
+                    variant_pro=os.environ.get(cfg.billing.lemon_variant_pro_env, ""),
+                    variant_team=os.environ.get(cfg.billing.lemon_variant_team_env, ""),
+                    webhook_secret=os.environ.get(cfg.billing.lemon_webhook_secret_env, ""),
+                )
+                logger.info("Lemon Squeezy provider initialized")
+
+            stripe_key = os.environ.get(cfg.billing.stripe_secret_key_env)
+            if stripe_key:
+                try:
+                    from stellar_memory.billing.stripe_provider import StripeProvider
+                    _stripe_provider = StripeProvider(
+                        secret_key=stripe_key,
+                        webhook_secret=os.environ.get(cfg.billing.stripe_webhook_secret_env, ""),
+                        price_pro=os.environ.get(cfg.billing.stripe_price_pro_env, ""),
+                        price_team=os.environ.get(cfg.billing.stripe_price_team_env, ""),
+                    )
+                    logger.info("Stripe provider initialized")
+                except ImportError:
+                    logger.warning("stripe package not installed, skipping Stripe")
+
+            toss_key = os.environ.get(cfg.billing.toss_secret_key_env)
+            if toss_key:
+                from stellar_memory.billing.toss_provider import TossProvider
+                _toss_provider = TossProvider(
+                    secret_key=toss_key,
+                    client_key=os.environ.get(cfg.billing.toss_client_key_env, ""),
+                    webhook_secret=os.environ.get(cfg.billing.toss_webhook_secret_env, ""),
+                )
+                logger.info("TossPayments provider initialized")
 
     @app.on_event("shutdown")
     async def shutdown():
         memory.stop()
+        if _db_pool:
+            await _db_pool.close()
 
     return app, memory

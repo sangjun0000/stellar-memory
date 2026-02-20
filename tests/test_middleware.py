@@ -38,11 +38,13 @@ class TestMemoryMiddleware:
     def test_after_chat_stores_conversation(self):
         sm = StellarMemory(_make_config())
         mw = MemoryMiddleware(sm, auto_store=True, auto_evaluate=False)
-        mw.after_chat("What is Python?", "Python is a programming language.")
-        # Should now find the conversation in memory
-        results = sm.recall("Python")
+        # Use important content that passes the 0.3 threshold
+        mw.after_chat(
+            "Remember this critical meeting deadline 2024-03-01!",
+            "I'll remember the meeting deadline.",
+        )
+        results = sm.recall("meeting deadline")
         assert len(results) >= 1
-        assert "Python" in results[0].content
 
     def test_after_chat_disabled(self):
         sm = StellarMemory(_make_config())
@@ -73,3 +75,35 @@ class TestMemoryMiddleware:
         context = mw.before_chat("topic")
         lines = [l for l in context.split("\n") if l.strip().startswith(("1.", "2.", "3.", "4."))]
         assert len(lines) <= 3
+
+    def test_chat_full_loop(self):
+        sm = StellarMemory(_make_config())
+        sm.store("Python was created by Guido van Rossum", importance=0.9)
+        mw = MemoryMiddleware(sm, auto_store=True)
+
+        def mock_llm(system_context: str, user_message: str) -> str:
+            return "Python was indeed created by Guido."
+
+        context, response = mw.chat("Python created", mock_llm)
+        assert "Relevant Memories" in context
+        assert "Guido" in response
+
+    def test_after_chat_skips_trivial(self):
+        sm = StellarMemory(_make_config())
+        mw = MemoryMiddleware(sm, auto_store=True)
+        result = mw.after_chat("ok", "Sure!")
+        # Trivial message should not be stored (importance < 0.3)
+        assert result is None
+
+    def test_context_includes_zone_names(self):
+        sm = StellarMemory(_make_config())
+        sm.store("Important fact about space", importance=0.9)
+        mw = MemoryMiddleware(sm)
+        context = mw.before_chat("space")
+        # Should contain zone label like [Core], [Inner], etc.
+        assert "[" in context and "]" in context
+
+    def test_create_middleware_on_stellar(self):
+        sm = StellarMemory(_make_config())
+        mw = sm.create_middleware(max_context=3)
+        assert isinstance(mw, MemoryMiddleware)

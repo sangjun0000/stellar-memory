@@ -206,14 +206,15 @@ class StellarMemory:
               encrypted: bool = False,
               role: str | None = None,
               emotion: EmotionVector | None = None,
-              content_type: str | None = None) -> MemoryItem:
+              content_type: str | None = None,
+              user_id: str | None = None) -> MemoryItem:
         # P6: RBAC check
         if self._access_control and role:
             self._access_control.require_permission(role, "write")
             if self._audit:
                 self._audit.log_access(role, "", "store")
 
-        item = MemoryItem.create(content, importance, metadata)
+        item = MemoryItem.create(content, importance, metadata, user_id=user_id)
         # P9: Content type detection/assignment
         if content_type is not None:
             item.content_type = content_type
@@ -321,7 +322,8 @@ class StellarMemory:
 
     def recall(self, query: str, limit: int = 5,
                role: str | None = None,
-               emotion: str | None = None) -> list[MemoryItem]:
+               emotion: str | None = None,
+               user_id: str | None = None) -> list[MemoryItem]:
         # P6: RBAC check
         if self._access_control and role:
             self._access_control.require_permission(role, "read")
@@ -372,6 +374,10 @@ class StellarMemory:
 
         results = results[:limit]
 
+        # Multi-tenant: filter by user_id if provided
+        if user_id:
+            results = [r for r in results if r.user_id is None or r.user_id == user_id]
+
         # Graph boost: enhance results with graph-connected memories
         if (self.config.recall_boost.graph_boost_enabled
                 and self.config.graph.enabled
@@ -413,9 +419,11 @@ class StellarMemory:
     def get(self, memory_id: str) -> MemoryItem | None:
         return self._orbit_mgr.find_item(memory_id)
 
-    def forget(self, memory_id: str) -> bool:
+    def forget(self, memory_id: str, user_id: str | None = None) -> bool:
         item = self._orbit_mgr.find_item(memory_id)
         if item is None:
+            return False
+        if user_id and item.user_id and item.user_id != user_id:
             return False
         storage = self._orbit_mgr.get_storage(item.zone)
         removed = storage.remove(memory_id)
@@ -495,6 +503,11 @@ class StellarMemory:
 
     def auto_tune(self) -> dict[str, float] | None:
         return self._tuner.tune()
+
+    def create_middleware(self, max_context: int = 5):
+        """Create an LLM integration middleware."""
+        from stellar_memory.llm_adapter import MemoryMiddleware
+        return MemoryMiddleware(self, recall_limit=max_context)
 
     # --- F2: Session Management ---
 
@@ -758,13 +771,15 @@ class StellarMemory:
         return self._stream
 
     def timeline(self, start=None, end=None,
-                 limit: int = 100) -> list[TimelineEntry]:
+                 limit: int = 100,
+                 user_id: str | None = None) -> list[TimelineEntry]:
         """Time-ordered memory timeline."""
-        return self.stream.timeline(start, end, limit)
+        return self.stream.timeline(start, end, limit, user_id=user_id)
 
-    def narrate(self, topic: str, limit: int = 10) -> str:
+    def narrate(self, topic: str, limit: int = 10,
+                user_id: str | None = None) -> str:
         """Generate narrative from memories about a topic."""
-        return self.stream.narrate(topic, limit)
+        return self.stream.narrate(topic, limit, user_id=user_id)
 
     # --- P9: Metacognition ---
 

@@ -335,6 +335,131 @@ def create_mcp_server(config: StellarConfig | None = None,
         report = memory.benchmark(queries=queries, dataset=dataset, seed=seed)
         return json.dumps(report.to_dict())
 
+    # --- Smart Onboarding Tools (v2.1.0) ---
+
+    @mcp.tool()
+    def memory_get_context(project_path: str = "") -> str:
+        """Get project context: tech stack, structure, conventions.
+        Auto-detects if not previously generated.
+
+        Args:
+            project_path: Optional path to project root (default: current dir)
+        """
+        from stellar_memory.knowledge_base import AIKnowledgeBase
+        kb = AIKnowledgeBase(memory)
+        context = kb.get_context(project_path or None)
+        return json.dumps({"context": context})
+
+    @mcp.tool()
+    def memory_get_rules() -> str:
+        """Get all active coding rules and user preferences.
+        Returns rules sorted by importance. Use this to understand
+        the user's coding conventions across all AI tools.
+        """
+        from stellar_memory.knowledge_base import AIKnowledgeBase
+        kb = AIKnowledgeBase(memory)
+        rules = kb.get_rules()
+        preferences = kb.get_preferences()
+        return json.dumps({
+            "rules": rules,
+            "preferences": preferences,
+            "total": len(rules) + len(preferences),
+        })
+
+    @mcp.tool()
+    def memory_learn_preference(key: str, value: str) -> str:
+        """Store a user preference that applies across all AI tools.
+        Once stored, any AI tool using Stellar Memory will know this preference.
+
+        Args:
+            key: Preference key (e.g., "naming_style", "language", "framework")
+            value: Preference value (e.g., "snake_case", "Korean", "FastAPI")
+        """
+        from stellar_memory.knowledge_base import AIKnowledgeBase
+        kb = AIKnowledgeBase(memory)
+        mid = kb.learn_preference(key, value)
+        return json.dumps({
+            "stored": True, "memory_id": mid,
+            "key": key, "value": value,
+        })
+
+    @mcp.tool()
+    def memory_sync_ai_config(tool: str, config_path: str) -> str:
+        """Import an AI configuration file into Stellar Memory.
+        This makes rules from one AI tool available to all others.
+
+        Args:
+            tool: AI tool name ("claude", "cursor", "copilot", "windsurf")
+            config_path: Path to the config file
+        """
+        from stellar_memory.knowledge_base import AIKnowledgeBase
+        kb = AIKnowledgeBase(memory)
+        count = kb.sync_ai_config(tool, config_path)
+        return json.dumps({"imported_rules": count, "tool": tool})
+
+    @mcp.tool()
+    def memory_visualize() -> str:
+        """Get a formatted summary of all memory zones and top memories per zone."""
+        stats = memory.stats()
+        zones_info = []
+        for zone_id in sorted(stats.zone_counts.keys()):
+            count = stats.zone_counts[zone_id]
+            cap = stats.zone_capacities.get(zone_id)
+            usage = f"{count}/{cap}" if cap else f"{count}/unlimited"
+            zones_info.append({
+                "zone": zone_id,
+                "count": count,
+                "capacity": cap,
+                "usage": usage,
+            })
+        return json.dumps({
+            "total_memories": stats.total_memories,
+            "zones": zones_info,
+        })
+
+    @mcp.tool()
+    def memory_topics(limit: int = 10) -> str:
+        """Cluster memories by keyword and return topic list with counts.
+
+        Args:
+            limit: Maximum number of topics to return (1-50)
+        """
+        from collections import Counter
+        limit = max(1, min(50, limit))
+        results = memory.recall("", limit=200)
+        word_counts: Counter = Counter()
+        stopwords = {"the", "a", "an", "is", "are", "was", "were", "in", "on",
+                      "at", "to", "for", "of", "and", "or", "not", "this", "that",
+                      "with", "from", "by", "as", "it", "be", "has", "had", "have"}
+        for item in results:
+            words = set(item.content.lower().split())
+            words = {w for w in words if len(w) > 2 and w not in stopwords}
+            word_counts.update(words)
+        topics = [{"topic": word, "count": count}
+                  for word, count in word_counts.most_common(limit)]
+        return json.dumps({"topics": topics, "total_memories": len(results)})
+
+    @mcp.tool()
+    def memory_onboard_status() -> str:
+        """Check onboarding status - what has been imported and what's available."""
+        from collections import Counter
+        stats = memory.stats()
+        results = memory.recall("", limit=500)
+        source_counts: Counter = Counter()
+        type_counts: Counter = Counter()
+        for item in results:
+            meta = item.metadata or {}
+            source_counts[meta.get("source", "manual")] += 1
+            type_counts[meta.get("type", "general")] += 1
+        return json.dumps({
+            "total_memories": stats.total_memories,
+            "by_source": dict(source_counts),
+            "by_type": dict(type_counts),
+            "has_ai_rules": type_counts.get("ai-rule", 0) > 0,
+            "has_project_context": type_counts.get("ai-context", 0) > 0,
+            "has_preferences": type_counts.get("ai-preference", 0) > 0,
+        })
+
     @mcp.resource("memory://stats")
     def resource_stats() -> str:
         """Real-time memory statistics."""

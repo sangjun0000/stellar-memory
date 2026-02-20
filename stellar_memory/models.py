@@ -89,10 +89,13 @@ class MemoryItem:
     emotion: EmotionVector | None = None
     # P9 fields
     content_type: str = "text"  # "text" | "code" | "json" | "structured"
+    # SaaS multi-tenancy
+    user_id: str | None = None
 
     @classmethod
     def create(cls, content: str, importance: float = 0.5,
-               metadata: dict | None = None) -> MemoryItem:
+               metadata: dict | None = None,
+               user_id: str | None = None) -> MemoryItem:
         now = time.time()
         return cls(
             id=str(uuid4()),
@@ -103,6 +106,7 @@ class MemoryItem:
             arbitrary_importance=max(0.0, min(1.0, importance)),
             zone=-1,
             metadata=metadata or {},
+            user_id=user_id,
         )
 
 
@@ -393,3 +397,48 @@ class BenchmarkReport:
             f"<table><tr><th>Zone</th><th>Count</th></tr>{zone_rows}</table>"
             "</body></html>"
         )
+
+
+# Smart Onboarding models (v2.1.0)
+
+@dataclass
+class ScanResult:
+    """Single file discovered by LocalScanner."""
+    path: str
+    category: str  # "documents"|"notes"|"ai-config"|"chat-history"|"code"|"bookmarks"
+    size: int
+    preview: str
+    ai_tool: str | None = None  # for ai-config: "claude"|"cursor"|"copilot"|"windsurf"
+    importable: bool = True
+
+
+@dataclass
+class ScanSummary:
+    """Aggregated scan results."""
+    total_found: int = 0
+    by_category: dict[str, int] = field(default_factory=dict)
+    total_size_bytes: int = 0
+    skipped_count: int = 0
+    results: list[ScanResult] = field(default_factory=list)
+
+
+@dataclass
+class ImportResult:
+    """Result of importing scan results into memory."""
+    total_processed: int = 0
+    imported: int = 0
+    skipped_duplicate: int = 0
+    skipped_error: int = 0
+    by_category: dict[str, int] = field(default_factory=dict)
+    by_zone: dict[int, int] = field(default_factory=dict)
+    memory_ids: list[str] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ChunkInfo:
+    """A chunk of content split from a larger file."""
+    content: str = ""
+    index: int = 0
+    total_chunks: int = 1
+    source_path: str = ""

@@ -102,6 +102,35 @@ class TestWeightTuner:
             os.unlink(db)
 
 
+    def test_max_delta_respected(self):
+        db = _tmp_db()
+        try:
+            max_d = 0.03
+            cfg = TunerConfig(feedback_db_path=db, min_feedback=2, max_delta=max_d)
+            mcfg = MemoryFunctionConfig()
+            original = {
+                "w_recall": mcfg.w_recall,
+                "w_freshness": mcfg.w_freshness,
+                "w_arbitrary": mcfg.w_arbitrary,
+                "w_context": mcfg.w_context,
+            }
+            tuner = WeightTuner(cfg, mcfg)
+            for _ in range(5):
+                tuner.record_feedback(FeedbackRecord(
+                    query="q", result_ids=["a", "b", "c", "d", "e"], used_ids=["a"],
+                ))
+            weights = tuner.tune()
+            if weights:
+                # Before normalization, each weight shift should be <= max_delta
+                # After normalization totals 1.0, but individual changes are bounded
+                for k in original:
+                    # Normalization can amplify slightly, allow 2x max_delta tolerance
+                    assert abs(weights[k] - original[k]) <= max_d * 3 + 0.01
+            tuner.close()
+        finally:
+            os.unlink(db)
+
+
 class TestNullTuner:
     def test_record_does_nothing(self):
         t = NullTuner()

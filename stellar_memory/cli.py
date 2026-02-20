@@ -132,6 +132,32 @@ def main(argv: list[str] | None = None) -> None:
     # status
     subparsers.add_parser("status", help="Check system status")
 
+    # onboard (v2.1.0)
+    p_onboard = subparsers.add_parser("onboard",
+        help="Smart onboarding - scan and import your data")
+    p_onboard.add_argument("--categories", "-c", nargs="*", default=None,
+        help="Categories: documents, notes, ai-config, chat-history, code, bookmarks")
+    p_onboard.add_argument("--exclude", nargs="*", default=None,
+        help="Paths to exclude from scanning")
+    p_onboard.add_argument("--yes", "-y", action="store_true",
+        help="Skip confirmation prompts")
+    p_onboard.add_argument("--dry-run", action="store_true",
+        help="Scan only, don't import")
+
+    # viz (v2.1.0)
+    p_viz = subparsers.add_parser("viz", help="Visualize memories in browser")
+    p_viz.add_argument("--output", "-o", default=None,
+        help="Output HTML file path (default: temp file)")
+    p_viz.add_argument("--no-open", action="store_true",
+        help="Don't open in browser")
+
+    # sync-ai (v2.1.0)
+    p_sync = subparsers.add_parser("sync-ai",
+        help="Import AI config files into Stellar Memory")
+    p_sync.add_argument("--tool", choices=["claude", "cursor", "copilot", "windsurf"],
+        default=None, help="AI tool (default: auto-detect)")
+    p_sync.add_argument("--path", default=None, help="Config file path (default: auto-detect)")
+
     args = parser.parse_args(argv)
     if not args.command:
         parser.print_help()
@@ -353,6 +379,182 @@ def main(argv: list[str] | None = None) -> None:
         if not h.healthy:
             for w in h.warnings:
                 print(f"  Warning: {w}")
+
+    elif args.command == "onboard":
+        _run_onboard(args, config)
+
+    elif args.command == "viz":
+        _run_viz(args, config)
+
+    elif args.command == "sync-ai":
+        _run_sync_ai(args, config)
+
+
+def _run_onboard(args, config) -> None:
+    """Interactive onboarding wizard."""
+    from stellar_memory.scanner import LocalScanner, CATEGORIES
+    from stellar_memory.importer import SmartImporter
+
+    print("=" * 50)
+    print("  Stellar Memory - Smart Onboarding")
+    print("=" * 50)
+    print()
+    print("This wizard scans your computer for useful data")
+    print("and imports it into Stellar Memory.")
+    print("Nothing is accessed without your permission.")
+    print()
+
+    # Category selection
+    all_cats = list(CATEGORIES.keys())
+    categories = args.categories
+    if categories is None and not args.yes:
+        print("Select categories to scan:")
+        for i, cat in enumerate(all_cats, 1):
+            default = "*" if cat == "ai-config" else " "
+            print(f"  [{default}] {i}. {cat}")
+        print()
+        try:
+            selection = input("Enter numbers (e.g., 1,2,3) or 'all' [default: all]: ").strip()
+        except (EOFError, KeyboardInterrupt):
+            return
+        if not selection or selection.lower() == "all":
+            categories = all_cats
+        else:
+            indices = [int(x.strip()) - 1 for x in selection.split(",")
+                       if x.strip().isdigit()]
+            categories = [all_cats[i] for i in indices if 0 <= i < len(all_cats)]
+    elif categories is None:
+        categories = all_cats
+
+    # Scan
+    scanner = LocalScanner(exclude_paths=args.exclude)
+    print("\nScanning...")
+    summary = scanner.scan(categories=categories)
+    print(f"\nFound {summary.total_found} items:")
+    for cat, count in summary.by_category.items():
+        if count > 0:
+            print(f"  {cat}: {count} files")
+
+    if summary.total_found == 0:
+        print("\nNo importable files found.")
+        return
+
+    # Preview
+    if not args.yes:
+        print("\nPreview (top 5 per category):")
+        shown: dict[str, int] = {}
+        for result in summary.results:
+            cat = result.category
+            shown[cat] = shown.get(cat, 0) + 1
+            if shown[cat] > 5:
+                continue
+            label = f"[{cat}]"
+            if result.ai_tool:
+                label = f"[{cat}/{result.ai_tool}]"
+            print(f"  {label} {result.path}")
+            if result.preview:
+                print(f"    {result.preview[:80]}...")
+        print()
+
+    # Confirm
+    if args.dry_run:
+        print("Dry run - no import performed.")
+        return
+    if not args.yes:
+        try:
+            answer = input("Import these items? [Y/n]: ").strip().lower()
+        except (EOFError, KeyboardInterrupt):
+            return
+        if answer and answer != "y":
+            print("Cancelled.")
+            return
+
+    # Import
+    memory = StellarMemory(config)
+    memory.start()
+    importer = SmartImporter(memory)
+    result = importer.import_scan_results(
+        summary.results,
+        progress_callback=lambda done, total: print(
+            f"\r  Importing... {done}/{total}", end="", flush=True),
+    )
+    print()
+
+    # Summary
+    print(f"\nImport complete!")
+    print(f"  Imported: {result.imported}")
+    print(f"  Skipped (duplicate): {result.skipped_duplicate}")
+    if result.skipped_error:
+        print(f"  Errors: {result.skipped_error}")
+    stats = memory.stats()
+    print(f"\nZone distribution:")
+    for z, count in sorted(stats.zone_counts.items()):
+        if count > 0:
+            print(f"  Zone {z}: {count} memories")
+    print(f"\nTotal: {stats.total_memories} memories")
+    print("\nTry: stellar-memory viz")
+    memory.stop()
+
+
+def _run_viz(args, config) -> None:
+    """Generate and open memory visualization."""
+    from stellar_memory.viz import MemoryVisualizer
+
+    memory = StellarMemory(config)
+    viz = MemoryVisualizer(memory)
+
+    output = args.output
+    open_browser = not args.no_open
+
+    path = viz.save_and_open(output_path=output, open_browser=open_browser)
+    print(f"Visualization saved to: {path}")
+    if open_browser:
+        print("Opening in browser...")
+
+
+def _run_sync_ai(args, config) -> None:
+    """Import AI config files into Stellar Memory."""
+    from pathlib import Path
+    from stellar_memory.knowledge_base import AIKnowledgeBase
+    from stellar_memory.scanner import AI_CONFIG_FILES, AI_CONFIG_SUBPATHS
+
+    memory = StellarMemory(config)
+    memory.start()
+    kb = AIKnowledgeBase(memory)
+
+    tool = args.tool
+    config_path = args.path
+
+    if config_path:
+        # Explicit path provided
+        if not tool:
+            tool = "unknown"
+        if not Path(config_path).exists():
+            print(f"File not found: {config_path}")
+            memory.stop()
+            return
+        count = kb.sync_ai_config(tool, config_path)
+        print(f"Imported {count} rules from {config_path} ({tool})")
+    else:
+        # Auto-detect
+        total = 0
+        search_dirs = [Path.cwd(), Path.home()]
+        for d in search_dirs:
+            for filename, t in {**AI_CONFIG_FILES, **AI_CONFIG_SUBPATHS}.items():
+                if tool and t != tool:
+                    continue
+                path = d / filename
+                if path.exists():
+                    count = kb.sync_ai_config(t, str(path))
+                    if count > 0:
+                        print(f"  {t}: {count} rules from {path}")
+                    total += count
+        if total == 0:
+            print("No AI config files found.")
+        else:
+            print(f"\nTotal: {total} rules imported")
+
+    memory.stop()
 
 
 def _claude_config_path() -> str:

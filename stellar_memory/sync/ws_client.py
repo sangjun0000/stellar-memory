@@ -17,9 +17,11 @@ logger = logging.getLogger(__name__)
 class WsClient:
     """Connects to a remote WsServer and exchanges ChangeEvents."""
 
-    def __init__(self, manager: MemorySyncManager, url: str):
+    def __init__(self, manager: MemorySyncManager, url: str,
+                 api_key: str | None = None):
         self._manager = manager
         self._url = url
+        self._api_key = api_key
         self._loop: asyncio.AbstractEventLoop | None = None
         self._thread: threading.Thread | None = None
         self._ws = None
@@ -50,6 +52,12 @@ class WsClient:
                 async with websockets.connect(self._url) as ws:
                     self._ws = ws
                     self._reconnect_delay = 1.0
+                    # Authenticate if api_key is provided
+                    if self._api_key:
+                        await ws.send(json.dumps({"api_key": self._api_key}))
+                        resp = json.loads(await ws.recv())
+                        if not resp.get("authenticated"):
+                            raise ConnectionError("WebSocket auth failed")
                     # send pending events
                     for evt in self._manager.flush_pending():
                         await ws.send(json.dumps(evt.to_dict()))

@@ -67,8 +67,9 @@ class TestEncryptionManager:
             mgr.decrypt("dummytoken")
 
     def test_key_from_env(self):
+        import base64
         key = EncryptionManager.generate_key()
-        os.environ["TEST_STELLAR_KEY"] = key.decode("latin-1")
+        os.environ["TEST_STELLAR_KEY"] = base64.b64encode(key).decode("ascii")
         try:
             mgr = EncryptionManager(key_env="TEST_STELLAR_KEY")
             assert mgr.enabled

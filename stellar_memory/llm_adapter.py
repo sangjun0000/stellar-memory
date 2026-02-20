@@ -9,6 +9,8 @@ if TYPE_CHECKING:
     from stellar_memory.stellar import StellarMemory
     from stellar_memory.models import SessionInfo
 
+from stellar_memory.models import MemoryItem
+
 logger = logging.getLogger(__name__)
 
 
@@ -23,29 +25,69 @@ class MemoryMiddleware:
         self._auto_evaluate = auto_evaluate
         self._last_result_ids: list[str] = []
 
+    _ZONE_NAMES = ["Core", "Inner", "Outer", "Belt", "Cloud"]
+
     def before_chat(self, user_message: str) -> str:
         """Recall relevant memories and build context prefix."""
         memories = self._memory.recall(user_message, limit=self._recall_limit)
         self._last_result_ids = [m.id for m in memories]
         if not memories:
             return ""
+        return self._format_context(memories)
+
+    def _format_context(self, memories) -> str:
+        """Format recalled memories with zone labels."""
         lines = ["[Relevant Memories]"]
-        for i, mem in enumerate(memories, 1):
-            lines.append(f"{i}. {mem.content}")
+        for i, m in enumerate(memories, 1):
+            zone_name = self._ZONE_NAMES[min(m.zone, len(self._ZONE_NAMES) - 1)]
+            lines.append(f"{i}. [{zone_name}] {m.content}")
         return "\n".join(lines)
 
-    def after_chat(self, user_message: str, assistant_response: str) -> None:
-        """Auto feedback + optionally store the exchange as a new memory."""
+    def after_chat(self, user_message: str, assistant_response: str) -> MemoryItem | None:
+        """Auto feedback + store important exchanges as new memory."""
         if self._last_result_ids:
             self._memory.provide_feedback(user_message, self._last_result_ids)
         if not self._auto_store:
-            return
+            return None
+
+        # Evaluate importance and filter by threshold
+        from stellar_memory.importance_evaluator import create_evaluator
+        evaluator = create_evaluator(None)
+        eval_result = evaluator.evaluate(user_message)
+        if eval_result.importance < 0.3:
+            return None
+
         content = f"User: {user_message}\nAssistant: {assistant_response}"
-        self._memory.store(
+        return self._memory.store(
             content=content,
+            importance=eval_result.importance,
             auto_evaluate=self._auto_evaluate,
-            metadata={"source": "conversation"},
+            metadata={
+                "source": "conversation",
+                "eval_method": eval_result.method,
+                "eval_scores": {
+                    "factual": eval_result.factual_score,
+                    "emotional": eval_result.emotional_score,
+                    "actionable": eval_result.actionable_score,
+                    "explicit": eval_result.explicit_score,
+                },
+            },
         )
+
+    def chat(self, user_message: str, llm_fn) -> tuple[str, str]:
+        """Complete conversation loop: before_chat -> llm_fn -> after_chat.
+
+        Args:
+            user_message: The user's message.
+            llm_fn: Callable (system_context: str, user_message: str) -> str
+
+        Returns:
+            Tuple of (context_used, ai_response).
+        """
+        context = self.before_chat(user_message)
+        response = llm_fn(context, user_message)
+        self.after_chat(user_message, response)
+        return context, response
 
     def wrap_messages(self, user_message: str) -> str:
         """Get memory context to prepend to user message."""

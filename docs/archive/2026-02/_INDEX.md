@@ -177,3 +177,27 @@
   - `free-access-overhaul/free-access-overhaul.design.md`
   - `free-access-overhaul/free-access-overhaul.analysis.md`
   - `free-access-overhaul/free-access-overhaul.report.md`
+
+### landing-quickguide (Landing Page UX Overhaul)
+- **Archived**: 2026-02-20
+- **Match Rate**: 96% (96%, 0 iterations)
+- **Duration**: 2026-02-20 (1 day)
+- **Features**: F1 "Who Is This For?" Section (4 persona cards: Student/Writer/Business/Developer), F2 In-Page Quick Guide Wizard (3-step: AI selector → OS auto-detect → tailored instructions), F3 AI Auto-Connect (Claude/Cursor/ChatGPT/Other × Windows/macOS/Linux instruction matrix), F4 GitHub-redirect CTA Removal (hero + nav updates), F5 i18n Updates (39 new keys × 5 languages)
+- **Files**: 1 modified (landing/index.html, +1,676 / -238 lines)
+- **Documents**:
+  - `landing-quickguide/landing-quickguide.plan.md`
+  - `landing-quickguide/landing-quickguide.design.md`
+  - `landing-quickguide/landing-quickguide.analysis.md`
+  - `landing-quickguide/landing-quickguide.report.md`
+
+### landing-persuasion (Landing Page Persuasion Redesign)
+- **Archived**: 2026-02-20
+- **Match Rate**: 100% (90% → 100%, 1 iteration)
+- **Duration**: 2026-02-20 (1 day)
+- **Features**: F1 Pain Point Section (3 chat-bubble cards: repeat/forget/context), F2 How It Works Replacement (code examples → 3-step visual + before/after demo), F3 Section Reorder (Features↔How It Works swap), F4 Hero CTA Update (persuasion-first flow), F5 i18n Updates (~100 new keys × 5 languages)
+- **Files**: 1 modified (landing/index.html)
+- **Documents**:
+  - `landing-persuasion/landing-persuasion.plan.md`
+  - `landing-persuasion/landing-persuasion.design.md`
+  - `landing-persuasion/landing-persuasion.analysis.md`
+  - `landing-persuasion/landing-persuasion.report.md`

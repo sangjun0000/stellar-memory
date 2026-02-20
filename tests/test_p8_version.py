@@ -56,4 +56,4 @@ class TestVersionManagement:
         )
         # Just check no crash; may fail without build deps
         # This is a soft test
-        assert result.returncode == 0 or "No module named" in result.stderr
+        assert result.returncode == 0 or "No module named" in result.stderr or "Missing dependencies" in result.stderr

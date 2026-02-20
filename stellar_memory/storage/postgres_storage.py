@@ -68,7 +68,8 @@ class PostgresStorage(StorageBackend):
                         source_url TEXT,
                         ingested_at DOUBLE PRECISION,
                         vector_clock JSONB DEFAULT '{}',
-                        embedding vector(384)
+                        embedding vector(384),
+                        user_id UUID REFERENCES users(id) ON DELETE CASCADE
                     )
                 """)
             else:
@@ -88,9 +89,18 @@ class PostgresStorage(StorageBackend):
                         source_url TEXT,
                         ingested_at DOUBLE PRECISION,
                         vector_clock JSONB DEFAULT '{}',
-                        embedding BYTEA
+                        embedding BYTEA,
+                        user_id UUID REFERENCES users(id) ON DELETE CASCADE
                     )
                 """)
+
+            # Add user_id column if table already exists without it
+            try:
+                await conn.execute("""
+                    ALTER TABLE memories ADD COLUMN IF NOT EXISTS user_id UUID
+                """)
+            except Exception:
+                pass
 
             await conn.execute("""
                 CREATE INDEX IF NOT EXISTS idx_memories_zone
@@ -107,6 +117,15 @@ class PostgresStorage(StorageBackend):
             await conn.execute("""
                 CREATE INDEX IF NOT EXISTS idx_memories_recalled
                 ON memories(last_recalled_at DESC)
+            """)
+            # Multi-tenant indexes
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_memories_user_zone
+                ON memories(user_id, zone)
+            """)
+            await conn.execute("""
+                CREATE INDEX IF NOT EXISTS idx_memories_user_score
+                ON memories(user_id, total_score DESC)
             """)
             # IVFFlat index for pgvector
             if self._has_pgvector:
@@ -151,8 +170,8 @@ class PostgresStorage(StorageBackend):
                     (id, content, created_at, last_recalled_at, recall_count,
                      arbitrary_importance, zone, metadata, total_score,
                      encrypted, source_type, source_url, ingested_at,
-                     vector_clock, embedding)
-                VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+                     vector_clock, embedding, user_id)
+                VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)
                 ON CONFLICT (id) DO UPDATE SET
                     content=EXCLUDED.content, zone=EXCLUDED.zone,
                     total_score=EXCLUDED.total_score,
@@ -166,28 +185,45 @@ class PostgresStorage(StorageBackend):
                 item.recall_count, item.arbitrary_importance, item.zone,
                 json.dumps(item.metadata), item.total_score,
                 item.encrypted, item.source_type, item.source_url,
-                item.ingested_at, vector_clock_json, embedding_val)
+                item.ingested_at, vector_clock_json, embedding_val,
+                item.user_id)
 
-    def get(self, item_id: str) -> MemoryItem | None:
+    def get(self, item_id: str,
+            user_id: str | None = None) -> MemoryItem | None:
         import asyncio
-        return asyncio.run(self._async_get(item_id))
+        return asyncio.run(self._async_get(item_id, user_id))
 
-    async def _async_get(self, item_id: str) -> MemoryItem | None:
+    async def _async_get(self, item_id: str,
+                         user_id: str | None = None) -> MemoryItem | None:
         async with self._pool.acquire() as conn:
-            row = await conn.fetchrow(
-                "SELECT * FROM memories WHERE id = $1", item_id
-            )
+            if user_id:
+                row = await conn.fetchrow(
+                    "SELECT * FROM memories WHERE id = $1 AND user_id = $2",
+                    item_id, user_id
+                )
+            else:
+                row = await conn.fetchrow(
+                    "SELECT * FROM memories WHERE id = $1", item_id
+                )
             return self._row_to_item(row) if row else None
 
-    def remove(self, item_id: str) -> bool:
+    def remove(self, item_id: str,
+               user_id: str | None = None) -> bool:
         import asyncio
-        return asyncio.run(self._async_remove(item_id))
+        return asyncio.run(self._async_remove(item_id, user_id))
 
-    async def _async_remove(self, item_id: str) -> bool:
+    async def _async_remove(self, item_id: str,
+                            user_id: str | None = None) -> bool:
         async with self._pool.acquire() as conn:
-            result = await conn.execute(
-                "DELETE FROM memories WHERE id = $1", item_id
-            )
+            if user_id:
+                result = await conn.execute(
+                    "DELETE FROM memories WHERE id = $1 AND user_id = $2",
+                    item_id, user_id
+                )
+            else:
+                result = await conn.execute(
+                    "DELETE FROM memories WHERE id = $1", item_id
+                )
             return result.endswith("1")
 
     def update(self, item: MemoryItem) -> None:
@@ -195,73 +231,117 @@ class PostgresStorage(StorageBackend):
 
     def search(self, query: str, limit: int = 5,
                query_embedding: list[float] | None = None,
-               zone: int | None = None) -> list[MemoryItem]:
+               zone: int | None = None,
+               user_id: str | None = None) -> list[MemoryItem]:
         import asyncio
-        return asyncio.run(self._async_search(query, limit, query_embedding, zone))
+        return asyncio.run(self._async_search(query, limit, query_embedding,
+                                              zone, user_id))
 
     async def _async_search(self, query: str, limit: int,
                             query_embedding: list[float] | None,
-                            zone: int | None) -> list[MemoryItem]:
+                            zone: int | None,
+                            user_id: str | None = None) -> list[MemoryItem]:
         async with self._pool.acquire() as conn:
-            # Use pgvector cosine similarity if available and embedding provided
+            # Build WHERE clauses
+            conditions = []
+            params = []
+            idx = 1
+
+            if user_id:
+                conditions.append(f"user_id = ${idx}")
+                params.append(user_id)
+                idx += 1
+
             if query_embedding and getattr(self, '_has_pgvector', False):
                 vec_str = "[" + ",".join(str(v) for v in query_embedding) + "]"
+                vec_param_idx = idx
+                params.append(vec_str)
+                idx += 1
+
                 if zone is not None:
-                    rows = await conn.fetch(
-                        "SELECT *, embedding <=> $1::vector AS distance "
-                        "FROM memories WHERE zone = $2 "
-                        "ORDER BY distance ASC LIMIT $3",
-                        vec_str, zone, limit
-                    )
-                else:
-                    rows = await conn.fetch(
-                        "SELECT *, embedding <=> $1::vector AS distance "
-                        "FROM memories "
-                        "ORDER BY distance ASC LIMIT $2",
-                        vec_str, limit
-                    )
-            elif zone is not None:
+                    conditions.append(f"zone = ${idx}")
+                    params.append(zone)
+                    idx += 1
+
+                where = f"WHERE {' AND '.join(conditions)}" if conditions else ""
+                params.append(limit)
                 rows = await conn.fetch(
-                    "SELECT * FROM memories WHERE zone = $1 "
-                    "AND LOWER(content) LIKE $2 "
-                    "ORDER BY total_score DESC LIMIT $3",
-                    zone, f"%{query.lower()}%", limit
+                    f"SELECT *, embedding <=> ${vec_param_idx}::vector AS distance "
+                    f"FROM memories {where} "
+                    f"ORDER BY distance ASC LIMIT ${idx}",
+                    *params
                 )
             else:
+                if zone is not None:
+                    conditions.append(f"zone = ${idx}")
+                    params.append(zone)
+                    idx += 1
+
+                conditions.append(f"LOWER(content) LIKE ${idx}")
+                params.append(f"%{query.lower()}%")
+                idx += 1
+
+                where = f"WHERE {' AND '.join(conditions)}"
+                params.append(limit)
                 rows = await conn.fetch(
-                    "SELECT * FROM memories "
-                    "WHERE LOWER(content) LIKE $1 "
-                    "ORDER BY total_score DESC LIMIT $2",
-                    f"%{query.lower()}%", limit
+                    f"SELECT * FROM memories {where} "
+                    f"ORDER BY total_score DESC LIMIT ${idx}",
+                    *params
                 )
             return [self._row_to_item(r) for r in rows]
 
-    def get_all(self, zone: int | None = None) -> list[MemoryItem]:
+    def get_all(self, zone: int | None = None,
+                user_id: str | None = None) -> list[MemoryItem]:
         import asyncio
-        return asyncio.run(self._async_get_all(zone))
+        return asyncio.run(self._async_get_all(zone, user_id))
 
-    async def _async_get_all(self, zone: int | None) -> list[MemoryItem]:
+    async def _async_get_all(self, zone: int | None,
+                             user_id: str | None = None) -> list[MemoryItem]:
         async with self._pool.acquire() as conn:
+            conditions = []
+            params = []
+            idx = 1
+
+            if user_id:
+                conditions.append(f"user_id = ${idx}")
+                params.append(user_id)
+                idx += 1
             if zone is not None:
-                rows = await conn.fetch(
-                    "SELECT * FROM memories WHERE zone = $1", zone
-                )
-            else:
-                rows = await conn.fetch("SELECT * FROM memories")
+                conditions.append(f"zone = ${idx}")
+                params.append(zone)
+                idx += 1
+
+            where = f"WHERE {' AND '.join(conditions)}" if conditions else ""
+            rows = await conn.fetch(
+                f"SELECT * FROM memories {where}", *params
+            )
             return [self._row_to_item(r) for r in rows]
 
-    def count(self, zone: int | None = None) -> int:
+    def count(self, zone: int | None = None,
+              user_id: str | None = None) -> int:
         import asyncio
-        return asyncio.run(self._async_count(zone))
+        return asyncio.run(self._async_count(zone, user_id))
 
-    async def _async_count(self, zone: int | None) -> int:
+    async def _async_count(self, zone: int | None,
+                           user_id: str | None = None) -> int:
         async with self._pool.acquire() as conn:
+            conditions = []
+            params = []
+            idx = 1
+
+            if user_id:
+                conditions.append(f"user_id = ${idx}")
+                params.append(user_id)
+                idx += 1
             if zone is not None:
-                row = await conn.fetchrow(
-                    "SELECT COUNT(*) FROM memories WHERE zone = $1", zone
-                )
-            else:
-                row = await conn.fetchrow("SELECT COUNT(*) FROM memories")
+                conditions.append(f"zone = ${idx}")
+                params.append(zone)
+                idx += 1
+
+            where = f"WHERE {' AND '.join(conditions)}" if conditions else ""
+            row = await conn.fetchrow(
+                f"SELECT COUNT(*) FROM memories {where}", *params
+            )
             return row[0]
 
     def get_lowest_score_item(self, zone: int) -> MemoryItem | None:
@@ -282,6 +362,7 @@ class PostgresStorage(StorageBackend):
         if row.get("embedding"):
             from stellar_memory.utils import deserialize_embedding
             embedding = deserialize_embedding(row["embedding"])
+        user_id_val = row.get("user_id")
         return MemoryItem(
             id=row["id"],
             content=row["content"],
@@ -297,4 +378,5 @@ class PostgresStorage(StorageBackend):
             source_type=row.get("source_type", "user"),
             source_url=row.get("source_url"),
             ingested_at=row.get("ingested_at"),
+            user_id=str(user_id_val) if user_id_val else None,
         )

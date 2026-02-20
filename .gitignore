@@ -31,11 +31,17 @@ Thumbs.db
 
 # SQLite databases (runtime)
 *.db
+*.db-shm
+*.db-wal
 *.sqlite3
 
 # Logs
 *.log
+*.jsonl
 logs/
+
+# Claude Code internal
+.claude/agent-memory/
 
 # Environment variables
 .env

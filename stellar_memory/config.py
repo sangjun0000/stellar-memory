@@ -234,6 +234,29 @@ class ServerConfig:
     cors_origins: list[str] = field(default_factory=lambda: ["*"])
 
 
+# Billing Config (Monetization Phase 2)
+
+@dataclass
+class BillingConfig:
+    enabled: bool = False
+    db_url_env: str = "STELLAR_DB_URL"
+    # Lemon Squeezy
+    lemon_api_key_env: str = "LEMON_API_KEY"
+    lemon_store_id_env: str = "LEMON_STORE_ID"
+    lemon_variant_pro_env: str = "LEMON_VARIANT_PRO"
+    lemon_variant_team_env: str = "LEMON_VARIANT_TEAM"
+    lemon_webhook_secret_env: str = "LEMON_WEBHOOK_SECRET"
+    # Stripe
+    stripe_secret_key_env: str = "STRIPE_SECRET_KEY"
+    stripe_webhook_secret_env: str = "STRIPE_WEBHOOK_SECRET"
+    stripe_price_pro_env: str = "STRIPE_PRICE_PRO"
+    stripe_price_team_env: str = "STRIPE_PRICE_TEAM"
+    # TossPayments
+    toss_secret_key_env: str = "TOSS_SECRET_KEY"
+    toss_client_key_env: str = "TOSS_CLIENT_KEY"
+    toss_webhook_secret_env: str = "TOSS_WEBHOOK_SECRET"
+
+
 # P9 Config classes
 
 @dataclass
@@ -279,6 +302,36 @@ class BenchmarkConfig:
     output_format: str = "json"
 
 
+# Smart Onboarding Config (v2.1.0)
+
+@dataclass
+class OnboardConfig:
+    enabled: bool = True
+    max_file_size: int = 102_400  # 100KB
+    max_scan_depth: int = 3
+    default_categories: list[str] = field(
+        default_factory=lambda: ["ai-config", "documents", "notes"]
+    )
+    skip_patterns: list[str] = field(
+        default_factory=lambda: [".git", "node_modules", "__pycache__",
+                                 ".env", "venv", ".venv"]
+    )
+    sensitive_patterns: list[str] = field(
+        default_factory=lambda: ["id_rsa", ".ssh", "credentials",
+                                 "password", "secret", ".pem", ".key"]
+    )
+
+
+@dataclass
+class KnowledgeBaseConfig:
+    enabled: bool = True
+    auto_detect_project: bool = True
+    auto_import_ai_configs: bool = False
+    preference_importance: float = 0.95
+    rule_importance: float = 0.9
+    context_importance: float = 0.85
+
+
 @dataclass
 class StellarConfig:
     memory_function: MemoryFunctionConfig = field(default_factory=MemoryFunctionConfig)
@@ -310,12 +363,16 @@ class StellarConfig:
     # P7 fields
     emotion: EmotionConfig = field(default_factory=EmotionConfig)
     server: ServerConfig = field(default_factory=ServerConfig)
+    billing: BillingConfig = field(default_factory=BillingConfig)
     # P9 fields
     metacognition: MetacognitionConfig = field(default_factory=MetacognitionConfig)
     self_learning: SelfLearningConfig = field(default_factory=SelfLearningConfig)
     multimodal: MultimodalConfig = field(default_factory=MultimodalConfig)
     reasoning: ReasoningConfig = field(default_factory=ReasoningConfig)
     benchmark: BenchmarkConfig = field(default_factory=BenchmarkConfig)
+    # v2.1.0 Smart Onboarding fields
+    onboard: OnboardConfig = field(default_factory=OnboardConfig)
+    knowledge_base: KnowledgeBaseConfig = field(default_factory=KnowledgeBaseConfig)
 
     @classmethod
     def from_json(cls, path: str | Path) -> StellarConfig:

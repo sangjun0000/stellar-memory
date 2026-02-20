@@ -22,18 +22,20 @@ class MemoryStream:
         self._memory = memory
 
     def timeline(self, start=None, end=None,
-                 limit: int = 100) -> list[TimelineEntry]:
+                 limit: int = 100,
+                 user_id: str | None = None) -> list[TimelineEntry]:
         """Retrieve memories in time order within a range.
 
         Args:
             start: Start time (Unix timestamp or "YYYY-MM-DD" string)
             end: End time (Unix timestamp or "YYYY-MM-DD" string)
             limit: Maximum entries to return
+            user_id: Filter to specific user's memories
         """
         start_ts = self._parse_time(start) if start is not None else 0.0
         end_ts = self._parse_time(end) if end is not None else time.time()
 
-        all_items = self._memory._orbit_mgr.get_all_items()
+        all_items = self._memory._orbit_mgr.get_all_items(user_id=user_id)
         filtered = [
             item for item in all_items
             if start_ts <= item.created_at <= end_ts
@@ -53,14 +55,16 @@ class MemoryStream:
             for item in filtered
         ]
 
-    def narrate(self, topic: str, limit: int = 10) -> str:
+    def narrate(self, topic: str, limit: int = 10,
+                user_id: str | None = None) -> str:
         """Generate a narrative from memories about a topic.
 
         Args:
             topic: Narrative topic/query
             limit: Number of memories to use
+            user_id: Filter to specific user's memories
         """
-        results = self._memory.recall(topic, limit=limit)
+        results = self._memory.recall(topic, limit=limit, user_id=user_id)
         if not results:
             return ""
 

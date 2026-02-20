@@ -84,10 +84,12 @@ class OrbitManager:
             duration=duration,
         )
 
-    def get_all_items(self) -> list[MemoryItem]:
+    def get_all_items(self, user_id: str | None = None) -> list[MemoryItem]:
         items: list[MemoryItem] = []
         for storage in self._storages.values():
             items.extend(storage.get_all())
+        if user_id:
+            items = [i for i in items if i.user_id is None or i.user_id == user_id]
         return items
 
     def get_zone_count(self, zone_id: int) -> int:

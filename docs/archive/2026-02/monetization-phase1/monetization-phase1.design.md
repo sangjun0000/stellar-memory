@@ -54,13 +54,13 @@ Pricing 섹션은 `#integrations` 섹션과 `<footer>` 사이에 삽입.
         <div class="pricing-price">$0<span>/mo</span></div>
         <div class="pricing-desc">For personal projects</div>
         <ul class="pricing-features">
-          <li class="included">5,000 memories</li>
-          <li class="included">1 agent</li>
-          <li class="included">SQLite storage</li>
-          <li class="included">Local MCP server</li>
-          <li class="included">CLI interface</li>
-          <li class="excluded">Cloud sync</li>
-          <li class="excluded">Web dashboard</li>
+          <li class="incl">5,000 memories</li>
+          <li class="incl">1 agent</li>
+          <li class="incl">SQLite storage</li>
+          <li class="incl">Local MCP server</li>
+          <li class="incl">CLI interface</li>
+          <li class="excl">Cloud sync</li>
+          <li class="excl">Web dashboard</li>
         </ul>
         <a href="https://pypi.org/project/stellar-memory/" class="pricing-cta">
           Get Started
@@ -74,15 +74,15 @@ Pricing 섹션은 `#integrations` 섹션과 `<footer>` 사이에 삽입.
         <div class="pricing-price">$29<span>/mo</span></div>
         <div class="pricing-desc">For serious builders</div>
         <ul class="pricing-features">
-          <li class="included">50,000 memories</li>
-          <li class="included">5 agents</li>
-          <li class="included">PostgreSQL + pgvector</li>
-          <li class="included">Cloud MCP endpoint</li>
-          <li class="included">Web dashboard</li>
-          <li class="included">Email support</li>
-          <li class="excluded">Team sync</li>
+          <li class="incl">50,000 memories</li>
+          <li class="incl">5 agents</li>
+          <li class="incl">PostgreSQL + pgvector</li>
+          <li class="incl">Cloud MCP endpoint</li>
+          <li class="incl">Web dashboard</li>
+          <li class="incl">Email support</li>
+          <li class="excl">Team sync</li>
         </ul>
-        <a href="#" class="pricing-cta pricing-cta-primary">
+        <a href="#" class="pricing-cta pricing-cta-gold">
           Coming Soon
         </a>
       </div>
@@ -93,13 +93,13 @@ Pricing 섹션은 `#integrations` 섹션과 `<footer>` 사이에 삽입.
         <div class="pricing-price">$99<span>/mo</span></div>
         <div class="pricing-desc">For growing teams</div>
         <ul class="pricing-features">
-          <li class="included">500,000 memories</li>
-          <li class="included">20 agents</li>
-          <li class="included">Everything in Pro</li>
-          <li class="included">CRDT team sync</li>
-          <li class="included">RBAC + audit logs</li>
-          <li class="included">Priority support</li>
-          <li class="included">SSO</li>
+          <li class="incl">500,000 memories</li>
+          <li class="incl">20 agents</li>
+          <li class="incl">Everything in Pro</li>
+          <li class="incl">CRDT team sync</li>
+          <li class="incl">RBAC + audit logs</li>
+          <li class="incl">Priority support</li>
+          <li class="incl">SSO</li>
         </ul>
         <a href="#" class="pricing-cta">
           Coming Soon
@@ -112,13 +112,13 @@ Pricing 섹션은 `#integrations` 섹션과 `<footer>` 사이에 삽입.
         <div class="pricing-price">Custom</div>
         <div class="pricing-desc">For organizations</div>
         <ul class="pricing-features">
-          <li class="included">Unlimited memories</li>
-          <li class="included">Unlimited agents</li>
-          <li class="included">Everything in Team</li>
-          <li class="included">On-premise deployment</li>
-          <li class="included">Dedicated support</li>
-          <li class="included">SLA guarantee</li>
-          <li class="included">Custom integrations</li>
+          <li class="incl">Unlimited memories</li>
+          <li class="incl">Unlimited agents</li>
+          <li class="incl">Everything in Team</li>
+          <li class="incl">On-premise deployment</li>
+          <li class="incl">Dedicated support</li>
+          <li class="incl">SLA guarantee</li>
+          <li class="incl">Custom integrations</li>
         </ul>
         <a href="mailto:contact@stellar-memory.com" class="pricing-cta">
           Contact Us
@@ -222,18 +222,18 @@ Pricing 섹션은 `#integrations` 섹션과 `<footer>` 사이에 삽입.
   align-items: center;
   gap: 8px;
 }
-.pricing-features li.included { color: var(--text-secondary); }
-.pricing-features li.excluded { color: var(--text-muted); text-decoration: line-through; opacity: 0.5; }
+.pricing-features li.incl { color: var(--text-secondary); }
+.pricing-features li.excl { color: var(--text-muted); opacity: 0.45; }
 
 /* included: gold checkmark, excluded: dim dash */
-.pricing-features li.included::before {
+.pricing-features li.incl::before {
   content: "";
   width: 16px; height: 16px;
   background: var(--accent-gold);
   mask: url("data:image/svg+xml,...checkmark...");  /* inline SVG checkmark */
   flex-shrink: 0;
 }
-.pricing-features li.excluded::before {
+.pricing-features li.excl::before {
   content: "—";
   width: 16px;
   text-align: center;
@@ -258,12 +258,12 @@ Pricing 섹션은 `#integrations` 섹션과 `<footer>` 사이에 삽입.
 }
 
 /* Primary CTA (Pro card) - Gold filled */
-.pricing-cta-primary {
+.pricing-cta-gold {
   background: var(--accent-gold);
   color: #000;
   border-color: var(--accent-gold);
 }
-.pricing-cta-primary:hover {
+.pricing-cta-gold:hover {
   background: var(--accent-glow);     /* #fcd34d */
 }
 
@@ -304,6 +304,13 @@ Pricing 섹션은 `#integrations` 섹션과 `<footer>` 사이에 삽입.
     "priceCurrency": "USD",
     "billingIncrement": "P1M",
     "description": "500,000 memories, 20 agents, Team Sync, RBAC, Audit Logs"
+  },
+  {
+    "@type": "Offer",
+    "name": "Enterprise",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Unlimited memories and agents, On-premise, SLA, Custom pricing"
   }
 ]
 ```
@@ -335,24 +342,24 @@ repository: https://github.com/sangjun0000/stellar-memory
 
 server:
   command: stellar-memory
-  args: ["serve-mcp"]
+  args: ["serve", "--mcp"]
 
 install:
   pip: stellar-memory[mcp]
 
 tools:
-  - name: stellar_store
-    description: "Store a memory with importance scoring"
-  - name: stellar_recall
-    description: "Recall relevant memories using semantic search"
-  - name: stellar_stats
-    description: "Get memory statistics and zone distribution"
-  - name: stellar_timeline
-    description: "View memory timeline"
-  - name: stellar_introspect
-    description: "Analyze knowledge state and gaps"
-  - name: stellar_reason
-    description: "Memory-augmented reasoning"
+  - name: memory_store
+    description: "Store a memory with automatic importance scoring and zone placement"
+  - name: memory_recall
+    description: "Recall relevant memories using semantic search across all zones"
+  - name: memory_stats
+    description: "Get memory statistics and zone distribution overview"
+  - name: memory_introspect
+    description: "Analyze knowledge state, identify gaps and strengths"
+  - name: memory_reason
+    description: "Memory-augmented reasoning with context from stored memories"
+  - name: memory_health
+    description: "System health check and diagnostics"
 
 tags:
   - ai-memory
@@ -360,6 +367,8 @@ tags:
   - mcp
   - celestial
   - context-management
+  - emotion-ai
+  - memory-management
 
 categories:
   - memory
@@ -375,7 +384,7 @@ categories:
   "mcpServers": {
     "stellar-memory": {
       "command": "stellar-memory",
-      "args": ["serve-mcp"],
+      "args": ["serve", "--mcp"],
       "env": {}
     }
   }

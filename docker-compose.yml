@@ -17,6 +17,20 @@ services:
     environment:
       - STELLAR_STORAGE_BACKEND=postgresql
       - STELLAR_DB_URL=postgresql://stellar:stellar@postgres:5432/stellar
+      - STELLAR_BILLING_ENABLED=false
+      # Uncomment and set for billing:
+      # - LEMON_API_KEY=
+      # - LEMON_STORE_ID=
+      # - LEMON_VARIANT_PRO=
+      # - LEMON_VARIANT_TEAM=
+      # - LEMON_WEBHOOK_SECRET=
+      # - STRIPE_SECRET_KEY=
+      # - STRIPE_WEBHOOK_SECRET=
+      # - STRIPE_PRICE_PRO=
+      # - STRIPE_PRICE_TEAM=
+      # - TOSS_SECRET_KEY=
+      # - TOSS_CLIENT_KEY=
+      # - TOSS_WEBHOOK_SECRET=
     depends_on:
       - postgres
 
