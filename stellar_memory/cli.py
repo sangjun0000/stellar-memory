@@ -317,7 +317,12 @@ def main(argv: list[str] | None = None) -> None:
         print(f"DB size: {report.db_size_mb:.2f}MB")
 
     elif args.command == "serve":
-        from stellar_memory.mcp_server import run_server
+        try:
+            from stellar_memory.mcp_server import run_server
+        except ImportError:
+            print("Error: MCP module not installed.")
+            print("Run:  pip install stellar-memory[mcp]")
+            sys.exit(1)
         run_server(config, namespace=args.namespace, transport=args.transport)
 
     elif args.command == "serve-api":

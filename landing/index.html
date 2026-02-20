@@ -1317,6 +1317,145 @@
       .footer-inner      { grid-template-columns: 1fr; }
       .footer-bottom     { flex-direction: column; gap: 16px; text-align: center; }
       .hero-actions      { flex-direction: column; align-items: flex-start; }
+      .ecosystem-grid    { grid-template-columns: 1fr; max-width: 360px; margin-left: auto; margin-right: auto; }
+    }
+
+    /* ============================================================
+       ECOSYSTEM
+    ============================================================ */
+    #ecosystem { padding: 100px 0; }
+
+    .ecosystem-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 780px;
+      margin: 48px auto 0;
+    }
+
+    .product-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .product-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255,255,255,0.12);
+    }
+    .product-card.product-featured {
+      border-color: rgba(240,180,41,0.3);
+      box-shadow: 0 0 40px rgba(240,180,41,0.08);
+    }
+
+    .product-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .product-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .product-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .product-tagline {
+      font-size: 0.85rem;
+      color: var(--accent-gold);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .product-desc {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .product-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .product-tag {
+      font-size: 0.7rem;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: rgba(240,180,41,0.08);
+      color: var(--accent-gold);
+      border: 1px solid rgba(240,180,41,0.15);
+    }
+
+    .product-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: auto;
+    }
+
+    .product-cta-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: var(--accent-gold);
+      color: #000;
+      border: none;
+      transition: background 0.2s;
+    }
+    .product-cta-primary:hover { background: var(--accent-glow); }
+    .product-cta-primary svg { width: 16px; height: 16px; }
+
+    .product-cta-secondary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-secondary);
+      transition: background 0.2s, color 0.2s;
+    }
+    .product-cta-secondary:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--text-primary);
+    }
+    .product-cta-secondary svg { width: 14px; height: 14px; }
+
+    .product-card.product-community {
+      border-style: dashed;
+      border-color: rgba(255,255,255,0.08);
+      background: rgba(15,32,68,0.5);
+    }
+    .product-card.product-community:hover {
+      border-color: rgba(240,180,41,0.2);
     }
   </style>
 </head>
@@ -1335,6 +1474,7 @@
         <ul class="nav-links">
           <li><a href="#use-cases" data-i18n="nav.usecases">Use Cases</a></li>
           <li><a href="#features" data-i18n="nav.features">Features</a></li>
+          <li><a href="#ecosystem" data-i18n="nav.ecosystem">Ecosystem</a></li>
           <li><a href="#get-started" data-i18n="nav.getstarted">Get Started</a></li>
           <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
           <li class="lang-selector">
@@ -1622,6 +1762,76 @@
   </section>
 
   <!-- ============================================================
+       ECOSYSTEM (Built with Stellar Memory)
+  ============================================================ -->
+  <section id="ecosystem">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:16px;">
+        <div class="section-label" data-i18n="eco.label">Ecosystem</div>
+        <h2 class="section-title" data-i18n="eco.title">Built with Stellar Memory</h2>
+        <p class="section-sub" style="margin:0 auto;" data-i18n="eco.subtitle">Open-source projects powered by intelligent AI memory</p>
+      </div>
+
+      <div class="ecosystem-grid">
+        <!-- Homunculus -->
+        <div class="product-card product-featured">
+          <div class="product-icon" style="background:rgba(240,180,41,0.1);">
+            <svg fill="none" stroke="var(--accent-gold)" stroke-width="1.5" viewBox="0 0 24 24">
+              <path d="M12 2a7 7 0 0 1 7 7c0 2.5-1.3 4.7-3.2 6H8.2C6.3 13.7 5 11.5 5 9a7 7 0 0 1 7-7z"/>
+              <path d="M9 22v-4h6v4"/>
+              <path d="M10 18h4"/>
+              <circle cx="9.5" cy="8.5" r="1" fill="var(--accent-gold)"/>
+              <circle cx="14.5" cy="8.5" r="1" fill="var(--accent-gold)"/>
+            </svg>
+          </div>
+          <h3 class="product-name">Homunculus</h3>
+          <p class="product-tagline" data-i18n="eco.hom.tagline">Autonomous AI Agent</p>
+          <p class="product-desc" data-i18n="eco.hom.desc">A self-aware AI agent that thinks, remembers, and acts. Powered by Stellar Memory's 5-zone brain.</p>
+          <div class="product-tags">
+            <span class="product-tag">AI Agent</span>
+            <span class="product-tag">Autonomous</span>
+            <span class="product-tag">Local-First</span>
+            <span class="product-tag">Python</span>
+          </div>
+          <div class="product-actions">
+            <a href="https://github.com/sangjun0000/homunculus/releases" target="_blank" rel="noopener" class="product-cta-primary" data-i18n="eco.hom.download">
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download v0.1.0
+            </a>
+            <a href="https://github.com/sangjun0000/homunculus" target="_blank" rel="noopener" class="product-cta-secondary">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              <span data-i18n="eco.hom.github">View on GitHub</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Your Project? (Community Card) -->
+        <div class="product-card product-community">
+          <div class="product-icon" style="background:rgba(99,102,241,0.1);">
+            <svg fill="none" stroke="var(--accent-indigo)" stroke-width="1.5" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="16"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
+          </div>
+          <h3 class="product-name" data-i18n="eco.community.title">Your Project?</h3>
+          <p class="product-tagline" data-i18n="eco.community.tagline">Join the Ecosystem</p>
+          <p class="product-desc" data-i18n="eco.community.desc">Build something amazing with Stellar Memory and showcase it here. We welcome all open-source projects.</p>
+          <div class="product-tags">
+            <span class="product-tag" style="background:rgba(99,102,241,0.08);color:var(--accent-indigo);border-color:rgba(99,102,241,0.15);">Open Source</span>
+          </div>
+          <div class="product-actions">
+            <a href="https://github.com/sangjun0000/stellar-memory/issues/new?title=Ecosystem+Submission&labels=ecosystem" target="_blank" rel="noopener" class="product-cta-secondary" style="border-color:rgba(99,102,241,0.25);color:var(--accent-indigo);">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              <span data-i18n="eco.community.cta">Submit Your Project</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
        GET STARTED (Setup Wizard)
   ============================================================ -->
   <section id="get-started">
@@ -1804,6 +2014,18 @@
         "setup.other.s2": "Start the MCP server",
         "setup.other.s3": "Connect your AI tool to http://localhost:5464",
         "setup.advanced": "Advanced: View on GitHub",
+        "nav.ecosystem": "Ecosystem",
+        "eco.label": "Ecosystem",
+        "eco.title": "Built with Stellar Memory",
+        "eco.subtitle": "Open-source projects powered by intelligent AI memory",
+        "eco.hom.tagline": "Autonomous AI Agent",
+        "eco.hom.desc": "A self-aware AI agent that thinks, remembers, and acts. Powered by Stellar Memory's 5-zone brain.",
+        "eco.hom.download": "Download v0.1.0",
+        "eco.hom.github": "View on GitHub",
+        "eco.community.title": "Your Project?",
+        "eco.community.tagline": "Join the Ecosystem",
+        "eco.community.desc": "Build something amazing with Stellar Memory and showcase it here. We welcome all open-source projects.",
+        "eco.community.cta": "Submit Your Project",
         "footer.desc": "An intelligent AI memory system inspired by celestial structures."
       },
       ko: {
@@ -1867,6 +2089,18 @@
         "setup.other.s2": "MCP 서버를 시작하세요",
         "setup.other.s3": "AI 도구를 http://localhost:5464에 연결하세요",
         "setup.advanced": "고급: GitHub에서 보기",
+        "nav.ecosystem": "생태계",
+        "eco.label": "생태계",
+        "eco.title": "Stellar Memory로 만든 프로젝트",
+        "eco.subtitle": "지능형 AI 기억을 활용한 오픈소스 프로젝트",
+        "eco.hom.tagline": "자율형 AI 에이전트",
+        "eco.hom.desc": "스스로 생각하고, 기억하고, 행동하는 AI 에이전트. Stellar Memory의 5-Zone 두뇌로 구동됩니다.",
+        "eco.hom.download": "다운로드 v0.1.0",
+        "eco.hom.github": "GitHub에서 보기",
+        "eco.community.title": "당신의 프로젝트?",
+        "eco.community.tagline": "생태계에 참여하세요",
+        "eco.community.desc": "Stellar Memory로 멋진 것을 만들고 여기에 소개하세요. 모든 오픈소스 프로젝트를 환영합니다.",
+        "eco.community.cta": "프로젝트 제출하기",
         "footer.desc": "천체 구조에서 영감을 받은 지능형 AI 기억 시스템."
       },
       zh: {
@@ -1930,6 +2164,18 @@
         "setup.other.s2": "启动MCP服务器",
         "setup.other.s3": "将你的AI工具连接到 http://localhost:5464",
         "setup.advanced": "高级：在GitHub上查看",
+        "nav.ecosystem": "生态系统",
+        "eco.label": "生态系统",
+        "eco.title": "基于 Stellar Memory 构建",
+        "eco.subtitle": "由智能AI记忆驱动的开源项目",
+        "eco.hom.tagline": "自主AI代理",
+        "eco.hom.desc": "一个能自主思考、记忆和行动的AI代理。由Stellar Memory的5区域大脑驱动。",
+        "eco.hom.download": "下载 v0.1.0",
+        "eco.hom.github": "在GitHub上查看",
+        "eco.community.title": "你的项目?",
+        "eco.community.tagline": "加入生态系统",
+        "eco.community.desc": "用Stellar Memory构建精彩项目，并在此展示。我们欢迎所有开源项目。",
+        "eco.community.cta": "提交你的项目",
         "footer.desc": "受天体结构启发的智能AI记忆系统。"
       },
       es: {
@@ -1993,6 +2239,18 @@
         "setup.other.s2": "Inicia el servidor MCP",
         "setup.other.s3": "Conecta tu herramienta de IA a http://localhost:5464",
         "setup.advanced": "Avanzado: Ver en GitHub",
+        "nav.ecosystem": "Ecosistema",
+        "eco.label": "Ecosistema",
+        "eco.title": "Construido con Stellar Memory",
+        "eco.subtitle": "Proyectos de codigo abierto impulsados por memoria AI inteligente",
+        "eco.hom.tagline": "Agente AI Autonomo",
+        "eco.hom.desc": "Un agente AI que piensa, recuerda y actua. Impulsado por el cerebro de 5 zonas de Stellar Memory.",
+        "eco.hom.download": "Descargar v0.1.0",
+        "eco.hom.github": "Ver en GitHub",
+        "eco.community.title": "Tu Proyecto?",
+        "eco.community.tagline": "Unete al Ecosistema",
+        "eco.community.desc": "Construye algo increible con Stellar Memory y muestralo aqui. Damos la bienvenida a todos los proyectos de codigo abierto.",
+        "eco.community.cta": "Enviar tu Proyecto",
         "footer.desc": "Un sistema de memoria AI inteligente inspirado en estructuras celestiales."
       },
       ja: {
@@ -2056,6 +2314,18 @@
         "setup.other.s2": "MCPサーバーを起動",
         "setup.other.s3": "AIツールをhttp://localhost:5464に接続",
         "setup.advanced": "上級者向け：GitHubで見る",
+        "nav.ecosystem": "エコシステム",
+        "eco.label": "エコシステム",
+        "eco.title": "Stellar Memoryで構築",
+        "eco.subtitle": "インテリジェントなAI記憶を活用したオープンソースプロジェクト",
+        "eco.hom.tagline": "自律型AIエージェント",
+        "eco.hom.desc": "自ら考え、記憶し、行動するAIエージェント。Stellar Memoryの5ゾーン脳で駆動。",
+        "eco.hom.download": "ダウンロード v0.1.0",
+        "eco.hom.github": "GitHubで見る",
+        "eco.community.title": "あなたのプロジェクト?",
+        "eco.community.tagline": "エコシステムに参加",
+        "eco.community.desc": "Stellar Memoryで素晴らしいものを作り、ここで紹介しましょう。すべてのオープンソースプロジェクトを歓迎します。",
+        "eco.community.cta": "プロジェクトを提出",
         "footer.desc": "天体構造にインスパイアされた知的AI記憶システム。"
       }
     };
@@ -2243,32 +2513,32 @@
         { titleKey: 'setup.cursor.s3', action: 'text' }
       ],
       'chatgpt-windows': [
-        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory[mcp]' },
         { titleKey: 'setup.chatgpt.s2', action: 'copy', command: 'from stellar_memory.middleware import ChatGPTMiddleware\nmiddleware = ChatGPTMiddleware()' },
         { titleKey: 'setup.chatgpt.s3', action: 'text' }
       ],
       'chatgpt-macos': [
-        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory[mcp]' },
         { titleKey: 'setup.chatgpt.s2', action: 'copy', command: 'from stellar_memory.middleware import ChatGPTMiddleware\nmiddleware = ChatGPTMiddleware()' },
         { titleKey: 'setup.chatgpt.s3', action: 'text' }
       ],
       'chatgpt-linux': [
-        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.chatgpt.s1', action: 'copy', command: 'pip install stellar-memory[mcp]' },
         { titleKey: 'setup.chatgpt.s2', action: 'copy', command: 'from stellar_memory.middleware import ChatGPTMiddleware\nmiddleware = ChatGPTMiddleware()' },
         { titleKey: 'setup.chatgpt.s3', action: 'text' }
       ],
       'other-windows': [
-        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory[mcp]' },
         { titleKey: 'setup.other.s2', action: 'copy', command: 'stellar-memory serve' },
         { titleKey: 'setup.other.s3', action: 'text' }
       ],
       'other-macos': [
-        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory[mcp]' },
         { titleKey: 'setup.other.s2', action: 'copy', command: 'stellar-memory serve' },
         { titleKey: 'setup.other.s3', action: 'text' }
       ],
       'other-linux': [
-        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory' },
+        { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory[mcp]' },
         { titleKey: 'setup.other.s2', action: 'copy', command: 'stellar-memory serve' },
         { titleKey: 'setup.other.s3', action: 'text' }
       ]
@@ -2318,7 +2588,7 @@
         html += '<div class="wizard-step-content">';
         html += '<p>' + title + '</p>';
         if (step.action === 'download') {
-          html += '<a href="' + step.url + '" download="' + step.filename + '" class="wizard-download-btn">';
+          html += '<a href="' + step.url + '" class="wizard-download-btn" onclick="downloadFile(event, \'' + step.url + '\', \'' + step.filename + '\')">';
           html += '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
           html += step.filename + '</a>';
         } else if (step.action === 'copy') {
@@ -2332,6 +2602,24 @@
         html += '</div></div>';
       }
       container.innerHTML = html;
+    }
+
+    function downloadFile(e, url, filename) {
+      e.preventDefault();
+      fetch(url)
+        .then(function(res) { return res.blob(); })
+        .then(function(blob) {
+          var a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(a.href);
+        })
+        .catch(function() {
+          window.open(url, '_blank');
+        });
     }
 
     function copyWizardCmd(btn) {
