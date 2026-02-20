@@ -17,9 +17,7 @@ if %ERRORLEVEL% neq 0 (
     echo.
     echo  Please install Python 3.11+ from https://python.org
     echo  Make sure to check "Add Python to PATH" during installation.
-    echo.
-    pause
-    exit /b 1
+    goto :end
 )
 for /f "tokens=2 delims= " %%v in ('python --version 2^>^&1') do set PYVER=%%v
 echo  Python %PYVER% found.
@@ -37,10 +35,9 @@ mkdir "%TEMP_DIR%"
 powershell -ExecutionPolicy Bypass -Command "try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri '%DOWNLOAD_URL%' -OutFile '%ZIP_FILE%' -UseBasicParsing } catch { exit 1 }"
 if %ERRORLEVEL% neq 0 (
     echo  [ERROR] Download failed. Check your internet connection.
-    pause
-    exit /b 1
+    goto :end
 )
-echo  -> Downloaded.
+echo  -^> Downloaded.
 echo.
 
 :: ── Step 2: Extract ──
@@ -48,31 +45,24 @@ echo  Extracting...
 powershell -ExecutionPolicy Bypass -Command "Expand-Archive -Path '%ZIP_FILE%' -DestinationPath '%TEMP_DIR%' -Force"
 if %ERRORLEVEL% neq 0 (
     echo  [ERROR] Extraction failed.
-    pause
-    exit /b 1
+    goto :end
 )
-echo  -> Extracted.
+echo  -^> Extracted.
 echo.
 
 :: ── Step 3: Run installer ──
 set "SOURCE_DIR=%TEMP_DIR%\homunculus-v0.2.0"
 if not exist "%SOURCE_DIR%\src\homunculus\installer.py" (
     echo  [ERROR] Invalid package. installer.py not found.
-    pause
-    exit /b 1
+    goto :end
 )
 
 python "%SOURCE_DIR%\src\homunculus\installer.py" "%SOURCE_DIR%"
-if %ERRORLEVEL% neq 0 (
-    echo.
-    echo  Installation failed. Please check the error above.
-    pause
-    exit /b 1
-)
 
 :: ── Cleanup ──
 rmdir /s /q "%TEMP_DIR%" >nul 2>&1
 
+:end
 echo.
 echo  Press any key to close...
 pause >nul
