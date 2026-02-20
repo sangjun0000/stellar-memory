@@ -2310,12 +2310,32 @@
         "feat.learn.desc": "Refina continuamente su organización de memoria según patrones de uso. Las memorias frecuentes migran hacia adentro; las poco usadas se alejan.",
         "feat.multi.title": "Memoria Multimodal",
         "feat.multi.desc": "Almacena y recupera texto, código, datos estructurados e historial de conversaciones — todo en un grafo de memoria unificado.",
-        "how.title": "Simple por diseño, potente en práctica",
-        "how.subtitle": "Dos operaciones. Profundidad de memoria infinita.",
-        "how.store": "Almacenar",
-        "how.store.desc": "Alimenta cualquier memoria al sistema orbital. El motor clasifica la ubicación de zona, asigna peso emocional y genera embeddings automáticamente.",
-        "how.recall": "Recordar",
-        "how.recall.desc": "Consulta con lenguaje natural. El motor de recuperación recorre las zonas orbitales, aplica pesos emocionales y temporales, y devuelve las memorias más relevantes.",
+        "pain.label": "El Problema",
+        "pain.title": "Cansado de repetirte ante la IA?",
+        "pain.subtitle": "Cada nueva conversacion empieza de cero. Tu IA no sabe quien eres.",
+        "pain.repeat.title": "Explicar desde cero, cada vez",
+        "pain.repeat.before": "\"Soy desarrollador frontend, uso React, prefiero TypeScript...\"",
+        "pain.repeat.ai": "\"Entendido! Como puedo ayudarte?\"",
+        "pain.repeat.label": "...proxima conversacion, lo mismo otra vez",
+        "pain.forget.title": "Nuevo chat = hoja en blanco",
+        "pain.forget.before": "\"Recuerdas la estructura del proyecto?\"",
+        "pain.forget.ai": "\"Lo siento, no puedo acceder a conversaciones anteriores.\"",
+        "pain.context.title": "IA que no te conoce",
+        "pain.context.before": "\"Revisa mi codigo\"",
+        "pain.context.ai": "\"Que lenguaje y framework usas?\"",
+        "pain.context.label": "...te lo he dicho cien veces",
+        "pain.solution": "Con Stellar Memory, tu IA recuerda todo esto.",
+        "how.label": "Como Funciona",
+        "how.title": "Un plugin de memoria para tu IA actual",
+        "how.subtitle": "No necesitas cambiar de IA. Solo conecta Stellar Memory a la que ya usas.",
+        "how.s1.title": "Conecta tu IA",
+        "how.s1.desc": "Claude, ChatGPT, Cursor o cualquier herramienta \u2014 conecta Stellar Memory en 30 segundos.",
+        "how.s2.title": "Recuerda automaticamente",
+        "how.s2.desc": "No necesitas decir \"recuerda esto\". Tu IA decide que es importante y lo guarda sola.",
+        "how.s3.title": "La proxima conversacion sera diferente",
+        "how.s3.desc": "Inicia un nuevo chat y tu IA ya conoce tu nombre, preferencias y contexto. Sin repetir nada.",
+        "how.before.label": "Sin Stellar Memory",
+        "how.after.label": "Con Stellar Memory",
         "setup.label": "Comenzar",
         "setup.title": "Configura en 3 pasos fáciles",
         "setup.subtitle": "Elige tu herramienta de IA y te guiaremos en el resto. Sin necesidad de programar.",
@@ -2363,8 +2383,9 @@
         "hero.desc": "あらゆるAIに記憶能力を。永久無料、プログラミング不要。30秒でインストール、またはクラウドで利用。",
         "hero.cta.start": "無料で始める",
         "hero.cta.who": "誰のため？",
+        "nav.why": "なぜ？",
         "nav.usecases": "活用例",
-        "nav.features": "機能",
+        "nav.howitworks": "仕組み",
         "nav.getstarted": "はじめる",
         "uc.label": "誰のため？",
         "uc.title": "みんなのためのAI記憶",
@@ -2521,20 +2542,6 @@
       toast.classList.add('show');
       setTimeout(function() { toast.classList.remove('show'); }, 2200);
     }
-
-    // ── How it works (step switcher removed — now static 3-step layout) ──
-
-    document.querySelectorAll('.how-step').forEach(function(el, i) {
-      el.addEventListener('click', function() {
-        clearInterval(autoCycle);
-        setStep(i);
-        currentStep = i;
-        autoCycle = setInterval(function() {
-          currentStep = (currentStep + 1) % 2;
-          setStep(currentStep);
-        }, 4000);
-      });
-    });
 
     // ── Intersection observer for fade-in ─────────────────────
     var observerStyle = document.createElement('style');
