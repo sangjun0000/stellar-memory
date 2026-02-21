@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://sangjun0000.github.io/stellar-memory/docs/getting-started/">
+        <link rel="canonical" href="https://stellar-memory.com/docs/getting-started/">
       
       
         <link rel="prev" href="..">
@@ -365,10 +365,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-5-emotional-memory-1-minute" class="md-nav__link">
+  <a href="#step-5-use-the-builder-v30" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 5: Emotional Memory (1 minute)
+        Step 5: Use the Builder (v3.0)
       
     </span>
   </a>
@@ -376,10 +376,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-6-clean-up" class="md-nav__link">
+  <a href="#step-6-link-related-memories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 6: Clean Up
+        Step 6: Link Related Memories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-clean-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Clean Up
       
     </span>
   </a>
@@ -882,10 +893,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-5-emotional-memory-1-minute" class="md-nav__link">
+  <a href="#step-5-use-the-builder-v30" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 5: Emotional Memory (1 minute)
+        Step 5: Use the Builder (v3.0)
       
     </span>
   </a>
@@ -893,10 +904,21 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-6-clean-up" class="md-nav__link">
+  <a href="#step-6-link-related-memories" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 6: Clean Up
+        Step 6: Link Related Memories
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-clean-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7: Clean Up
       
     </span>
   </a>
@@ -967,19 +989,31 @@
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">for</span> <span class="n">zone_id</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">stats</span><span class="o">.</span><span class="n">zone_counts</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Zone </span><span class="si">{</span><span class="n">zone_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="step-5-emotional-memory-1-minute">Step 5: Emotional Memory (1 minute)</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarConfig</span><span class="p">,</span> <span class="n">EmotionConfig</span>
+<h2 id="step-5-use-the-builder-v30">Step 5: Use the Builder (v3.0)</h2>
+<p>The recommended way to configure Stellar Memory:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarBuilder</span><span class="p">,</span> <span class="n">Preset</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
-<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">StellarConfig</span><span class="p">(</span><span class="n">emotion</span><span class="o">=</span><span class="n">EmotionConfig</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarMemory</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="c1"># Choose a preset that fits your use case</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarBuilder</span><span class="p">(</span><span class="n">Preset</span><span class="o">.</span><span class="n">CHAT</span><span class="p">)</span><span class="o">.</span><span class="n">with_sqlite</span><span class="p">(</span><span class="s2">&quot;chat.db&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 <a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
 <a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">item</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="s2">&quot;Got my first customer today!&quot;</span><span class="p">)</span>
-<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">if</span> <span class="n">item</span><span class="o">.</span><span class="n">emotion</span><span class="p">:</span>
-<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dominant emotion: </span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">emotion</span><span class="o">.</span><span class="n">dominant</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Joy: </span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">emotion</span><span class="o">.</span><span class="n">joy</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Stored: </span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
-<h2 id="step-6-clean-up">Step 6: Clean Up</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">memory</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+<p>Available presets: <code>MINIMAL</code>, <code>CHAT</code>, <code>AGENT</code>, <code>KNOWLEDGE</code>, <code>RESEARCH</code>.</p>
+<h2 id="step-6-link-related-memories">Step 6: Link Related Memories</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">id1</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="s2">&quot;Python is my favorite language&quot;</span><span class="p">,</span> <span class="n">importance</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">id2</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="s2">&quot;I use FastAPI for web APIs&quot;</span><span class="p">,</span> <span class="n">importance</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Explicitly link related memories</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">memory</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">,</span> <span class="n">relation</span><span class="o">=</span><span class="s2">&quot;related&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># Discover related memories through the graph</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">related</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">related</span><span class="p">(</span><span class="n">id1</span><span class="p">)</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">related</span><span class="p">:</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Related: </span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="step-7-clean-up">Step 7: Clean Up</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">memory</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
 </code></pre></div>
 <h2 id="next-steps">Next Steps</h2>
 <p>Choose your path:</p>
@@ -988,10 +1022,11 @@
 <li><strong>REST API</strong> - Run <code>stellar-memory serve-api</code> and open <code>http://localhost:9000/docs</code></li>
 <li><strong>MCP Server</strong> - Run <code>stellar-memory init-mcp</code> for Claude Code/Cursor integration</li>
 <li><strong>Docker</strong> - Run <code>docker-compose up stellar</code> for containerized deployment</li>
+<li><strong>Migration from v2</strong> - See <a href="../migration-v2-to-v3/">Migration Guide</a> for upgrading</li>
 </ul>
 <h2 id="interactive-setup">Interactive Setup</h2>
 <p>For a guided setup experience:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>stellar-memory<span class="w"> </span>quickstart
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>stellar-memory<span class="w"> </span>quickstart
 </code></pre></div>
 <p>This wizard walks you through choosing a usage mode, configuring options, and storing your first memory.</p>
 

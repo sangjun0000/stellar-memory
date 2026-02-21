@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://sangjun0000.github.io/stellar-memory/docs/guides/personal-assistant/">
+        <link rel="canonical" href="https://stellar-memory.com/docs/guides/personal-assistant/">
       
       
         <link rel="prev" href="../chatbot/">
@@ -884,14 +884,11 @@
 <h1 id="personal-assistant-with-memory">Personal Assistant with Memory</h1>
 <p>Build an AI assistant that learns and remembers user preferences over time.</p>
 <h2 id="setup">Setup</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarMemory</span><span class="p">,</span> <span class="n">StellarConfig</span><span class="p">,</span> <span class="n">EmotionConfig</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarBuilder</span><span class="p">,</span> <span class="n">Preset</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">StellarConfig</span><span class="p">(</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">db_path</span><span class="o">=</span><span class="s2">&quot;assistant_memory.db&quot;</span><span class="p">,</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">emotion</span><span class="o">=</span><span class="n">EmotionConfig</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="p">)</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarMemory</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarBuilder</span><span class="p">(</span><span class="n">Preset</span><span class="o">.</span><span class="n">CHAT</span><span class="p">)</span><span class="o">.</span><span class="n">with_sqlite</span><span class="p">(</span><span class="s2">&quot;assistant_memory.db&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </code></pre></div>
+<p>The <code>CHAT</code> preset enables emotion analysis and session support, ideal for personal assistants.</p>
 <h2 id="learning-preferences">Learning Preferences</h2>
 <p>Store user preferences with high importance so they stay in the Core zone:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">learn_preference</span><span class="p">(</span><span class="n">category</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">preference</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>

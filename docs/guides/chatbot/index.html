@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://sangjun0000.github.io/stellar-memory/docs/guides/chatbot/">
+        <link rel="canonical" href="https://stellar-memory.com/docs/guides/chatbot/">
       
       
         <link rel="prev" href="../../api-reference/">
@@ -931,14 +931,11 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>stellar-memory<span class="o">[</span>ai<span class="o">]</span>
 </code></pre></div>
 <h2 id="basic-integration">Basic Integration</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarMemory</span><span class="p">,</span> <span class="n">StellarConfig</span><span class="p">,</span> <span class="n">EmotionConfig</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarBuilder</span><span class="p">,</span> <span class="n">Preset</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">StellarConfig</span><span class="p">(</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    <span class="n">db_path</span><span class="o">=</span><span class="s2">&quot;chatbot_memory.db&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">emotion</span><span class="o">=</span><span class="n">EmotionConfig</span><span class="p">(</span><span class="n">enabled</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarMemory</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarBuilder</span><span class="p">(</span><span class="n">Preset</span><span class="o">.</span><span class="n">CHAT</span><span class="p">)</span><span class="o">.</span><span class="n">with_sqlite</span><span class="p">(</span><span class="s2">&quot;chatbot_memory.db&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </code></pre></div>
+<p>The <code>CHAT</code> preset enables emotion analysis and session support by default.</p>
 <h2 id="store-user-messages">Store User Messages</h2>
 <p>After each conversation turn, store relevant information:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">process_message</span><span class="p">(</span><span class="n">user_input</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">bot_response</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>

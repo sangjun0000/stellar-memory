@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://sangjun0000.github.io/stellar-memory/docs/guides/code-assistant/">
+        <link rel="canonical" href="https://stellar-memory.com/docs/guides/code-assistant/">
       
       
         <link rel="prev" href="../personal-assistant/">
@@ -884,11 +884,11 @@
 <h1 id="code-assistant-with-memory">Code Assistant with Memory</h1>
 <p>Build a code assistant that remembers project context, decisions, and patterns.</p>
 <h2 id="setup">Setup</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarMemory</span><span class="p">,</span> <span class="n">StellarConfig</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarBuilder</span><span class="p">,</span> <span class="n">Preset</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">StellarConfig</span><span class="p">(</span><span class="n">db_path</span><span class="o">=</span><span class="s2">&quot;code_assistant_memory.db&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarMemory</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarBuilder</span><span class="p">(</span><span class="n">Preset</span><span class="o">.</span><span class="n">AGENT</span><span class="p">)</span><span class="o">.</span><span class="n">with_sqlite</span><span class="p">(</span><span class="s2">&quot;code_assistant_memory.db&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </code></pre></div>
+<p>The <code>AGENT</code> preset enables graph linking, summarization, and full recall for AI agents.</p>
 <h2 id="storing-project-context">Storing Project Context</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Store architectural decisions</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span>

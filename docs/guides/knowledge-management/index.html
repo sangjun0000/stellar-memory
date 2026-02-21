@@ -10,7 +10,7 @@
       
       
       
-        <link rel="canonical" href="https://sangjun0000.github.io/stellar-memory/docs/guides/knowledge-management/">
+        <link rel="canonical" href="https://stellar-memory.com/docs/guides/knowledge-management/">
       
       
         <link rel="prev" href="../code-assistant/">
@@ -928,11 +928,11 @@
 <h1 id="knowledge-management">Knowledge Management</h1>
 <p>Use Stellar Memory as a personal or team knowledge base with natural language retrieval.</p>
 <h2 id="setup">Setup</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarMemory</span><span class="p">,</span> <span class="n">StellarConfig</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">stellar_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">StellarBuilder</span><span class="p">,</span> <span class="n">Preset</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">config</span> <span class="o">=</span> <span class="n">StellarConfig</span><span class="p">(</span><span class="n">db_path</span><span class="o">=</span><span class="s2">&quot;knowledge.db&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarMemory</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">memory</span> <span class="o">=</span> <span class="n">StellarBuilder</span><span class="p">(</span><span class="n">Preset</span><span class="o">.</span><span class="n">KNOWLEDGE</span><span class="p">)</span><span class="o">.</span><span class="n">with_sqlite</span><span class="p">(</span><span class="s2">&quot;knowledge.db&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">build</span><span class="p">()</span>
 </code></pre></div>
+<p>The <code>KNOWLEDGE</code> preset enables graph linking and summarization for knowledge management.</p>
 <h2 id="storing-knowledge">Storing Knowledge</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Store facts with appropriate importance</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="s2">&quot;Python 3.12 introduced type parameter syntax (PEP 695)&quot;</span><span class="p">,</span> <span class="n">importance</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
@@ -950,9 +950,13 @@
 <a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">id1</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="s2">&quot;FastAPI uses Pydantic for validation&quot;</span><span class="p">,</span> <span class="n">importance</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
 <a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">id2</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="s2">&quot;Pydantic v2 is 5-50x faster than v1&quot;</span><span class="p">,</span> <span class="n">importance</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span><span class="o">.</span><span class="n">id</span>
 <a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Later, discover connections via graph</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="k">if</span> <span class="n">memory</span><span class="o">.</span><span class="n">_analyzer</span><span class="p">:</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">neighbors</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">_analyzer</span><span class="o">.</span><span class="n">neighbors</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1"># Explicitly link related knowledge</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">memory</span><span class="o">.</span><span class="n">link</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">id2</span><span class="p">,</span> <span class="n">relation</span><span class="o">=</span><span class="s2">&quot;related&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="c1"># Discover connections through the graph</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">related_items</span> <span class="o">=</span> <span class="n">memory</span><span class="o">.</span><span class="n">related</span><span class="p">(</span><span class="n">id1</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">related_items</span><span class="p">:</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  Connected: </span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">content</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </code></pre></div>
 <h2 id="export-and-backup">Export and Backup</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Export all knowledge</span>
