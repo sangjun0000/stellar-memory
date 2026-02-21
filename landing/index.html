@@ -1324,15 +1324,135 @@
     }
 
     /* ============================================================
+       CHROME EXTENSION
+    ============================================================ */
+    #chrome-extension {
+      background: linear-gradient(180deg, transparent 0%, rgba(244,63,94,0.03) 50%, transparent 100%);
+    }
+
+    .ext-ai-logos {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin: 40px 0 48px;
+    }
+
+    .ext-ai-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ext-ai-logo svg {
+      width: 48px;
+      height: 48px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+
+    .ext-ai-logo:hover svg { opacity: 1; }
+
+    .ext-ai-logo span {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .ext-features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+
+    .ext-feat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+    }
+
+    .ext-feat-card:hover {
+      border-color: rgba(148,163,184,0.2);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-card);
+    }
+
+    .ext-feat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+    }
+
+    .ext-feat-card h3 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .ext-feat-card p {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .ext-demo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .ext-demo-before,
+    .ext-demo-after {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-md);
+      padding: 24px;
+    }
+
+    .ext-demo-after {
+      border-color: rgba(240,180,41,0.2);
+      background: rgba(240,180,41,0.02);
+    }
+
+    .ai-card-featured {
+      border-color: rgba(244,63,94,0.3) !important;
+      background: rgba(244,63,94,0.05) !important;
+    }
+
+    .ai-card-featured:hover {
+      border-color: rgba(244,63,94,0.5) !important;
+      background: rgba(244,63,94,0.08) !important;
+    }
+
+    .ai-card-badge {
+      font-size: 0.6rem;
+      color: var(--accent-rose);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    /* ============================================================
        ECOSYSTEM
     ============================================================ */
     #ecosystem { padding: 100px 0; }
 
     .ecosystem-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
-      max-width: 780px;
+      max-width: 1100px;
       margin: 48px auto 0;
     }
 
@@ -1823,9 +1943,9 @@
             <span class="product-tag">Python</span>
           </div>
           <div class="product-actions">
-            <a href="downloads/homunculus-v0.5.1.zip" download class="product-cta-primary" data-i18n="eco.hom.download">
+            <a href="downloads/homunculus-v0.5.2.zip" download class="product-cta-primary" data-i18n="eco.hom.download">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download v0.5.1
+              Download v0.5.2
             </a>
             <a href="https://github.com/sangjun0000/homunculus" target="_blank" rel="noopener" class="product-cta-secondary">
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
@@ -2075,7 +2195,7 @@
         "eco.subtitle": "Open-source projects powered by intelligent AI memory",
         "eco.hom.tagline": "Autonomous AI Agent with Interactive TUI",
         "eco.hom.desc": "A self-aware AI agent with a fullscreen interactive interface. Thinks, remembers, and acts — powered by Stellar Memory's 5-zone brain.",
-        "eco.hom.download": "Download v0.5.1",
+        "eco.hom.download": "Download v0.5.2",
         "eco.hom.github": "View on GitHub",
         "eco.community.title": "Your Project?",
         "eco.community.tagline": "Join the Ecosystem",
@@ -2176,7 +2296,7 @@
         "eco.subtitle": "지능형 AI 기억을 활용한 오픈소스 프로젝트",
         "eco.hom.tagline": "인터랙티브 TUI를 갖춘 자율형 AI 에이전트",
         "eco.hom.desc": "풀스크린 인터랙티브 인터페이스를 갖춘 자율형 AI 에이전트. 스스로 생각하고, 기억하고, 행동합니다 — Stellar Memory의 5-Zone 두뇌로 구동.",
-        "eco.hom.download": "다운로드 v0.5.1",
+        "eco.hom.download": "다운로드 v0.5.2",
         "eco.hom.github": "GitHub에서 보기",
         "eco.community.title": "당신의 프로젝트?",
         "eco.community.tagline": "생태계에 참여하세요",
@@ -2272,7 +2392,7 @@
         "eco.subtitle": "由智能AI记忆驱动的开源项目",
         "eco.hom.tagline": "带交互式TUI的自主AI代理",
         "eco.hom.desc": "拥有全屏交互界面的自主AI代理。自主思考、记忆和行动——由Stellar Memory的5区域大脑驱动。",
-        "eco.hom.download": "下载 v0.5.1",
+        "eco.hom.download": "下载 v0.5.2",
         "eco.hom.github": "在GitHub上查看",
         "eco.community.title": "你的项目?",
         "eco.community.tagline": "加入生态系统",
@@ -2368,7 +2488,7 @@
         "eco.subtitle": "Proyectos de codigo abierto impulsados por memoria AI inteligente",
         "eco.hom.tagline": "Agente AI Autonomo con TUI Interactivo",
         "eco.hom.desc": "Un agente AI con interfaz interactiva de pantalla completa. Piensa, recuerda y actua — impulsado por el cerebro de 5 zonas de Stellar Memory.",
-        "eco.hom.download": "Descargar v0.5.1",
+        "eco.hom.download": "Descargar v0.5.2",
         "eco.hom.github": "Ver en GitHub",
         "eco.community.title": "Tu Proyecto?",
         "eco.community.tagline": "Unete al Ecosistema",
@@ -2464,7 +2584,7 @@
         "eco.subtitle": "インテリジェントなAI記憶を活用したオープンソースプロジェクト",
         "eco.hom.tagline": "インタラクティブTUI搭載の自律型AIエージェント",
         "eco.hom.desc": "フルスクリーンのインタラクティブインターフェースを持つ自律型AIエージェント。自ら考え、記憶し、行動 — Stellar Memoryの5ゾーン脳で駆動。",
-        "eco.hom.download": "ダウンロード v0.5.1",
+        "eco.hom.download": "ダウンロード v0.5.2",
         "eco.hom.github": "GitHubで見る",
         "eco.community.title": "あなたのプロジェクト?",
         "eco.community.tagline": "エコシステムに参加",
