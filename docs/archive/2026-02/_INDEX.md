@@ -226,3 +226,29 @@
   - `platform-sdk/platform-sdk.design.md`
   - `platform-sdk/platform-sdk.analysis.md`
   - `platform-sdk/platform-sdk.report.md`
+
+### chrome-extension (Chrome Extension v1.0.0)
+- **Match Rate**: 96%
+- **Iterations**: 2 (Act phase)
+- **Tests**: 48 tests (unit + integration)
+- **Duration**: 2026-02-20 ~ 2026-02-21 (1 day)
+- **Features**: F1 Content Script (ChatGPT/Claude/Gemini MutationObserver), F2 Auto-Inject (submit intercept, memory injection), F3 Background Service Worker (Stellar Memory API client), F4 Popup UI (status, recent memories, toggle), F5 Options Page (server URL, toggle per-site), F6 Cross-Platform Memory (unified storage across 3 AI platforms)
+- **Files**: Manifest V3, 6 core modules, TypeScript
+- **Documents**:
+  - `chrome-extension/chrome-extension.plan.md`
+  - `chrome-extension/chrome-extension.design.md`
+  - `chrome-extension/chrome-extension.analysis.md`
+  - `chrome-extension/chrome-extension.report.md`
+
+### landing-chrome-extension (Landing Page Chrome Extension 소개)
+- **Match Rate**: 98% (after Act fix)
+- **Iterations**: 1 (Act phase)
+- **Tests**: N/A (static landing page)
+- **Duration**: 2026-02-21 (same day)
+- **Features**: F1 Chrome Extension 전용 섹션 (4 cards + Before/After demo), F2 Hero CTA 변경 ("Get Chrome Extension" + "Developer SDK"), F3 Get Started 위저드 Extension 카드 (featured, "Easiest"), F4 Ecosystem 카드, F5 Navigation 링크, F6 Footer 배지+링크, F7 i18n 155 translations (31 keys × 5 langs), F8 CSS + Responsive
+- **Files**: 1 modified (landing/index.html, ~500 lines added)
+- **Documents**:
+  - `landing-chrome-extension/landing-chrome-extension.plan.md`
+  - `landing-chrome-extension/landing-chrome-extension.design.md`
+  - `landing-chrome-extension/landing-chrome-extension.analysis.md`
+  - `landing-chrome-extension/landing-chrome-extension.report.md`

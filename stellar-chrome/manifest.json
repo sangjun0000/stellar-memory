@@ -1,0 +1,65 @@
+{
+  "manifest_version": 3,
+  "name": "Stellar Memory \u2014 AI\uAC00 \uB098\uB97C \uAE30\uC5B5\uD569\uB2C8\uB2E4",
+  "version": "1.0.0",
+  "description": "ChatGPT, Claude, Gemini에서 대화를 자동으로 기억합니다",
+
+  "permissions": [
+    "storage",
+    "sidePanel",
+    "contextMenus",
+    "activeTab"
+  ],
+
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "http://localhost:9000/*"
+  ],
+
+  "background": {
+    "service_worker": "src/background/background.ts",
+    "type": "module"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://chat.openai.com/*", "https://chatgpt.com/*"],
+      "js": ["src/content/chatgpt-cs.ts"]
+    },
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["src/content/claude-cs.ts"]
+    },
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "js": ["src/content/gemini-cs.ts"]
+    }
+  ],
+
+  "action": {
+    "default_popup": "src/popup/index.html",
+    "default_icon": {
+      "16": "public/icons/icon-16.png",
+      "32": "public/icons/icon-32.png",
+      "48": "public/icons/icon-48.png",
+      "128": "public/icons/icon-128.png"
+    }
+  },
+
+  "side_panel": {
+    "default_path": "src/sidepanel/index.html"
+  },
+
+  "icons": {
+    "16": "public/icons/icon-16.png",
+    "48": "public/icons/icon-48.png",
+    "128": "public/icons/icon-128.png"
+  },
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
