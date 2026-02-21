@@ -34,10 +34,7 @@ if exist "%TEMP_DIR%" rmdir /s /q "%TEMP_DIR%"
 mkdir "%TEMP_DIR%"
 
 echo  [2/6] Downloading...
-powershell -ExecutionPolicy Bypass -Command ^
-  "try { [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; ^
-  Invoke-WebRequest -Uri '%DOWNLOAD_URL%' -OutFile '%ZIP_FILE%' -UseBasicParsing } ^
-  catch { exit 1 }"
+curl.exe -fsSL "%DOWNLOAD_URL%" -o "%ZIP_FILE%"
 if %ERRORLEVEL% neq 0 (
     echo  [ERROR] Download failed. Check your internet connection.
     pause
@@ -46,8 +43,7 @@ if %ERRORLEVEL% neq 0 (
 
 :: -- Step 3: Extract --
 echo  [3/6] Extracting...
-powershell -ExecutionPolicy Bypass -Command ^
-  "Expand-Archive -Path '%ZIP_FILE%' -DestinationPath '%TEMP_DIR%' -Force"
+powershell -ExecutionPolicy Bypass -Command "Expand-Archive -Path '%ZIP_FILE%' -DestinationPath '%TEMP_DIR%' -Force"
 
 :: -- Step 4: Install (auto mode) --
 set "SOURCE_DIR=%TEMP_DIR%\homunculus-v1.0.0"
