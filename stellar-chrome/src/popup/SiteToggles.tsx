@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
   sites: { chatgpt: boolean; claude: boolean; gemini: boolean };
   onToggle: (site: "chatgpt" | "claude" | "gemini") => void;

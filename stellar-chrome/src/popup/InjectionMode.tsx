@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
   mode: "auto" | "manual";
   onChange: (mode: "auto" | "manual") => void;

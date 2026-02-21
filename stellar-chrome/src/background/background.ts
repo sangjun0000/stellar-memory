@@ -1,6 +1,6 @@
 import { ApiClient } from "../lib/api-client";
 import { SettingsManager } from "../lib/settings-manager";
-import type { CSMessage, StellarSettings } from "../types";
+import type { CSMessage } from "../types";
 
 const api = new ApiClient();
 const settings = new SettingsManager();

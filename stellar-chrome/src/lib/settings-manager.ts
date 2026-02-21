@@ -11,8 +11,8 @@ export class SettingsManager {
 
   async update(partial: Partial<StellarSettings>): Promise<StellarSettings> {
     const current = await this.getAll();
-    const merged = deepMerge(current, partial) as StellarSettings;
-    await chrome.storage.local.set({ [STORAGE_KEY]: merged });
+    const merged = deepMerge(current as unknown as Record<string, unknown>, partial as unknown as Record<string, unknown>) as unknown as StellarSettings;
+    await chrome.storage.local.set({ [STORAGE_KEY]: merged as unknown as Record<string, unknown> });
     return merged;
   }
 

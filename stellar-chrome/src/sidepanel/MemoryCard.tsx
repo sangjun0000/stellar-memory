@@ -1,4 +1,3 @@
-import React from "react";
 import type { MemoryRecord } from "../types";
 import { zoneEmoji, zoneLabel, getRelativeTime } from "../lib/utils";
 

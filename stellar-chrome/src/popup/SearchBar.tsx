@@ -1,5 +1,3 @@
-import React from "react";
-
 interface Props {
   query: string;
   onChange: (q: string) => void;
