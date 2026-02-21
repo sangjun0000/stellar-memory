@@ -8,22 +8,27 @@ echo "  ║     Autonomous AI Agent               ║"
 echo "  ╚═══════════════════════════════════════╝"
 echo ""
 
-# ── Step 0: Check Python ──
+# -- Step 1: Check Python --
 if ! command -v python3 &>/dev/null; then
-    echo "  [ERROR] Python 3 not found."
-    echo "  Install: https://python.org or 'brew install python3'"
+    echo "  [!] Python 3 not found."
+    echo ""
+    echo "  Install Python 3.11+:"
+    echo "    macOS:  brew install python3"
+    echo "    Ubuntu: sudo apt install python3 python3-venv"
+    echo "    Other:  https://python.org"
+    echo ""
+    echo "  Then run this script again."
     exit 1
 fi
 PYVER=$(python3 --version 2>&1 | awk '{print $2}')
-echo "  Python ${PYVER} found."
-echo ""
+echo "  [1/6] Python ${PYVER} found."
 
-# ── Step 1: Download ──
+# -- Step 2: Download --
 DOWNLOAD_URL="https://sangjun0000.github.io/stellar-memory/downloads/homunculus-v0.5.0.zip"
 TEMP_DIR=$(mktemp -d)
 ZIP_FILE="${TEMP_DIR}/homunculus-v0.5.0.zip"
 
-echo "  Downloading Homunculus..."
+echo "  [2/6] Downloading..."
 if command -v curl &>/dev/null; then
     curl -fsSL "$DOWNLOAD_URL" -o "$ZIP_FILE"
 elif command -v wget &>/dev/null; then
@@ -32,21 +37,26 @@ else
     echo "  [ERROR] curl or wget required."
     exit 1
 fi
-echo "  -> Downloaded."
-echo ""
 
-# ── Step 2: Extract ──
-echo "  Extracting..."
+# -- Step 3: Extract --
+echo "  [3/6] Extracting..."
 unzip -qo "$ZIP_FILE" -d "$TEMP_DIR"
-echo "  -> Extracted."
-echo ""
 
-# ── Step 3: Run installer ──
+# -- Step 4: Install (auto mode) --
 SOURCE_DIR="${TEMP_DIR}/homunculus-v0.5.0"
-python3 "${SOURCE_DIR}/src/homunculus/installer.py" "${SOURCE_DIR}"
+echo "  [4/6] Installing..."
+python3 "${SOURCE_DIR}/src/homunculus/installer.py" "${SOURCE_DIR}" --auto
 
-# ── Cleanup ──
+# -- Step 5: Cleanup --
+echo "  [5/6] Cleaning up..."
 rm -rf "$TEMP_DIR"
 
+# -- Step 6: Auto-launch --
+echo "  [6/6] Launching Homunculus..."
 echo ""
-echo "  Setup complete!"
+INSTALL_DIR="$HOME/Homunculus"
+if [ -f "$INSTALL_DIR/launch.sh" ]; then
+    exec "$INSTALL_DIR/launch.sh"
+else
+    echo "  Installation complete! Run: ~/Homunculus/launch.sh"
+fi
