@@ -1597,6 +1597,7 @@
         <ul class="nav-links">
           <li><a href="#pain-point" data-i18n="nav.why">Why?</a></li>
           <li><a href="#use-cases" data-i18n="nav.usecases">Use Cases</a></li>
+          <li><a href="#chrome-extension" data-i18n="nav.extension">Extension</a></li>
           <li><a href="#how-it-works" data-i18n="nav.howitworks">How It Works</a></li>
           <li><a href="#get-started" data-i18n="nav.getstarted">Get Started</a></li>
           <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener" class="nav-cta">GitHub</a></li>
@@ -1641,15 +1642,15 @@
             <span class="hero-title-gradient" data-i18n="hero.title">Stellar Memory</span>
           </h1>
           <p class="hero-tagline" data-i18n="hero.subtitle">AI remembers you</p>
-          <p class="hero-desc" data-i18n="hero.desc">Give any AI the ability to remember. Free forever, no programming required. Install on your computer in 30 seconds, or use our cloud service.</p>
+          <p class="hero-desc" data-i18n="hero.desc">Give any AI the ability to remember. Install our Chrome Extension for ChatGPT, Claude &amp; Gemini — or connect via MCP for developer tools. Free forever.</p>
           <div class="hero-actions">
-            <a href="#how-it-works" class="btn-primary">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              <span data-i18n="hero.cta.start">How does it work?</span>
+            <a href="#chrome-extension" class="btn-primary">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 12h8M12 8v8"/></svg>
+              <span data-i18n="hero.cta.ext">Get Chrome Extension</span>
             </a>
             <a href="#get-started" class="btn-secondary">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-              <span data-i18n="hero.cta.who">Get Started Free</span>
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+              <span data-i18n="hero.cta.dev">Developer SDK</span>
             </a>
           </div>
         </div>
@@ -1845,6 +1846,86 @@
   </section>
 
   <!-- ============================================================
+       CHROME EXTENSION
+  ============================================================ -->
+  <section id="chrome-extension" style="padding:100px 0;">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:16px;">
+        <div class="section-label" data-i18n="ext.label">Chrome Extension</div>
+        <h2 class="section-title" data-i18n="ext.title">Install once, every AI remembers you</h2>
+        <p class="section-sub" style="margin:0 auto;" data-i18n="ext.subtitle">No coding required. Just install and chat — works with ChatGPT, Claude, and Gemini.</p>
+      </div>
+
+      <div class="ext-ai-logos">
+        <div class="ext-ai-logo">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="var(--accent-emerald)" stroke-width="1.5" fill="rgba(16,185,129,0.1)"/><path d="M8 12h8M12 8v8" stroke="var(--accent-emerald)" stroke-width="1.5"/></svg>
+          <span>ChatGPT</span>
+        </div>
+        <div class="ext-ai-logo">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M16.98 3.41L12 6.77 7.02 3.41 2 7.26v9.48l10 5.85 10-5.85V7.26l-5.02-3.85z" stroke="var(--accent-gold)" stroke-width="1.5" fill="rgba(240,180,41,0.1)"/></svg>
+          <span>Claude</span>
+        </div>
+        <div class="ext-ai-logo">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="var(--accent-blue)" stroke-width="1.5" fill="rgba(59,130,246,0.1)"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="var(--accent-blue)" stroke-width="1.5"/></svg>
+          <span>Gemini</span>
+        </div>
+      </div>
+
+      <div class="ext-features-grid">
+        <div class="ext-feat-card">
+          <div class="ext-feat-icon" style="background:rgba(16,185,129,0.1);">
+            <svg width="22" height="22" fill="none" stroke="var(--accent-emerald)" stroke-width="2" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <h3 data-i18n="ext.f1.title">Auto-Capture</h3>
+          <p data-i18n="ext.f1.desc">Your conversations are automatically saved as you chat. No buttons to click, nothing to remember.</p>
+        </div>
+        <div class="ext-feat-card">
+          <div class="ext-feat-icon" style="background:rgba(240,180,41,0.1);">
+            <svg width="22" height="22" fill="none" stroke="var(--accent-gold)" stroke-width="2" viewBox="0 0 24 24"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          </div>
+          <h3 data-i18n="ext.f2.title">Auto-Inject</h3>
+          <p data-i18n="ext.f2.desc">When you start a new chat, relevant memories are automatically included. Your AI already knows the context.</p>
+        </div>
+        <div class="ext-feat-card">
+          <div class="ext-feat-icon" style="background:rgba(59,130,246,0.1);">
+            <svg width="22" height="22" fill="none" stroke="var(--accent-blue)" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg>
+          </div>
+          <h3 data-i18n="ext.f3.title">Cross-Platform Memory</h3>
+          <p data-i18n="ext.f3.desc">Tell ChatGPT you love coffee — Claude remembers it too. Your memory follows you across every AI.</p>
+        </div>
+        <div class="ext-feat-card">
+          <div class="ext-feat-icon" style="background:rgba(139,92,246,0.1);">
+            <svg width="22" height="22" fill="none" stroke="var(--accent-violet)" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 data-i18n="ext.f4.title">Privacy-First</h3>
+          <p data-i18n="ext.f4.desc">All data stays on your computer. Nothing is sent to external servers. Your memories are yours alone.</p>
+        </div>
+      </div>
+
+      <div class="ext-demo">
+        <div class="ext-demo-before">
+          <div class="demo-label" data-i18n="ext.before.label">Without Extension</div>
+          <div class="chat-bubble user" data-i18n="ext.before.user">"What's my favorite drink?"</div>
+          <div class="chat-bubble ai" data-i18n="ext.before.ai">"I'm sorry, I don't have any information about your preferences."</div>
+        </div>
+        <div class="ext-demo-after">
+          <div class="demo-label" data-i18n="ext.after.label">With Extension</div>
+          <div class="chat-bubble user" data-i18n="ext.after.user">"What's my favorite drink?"</div>
+          <div class="chat-bubble ai" data-i18n="ext.after.ai">"You mentioned you love coffee — especially iced americano!"</div>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:48px;">
+        <a href="#get-started" class="btn-primary" style="font-size:1.05rem; padding:14px 32px;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 12h8M12 8v8"/></svg>
+          <span data-i18n="ext.cta">Get Chrome Extension</span>
+        </a>
+        <p style="margin-top:12px; color:var(--text-muted); font-size:0.85rem;" data-i18n="ext.cta.sub">Free &amp; open source — works on any Chromium browser</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
        FEATURES (3 cards)
   ============================================================ -->
   <section id="features">
@@ -1943,13 +2024,43 @@
             <span class="product-tag">Python</span>
           </div>
           <div class="product-actions">
-            <a href="downloads/homunculus-v0.5.3.zip" download class="product-cta-primary" data-i18n="eco.hom.download">
+            <a href="downloads/homunculus-v0.5.0.zip" download class="product-cta-primary" data-i18n="eco.hom.download">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download v0.5.3
+              Download v0.5.0
             </a>
             <a href="https://github.com/sangjun0000/homunculus" target="_blank" rel="noopener" class="product-cta-secondary">
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
               <span data-i18n="eco.hom.github">View on GitHub</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Chrome Extension Card -->
+        <div class="product-card product-featured">
+          <div class="product-icon" style="background:rgba(244,63,94,0.1);">
+            <svg fill="none" stroke="var(--accent-rose)" stroke-width="1.5" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="18" height="18" rx="4"/>
+              <path d="M8 12h8M12 8v8" stroke-width="2"/>
+            </svg>
+          </div>
+          <h3 class="product-name">Chrome Extension</h3>
+          <p class="product-tagline" data-i18n="eco.ext.tagline">AI Memory for ChatGPT, Claude &amp; Gemini</p>
+          <p class="product-desc" data-i18n="eco.ext.desc">Install once and every AI remembers you. Automatically captures conversations and injects relevant memories.</p>
+          <div class="product-tags">
+            <span class="product-tag">Chrome Extension</span>
+            <span class="product-tag">ChatGPT</span>
+            <span class="product-tag">Claude</span>
+            <span class="product-tag">Gemini</span>
+            <span class="product-tag">TypeScript</span>
+          </div>
+          <div class="product-actions">
+            <a href="#get-started" class="product-cta-primary" data-i18n="eco.ext.install">
+              <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Install Extension
+            </a>
+            <a href="https://github.com/sangjun0000/stellar-memory/tree/main/stellar-chrome" target="_blank" rel="noopener" class="product-cta-secondary">
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              <span data-i18n="eco.ext.github">View Source</span>
             </a>
           </div>
         </div>
@@ -1996,6 +2107,13 @@
         <div class="wizard-section">
           <div class="wizard-section-title" data-i18n="setup.step1">Which AI do you use?</div>
           <div class="ai-selector">
+            <div class="ai-card ai-card-featured" data-ai="extension" onclick="selectAI('extension')">
+              <div class="ai-card-icon">
+                <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="var(--accent-rose)" stroke-width="1.5" fill="rgba(244,63,94,0.1)"/><path d="M8 12h8M12 8v8" stroke="var(--accent-rose)" stroke-width="2"/></svg>
+              </div>
+              <div class="ai-card-label" data-i18n="setup.ai.extension">Chrome Extension</div>
+              <div class="ai-card-badge" data-i18n="setup.ai.ext.badge">Easiest</div>
+            </div>
             <div class="ai-card" data-ai="claude" onclick="selectAI('claude')">
               <div class="ai-card-icon">
                 <svg viewBox="0 0 24 24" fill="none"><path d="M16.98 3.41L12 6.77 7.02 3.41 2 7.26v9.48l10 5.85 10-5.85V7.26l-5.02-3.85z" stroke="var(--accent-gold)" stroke-width="1.5" fill="rgba(240,180,41,0.1)"/></svg>
@@ -2066,6 +2184,7 @@
           <ul class="footer-links">
             <li><a href="https://github.com/sangjun0000/stellar-memory" target="_blank" rel="noopener">GitHub Repository</a></li>
             <li><a href="https://pypi.org/project/stellar-memory/" target="_blank" rel="noopener">PyPI Package</a></li>
+            <li><a href="#chrome-extension">Chrome Extension</a></li>
             <li><a href="https://github.com/sangjun0000/stellar-memory/releases" target="_blank" rel="noopener">Releases</a></li>
             <li><a href="https://github.com/sangjun0000/stellar-memory/issues" target="_blank" rel="noopener">Issue Tracker</a></li>
           </ul>
@@ -2088,6 +2207,7 @@
           <span class="badge"><span class="badge-dot" style="background:var(--accent-emerald);"></span>v3.0.0 Stable</span>
           <span class="badge"><span class="badge-dot" style="background:var(--accent-gold);"></span>MIT License</span>
           <span class="badge"><span class="badge-dot" style="background:var(--accent-blue);"></span>Python 3.9+</span>
+          <span class="badge"><span class="badge-dot" style="background:var(--accent-rose);"></span>Chrome Extension</span>
         </div>
       </div>
     </div>
@@ -2195,7 +2315,7 @@
         "eco.subtitle": "Open-source projects powered by intelligent AI memory",
         "eco.hom.tagline": "Autonomous AI Agent with Interactive TUI",
         "eco.hom.desc": "A self-aware AI agent with a fullscreen interactive interface. Thinks, remembers, and acts — powered by Stellar Memory's 5-zone brain.",
-        "eco.hom.download": "Download v0.5.3",
+        "eco.hom.download": "Download v0.5.0",
         "eco.hom.github": "View on GitHub",
         "eco.community.title": "Your Project?",
         "eco.community.tagline": "Join the Ecosystem",
@@ -2296,7 +2416,7 @@
         "eco.subtitle": "지능형 AI 기억을 활용한 오픈소스 프로젝트",
         "eco.hom.tagline": "인터랙티브 TUI를 갖춘 자율형 AI 에이전트",
         "eco.hom.desc": "풀스크린 인터랙티브 인터페이스를 갖춘 자율형 AI 에이전트. 스스로 생각하고, 기억하고, 행동합니다 — Stellar Memory의 5-Zone 두뇌로 구동.",
-        "eco.hom.download": "다운로드 v0.5.3",
+        "eco.hom.download": "다운로드 v0.5.0",
         "eco.hom.github": "GitHub에서 보기",
         "eco.community.title": "당신의 프로젝트?",
         "eco.community.tagline": "생태계에 참여하세요",
@@ -2392,7 +2512,7 @@
         "eco.subtitle": "由智能AI记忆驱动的开源项目",
         "eco.hom.tagline": "带交互式TUI的自主AI代理",
         "eco.hom.desc": "拥有全屏交互界面的自主AI代理。自主思考、记忆和行动——由Stellar Memory的5区域大脑驱动。",
-        "eco.hom.download": "下载 v0.5.3",
+        "eco.hom.download": "下载 v0.5.0",
         "eco.hom.github": "在GitHub上查看",
         "eco.community.title": "你的项目?",
         "eco.community.tagline": "加入生态系统",
@@ -2488,7 +2608,7 @@
         "eco.subtitle": "Proyectos de codigo abierto impulsados por memoria AI inteligente",
         "eco.hom.tagline": "Agente AI Autonomo con TUI Interactivo",
         "eco.hom.desc": "Un agente AI con interfaz interactiva de pantalla completa. Piensa, recuerda y actua — impulsado por el cerebro de 5 zonas de Stellar Memory.",
-        "eco.hom.download": "Descargar v0.5.3",
+        "eco.hom.download": "Descargar v0.5.0",
         "eco.hom.github": "Ver en GitHub",
         "eco.community.title": "Tu Proyecto?",
         "eco.community.tagline": "Unete al Ecosistema",
@@ -2584,7 +2704,7 @@
         "eco.subtitle": "インテリジェントなAI記憶を活用したオープンソースプロジェクト",
         "eco.hom.tagline": "インタラクティブTUI搭載の自律型AIエージェント",
         "eco.hom.desc": "フルスクリーンのインタラクティブインターフェースを持つ自律型AIエージェント。自ら考え、記憶し、行動 — Stellar Memoryの5ゾーン脳で駆動。",
-        "eco.hom.download": "ダウンロード v0.5.3",
+        "eco.hom.download": "ダウンロード v0.5.0",
         "eco.hom.github": "GitHubで見る",
         "eco.community.title": "あなたのプロジェクト?",
         "eco.community.tagline": "エコシステムに参加",
