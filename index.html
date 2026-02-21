@@ -14,7 +14,7 @@
   <meta name="twitter:description" content="100% free, open-source AI memory. No programming required. Install in 30 seconds." />
   <link rel="canonical" href="https://stellar-memory.com/" />
   <meta name="robots" content="index, follow" />
-  <meta name="keywords" content="AI memory, LLM memory, stellar memory, celestial memory, MCP, AI agent memory, Python AI library, memory management" />
+  <meta name="keywords" content="AI memory, LLM memory, stellar memory, celestial memory, MCP, AI agent memory, Python AI library, memory management, chrome extension, browser extension, chatgpt memory, claude memory" />
   <meta name="author" content="sangjun0000" />
   <script type="application/ld+json">
   {
@@ -22,7 +22,7 @@
     "@type": "SoftwareApplication",
     "name": "Stellar Memory",
     "description": "Celestial-structure-based AI memory management system. Give any AI human-like memory with 5 orbital zones, self-learning, and multimodal support.",
-    "applicationCategory": "DeveloperApplication",
+    "applicationCategory": ["DeveloperApplication", "BrowserExtension"],
     "operatingSystem": "Cross-platform",
     "offers": [
       {"@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "Unlimited memories, unlimited agents, all features included. 100% free & open source."}
@@ -1171,9 +1171,13 @@
 
     @media (max-width: 768px) {
       .ai-selector { grid-template-columns: repeat(2, 1fr); }
+      .ext-features-grid { grid-template-columns: repeat(2, 1fr); }
+      .ext-demo { grid-template-columns: 1fr; }
+      .ext-ai-logos { gap: 32px; }
     }
     @media (max-width: 480px) {
       .ai-selector { grid-template-columns: 1fr; }
+      .ext-features-grid { grid-template-columns: 1fr; }
     }
 
     /* ============================================================
@@ -1552,6 +1556,42 @@
     .product-cta-primary:hover { background: var(--accent-glow); }
     .product-cta-primary svg { width: 16px; height: 16px; }
 
+    .install-cmd {
+      display: block;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      word-break: break-all;
+      user-select: all;
+      text-align: left;
+    }
+    .copy-btn {
+      margin-top: 6px;
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      border-radius: 6px;
+      cursor: pointer;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-secondary);
+      transition: background 0.2s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,0.15); }
+    .install-toggle {
+      display: block;
+      margin-top: 8px;
+      font-size: 0.75rem;
+      opacity: 0.6;
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .install-toggle:hover { opacity: 1; }
+
     .product-cta-secondary {
       display: flex;
       align-items: center;
@@ -1644,8 +1684,8 @@
           <p class="hero-tagline" data-i18n="hero.subtitle">AI remembers you</p>
           <p class="hero-desc" data-i18n="hero.desc">Give any AI the ability to remember. Install our Chrome Extension for ChatGPT, Claude &amp; Gemini — or connect via MCP for developer tools. Free forever.</p>
           <div class="hero-actions">
-            <a href="#chrome-extension" class="btn-primary">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 12h8M12 8v8"/></svg>
+            <a href="https://github.com/sangjun0000/stellar-memory/tree/main/stellar-chrome" target="_blank" rel="noopener" class="btn-primary">
+              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               <span data-i18n="hero.cta.ext">Get Chrome Extension</span>
             </a>
             <a href="#get-started" class="btn-secondary">
@@ -1916,8 +1956,8 @@
       </div>
 
       <div style="text-align:center; margin-top:48px;">
-        <a href="#get-started" class="btn-primary" style="font-size:1.05rem; padding:14px 32px;">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M8 12h8M12 8v8"/></svg>
+        <a href="https://github.com/sangjun0000/stellar-memory/tree/main/stellar-chrome" target="_blank" rel="noopener" class="btn-primary" style="font-size:1.05rem; padding:14px 32px;">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span data-i18n="ext.cta">Get Chrome Extension</span>
         </a>
         <p style="margin-top:12px; color:var(--text-muted); font-size:0.85rem;" data-i18n="ext.cta.sub">Free &amp; open source — works on any Chromium browser</p>
@@ -2023,11 +2063,20 @@
             <span class="product-tag">Interactive TUI</span>
             <span class="product-tag">Python</span>
           </div>
-          <div class="product-actions">
-            <a href="downloads/homunculus-v0.5.0.zip" download class="product-cta-primary" data-i18n="eco.hom.download">
+          <div class="product-actions" id="hom-install">
+            <!-- Windows: .bat download -->
+            <a href="downloads/Homunculus-Setup.bat" download class="product-cta-primary install-win">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download v0.5.0
+              <span data-i18n="eco.hom.install.win">Install for Windows</span>
             </a>
+            <!-- Mac/Linux: curl one-liner -->
+            <div class="install-unix" style="display:none">
+              <code class="install-cmd" id="hom-curl">curl -fsSL https://stellar-memory.com/downloads/Homunculus-Setup.sh | bash</code>
+              <button onclick="copyHomCmd()" class="copy-btn" data-i18n-copy="eco.hom.install.copy">Copy</button>
+            </div>
+            <!-- Toggle -->
+            <a href="javascript:void(0)" class="install-toggle" onclick="toggleHomInstallOS()" data-i18n="eco.hom.install.toggle">Other OS?</a>
+            <!-- GitHub -->
             <a href="https://github.com/sangjun0000/homunculus" target="_blank" rel="noopener" class="product-cta-secondary">
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
               <span data-i18n="eco.hom.github">View on GitHub</span>
@@ -2054,7 +2103,7 @@
             <span class="product-tag">TypeScript</span>
           </div>
           <div class="product-actions">
-            <a href="#get-started" class="product-cta-primary" data-i18n="eco.ext.install">
+            <a href="https://github.com/sangjun0000/stellar-memory/tree/main/stellar-chrome" target="_blank" rel="noopener" class="product-cta-primary" data-i18n="eco.ext.install">
               <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
               Install Extension
             </a>
@@ -2226,7 +2275,7 @@
         "hero.badge": "100% Free & Open Source",
         "hero.title": "Stellar Memory",
         "hero.subtitle": "AI remembers you",
-        "hero.desc": "Give any AI the ability to remember. Free forever, no programming required. Install on your computer in 30 seconds, or use our cloud service.",
+        "hero.desc": "Give any AI the ability to remember. Install our Chrome Extension for ChatGPT, Claude & Gemini — or connect via MCP for developer tools. Free forever.",
         "hero.cta.start": "How does it work?",
         "hero.cta.who": "Get Started Free",
         "nav.why": "Why?",
@@ -2315,19 +2364,51 @@
         "eco.subtitle": "Open-source projects powered by intelligent AI memory",
         "eco.hom.tagline": "Autonomous AI Agent with Interactive TUI",
         "eco.hom.desc": "A self-aware AI agent with a fullscreen interactive interface. Thinks, remembers, and acts — powered by Stellar Memory's 5-zone brain.",
-        "eco.hom.download": "Download v0.5.0",
+        "eco.hom.install.win": "Install for Windows",
+        "eco.hom.install.toggle": "Other OS?",
         "eco.hom.github": "View on GitHub",
         "eco.community.title": "Your Project?",
         "eco.community.tagline": "Join the Ecosystem",
         "eco.community.desc": "Build something amazing with Stellar Memory and showcase it here. We welcome all open-source projects.",
         "eco.community.cta": "Submit Your Project",
-        "footer.desc": "An intelligent AI memory system inspired by celestial structures."
+        "footer.desc": "An intelligent AI memory system inspired by celestial structures.",
+        "nav.extension": "Extension",
+        "ext.label": "Chrome Extension",
+        "ext.title": "Install once, every AI remembers you",
+        "ext.subtitle": "No coding required. Just install and chat — works with ChatGPT, Claude, and Gemini.",
+        "ext.f1.title": "Auto-Capture",
+        "ext.f1.desc": "Your conversations are automatically saved as you chat. No buttons to click, nothing to remember.",
+        "ext.f2.title": "Auto-Inject",
+        "ext.f2.desc": "When you start a new chat, relevant memories are automatically included. Your AI already knows the context.",
+        "ext.f3.title": "Cross-Platform Memory",
+        "ext.f3.desc": "Tell ChatGPT you love coffee — Claude remembers it too. Your memory follows you across every AI.",
+        "ext.f4.title": "Privacy-First",
+        "ext.f4.desc": "All data stays on your computer. Nothing is sent to external servers. Your memories are yours alone.",
+        "ext.before.label": "Without Extension",
+        "ext.before.user": "\"What's my favorite drink?\"",
+        "ext.before.ai": "\"I'm sorry, I don't have any information about your preferences.\"",
+        "ext.after.label": "With Extension",
+        "ext.after.user": "\"What's my favorite drink?\"",
+        "ext.after.ai": "\"You mentioned you love coffee — especially iced americano!\"",
+        "ext.cta": "Get Chrome Extension",
+        "ext.cta.sub": "Free & open source — works on any Chromium browser",
+        "hero.cta.ext": "Get Chrome Extension",
+        "hero.cta.dev": "Developer SDK",
+        "setup.ai.extension": "Chrome Extension",
+        "setup.ai.ext.badge": "Easiest",
+        "setup.ext.s1": "Install from Chrome Web Store",
+        "setup.ext.s2": "Visit any AI site (ChatGPT, Claude, or Gemini)",
+        "setup.ext.s3": "Start chatting — Stellar Memory handles the rest!",
+        "eco.ext.tagline": "AI Memory for ChatGPT, Claude & Gemini",
+        "eco.ext.desc": "Install once and every AI remembers you. Automatically captures conversations and injects relevant memories.",
+        "eco.ext.install": "Install Extension",
+        "eco.ext.github": "View Source"
       },
       ko: {
         "hero.badge": "100% 무료 & 오픈소스",
         "hero.title": "Stellar Memory",
         "hero.subtitle": "AI가 당신을 기억합니다",
-        "hero.desc": "어떤 AI에든 기억 능력을 부여하세요. 영구 무료, 프로그래밍 불필요. 30초 설치 또는 클라우드에서 바로 사용.",
+        "hero.desc": "어떤 AI에든 기억 능력을 부여하세요. ChatGPT, Claude, Gemini용 크롬 확장 프로그램을 설치하거나, 개발자 도구용 MCP로 연결하세요. 영구 무료.",
         "hero.cta.start": "어떻게 동작하나요?",
         "hero.cta.who": "무료로 시작하기",
         "nav.why": "왜 필요한가요?",
@@ -2416,19 +2497,51 @@
         "eco.subtitle": "지능형 AI 기억을 활용한 오픈소스 프로젝트",
         "eco.hom.tagline": "인터랙티브 TUI를 갖춘 자율형 AI 에이전트",
         "eco.hom.desc": "풀스크린 인터랙티브 인터페이스를 갖춘 자율형 AI 에이전트. 스스로 생각하고, 기억하고, 행동합니다 — Stellar Memory의 5-Zone 두뇌로 구동.",
-        "eco.hom.download": "다운로드 v0.5.0",
+        "eco.hom.install.win": "Windows 설치",
+        "eco.hom.install.toggle": "다른 OS?",
         "eco.hom.github": "GitHub에서 보기",
         "eco.community.title": "당신의 프로젝트?",
         "eco.community.tagline": "생태계에 참여하세요",
         "eco.community.desc": "Stellar Memory로 멋진 것을 만들고 여기에 소개하세요. 모든 오픈소스 프로젝트를 환영합니다.",
         "eco.community.cta": "프로젝트 제출하기",
-        "footer.desc": "천체 구조에서 영감을 받은 지능형 AI 기억 시스템."
+        "footer.desc": "천체 구조에서 영감을 받은 지능형 AI 기억 시스템.",
+        "nav.extension": "확장 프로그램",
+        "ext.label": "크롬 확장 프로그램",
+        "ext.title": "한 번 설치하면, 모든 AI가 나를 기억합니다",
+        "ext.subtitle": "코딩이 필요 없습니다. 설치하고 대화하세요 — ChatGPT, Claude, Gemini에서 작동합니다.",
+        "ext.f1.title": "자동 캡처",
+        "ext.f1.desc": "대화하면 자동으로 저장됩니다. 버튼을 누를 필요도, 기억할 필요도 없습니다.",
+        "ext.f2.title": "자동 주입",
+        "ext.f2.desc": "새 대화를 시작하면 관련 기억이 자동으로 포함됩니다. AI가 이미 맥락을 알고 있습니다.",
+        "ext.f3.title": "크로스 플랫폼 기억",
+        "ext.f3.desc": "ChatGPT에 커피를 좋아한다고 말하면 — Claude도 기억합니다. 기억이 모든 AI를 따라다닙니다.",
+        "ext.f4.title": "프라이버시 우선",
+        "ext.f4.desc": "모든 데이터는 내 컴퓨터에 저장됩니다. 외부 서버로 전송되지 않습니다. 내 기억은 오직 나만의 것.",
+        "ext.before.label": "확장 프로그램 없이",
+        "ext.before.user": "\"내가 좋아하는 음료가 뭐야?\"",
+        "ext.before.ai": "\"죄송합니다, 선호도에 대한 정보가 없습니다.\"",
+        "ext.after.label": "확장 프로그램 사용 시",
+        "ext.after.user": "\"내가 좋아하는 음료가 뭐야?\"",
+        "ext.after.ai": "\"커피를 좋아하신다고 하셨죠 — 특히 아이스 아메리카노요!\"",
+        "ext.cta": "크롬 확장 프로그램 설치",
+        "ext.cta.sub": "무료 & 오픈소스 — 모든 크로미움 브라우저에서 작동",
+        "hero.cta.ext": "크롬 확장 프로그램 설치",
+        "hero.cta.dev": "개발자 SDK",
+        "setup.ai.extension": "크롬 확장 프로그램",
+        "setup.ai.ext.badge": "가장 쉬움",
+        "setup.ext.s1": "Chrome 웹 스토어에서 설치하세요",
+        "setup.ext.s2": "아무 AI 사이트를 방문하세요 (ChatGPT, Claude, 또는 Gemini)",
+        "setup.ext.s3": "대화를 시작하세요 — Stellar Memory가 나머지를 처리합니다!",
+        "eco.ext.tagline": "ChatGPT, Claude & Gemini를 위한 AI 기억",
+        "eco.ext.desc": "한 번 설치하면 모든 AI가 나를 기억합니다. 대화를 자동으로 캡처하고 관련 기억을 주입합니다.",
+        "eco.ext.install": "확장 프로그램 설치",
+        "eco.ext.github": "소스 보기"
       },
       zh: {
         "hero.badge": "100% 免费 & 开源",
         "hero.title": "Stellar Memory",
         "hero.subtitle": "AI记住你",
-        "hero.desc": "赋予任何AI记忆能力。永久免费，无需编程。30秒安装到电脑，或使用云服务。",
+        "hero.desc": "赋予任何AI记忆能力。安装 Chrome 扩展，支持 ChatGPT、Claude 和 Gemini — 或通过 MCP 连接开发者工具。永久免费。",
         "hero.cta.start": "如何运作？",
         "hero.cta.who": "免费开始",
         "nav.why": "为什么？",
@@ -2512,19 +2625,51 @@
         "eco.subtitle": "由智能AI记忆驱动的开源项目",
         "eco.hom.tagline": "带交互式TUI的自主AI代理",
         "eco.hom.desc": "拥有全屏交互界面的自主AI代理。自主思考、记忆和行动——由Stellar Memory的5区域大脑驱动。",
-        "eco.hom.download": "下载 v0.5.0",
+        "eco.hom.install.win": "Windows 安装",
+        "eco.hom.install.toggle": "其他系统?",
         "eco.hom.github": "在GitHub上查看",
         "eco.community.title": "你的项目?",
         "eco.community.tagline": "加入生态系统",
         "eco.community.desc": "用Stellar Memory构建精彩项目，并在此展示。我们欢迎所有开源项目。",
         "eco.community.cta": "提交你的项目",
-        "footer.desc": "受天体结构启发的智能AI记忆系统。"
+        "footer.desc": "受天体结构启发的智能AI记忆系统。",
+        "nav.extension": "浏览器扩展",
+        "ext.label": "Chrome 扩展",
+        "ext.title": "安装一次，所有AI都记住你",
+        "ext.subtitle": "无需编程。安装后直接对话 — 支持 ChatGPT、Claude 和 Gemini。",
+        "ext.f1.title": "自动捕获",
+        "ext.f1.desc": "对话时自动保存。无需点击按钮，无需刻意记忆。",
+        "ext.f2.title": "自动注入",
+        "ext.f2.desc": "开始新对话时，相关记忆自动包含。AI已经了解上下文。",
+        "ext.f3.title": "跨平台记忆",
+        "ext.f3.desc": "告诉ChatGPT你喜欢咖啡 — Claude也会记住。你的记忆跟随你到每个AI。",
+        "ext.f4.title": "隐私优先",
+        "ext.f4.desc": "所有数据保存在你的电脑上。不会发送到外部服务器。你的记忆只属于你。",
+        "ext.before.label": "没有扩展",
+        "ext.before.user": "\"我最喜欢的饮料是什么？\"",
+        "ext.before.ai": "\"抱歉，我没有关于你偏好的信息。\"",
+        "ext.after.label": "使用扩展后",
+        "ext.after.user": "\"我最喜欢的饮料是什么？\"",
+        "ext.after.ai": "\"你说过你喜欢咖啡 — 特别是冰美式！\"",
+        "ext.cta": "获取 Chrome 扩展",
+        "ext.cta.sub": "免费开源 — 适用于所有 Chromium 浏览器",
+        "hero.cta.ext": "获取 Chrome 扩展",
+        "hero.cta.dev": "开发者 SDK",
+        "setup.ai.extension": "Chrome 扩展",
+        "setup.ai.ext.badge": "最简单",
+        "setup.ext.s1": "从 Chrome 网上应用店安装",
+        "setup.ext.s2": "访问任意AI网站（ChatGPT、Claude 或 Gemini）",
+        "setup.ext.s3": "开始对话 — Stellar Memory 处理其余一切！",
+        "eco.ext.tagline": "ChatGPT、Claude 和 Gemini 的 AI 记忆",
+        "eco.ext.desc": "安装一次，所有AI都记住你。自动捕获对话并注入相关记忆。",
+        "eco.ext.install": "安装扩展",
+        "eco.ext.github": "查看源码"
       },
       es: {
         "hero.badge": "100% Gratis y Open Source",
         "hero.title": "Stellar Memory",
         "hero.subtitle": "La IA te recuerda",
-        "hero.desc": "Dale a cualquier IA la capacidad de recordar. Gratis para siempre, sin programación. Instala en 30 segundos o usa nuestro servicio en la nube.",
+        "hero.desc": "Dale a cualquier IA la capacidad de recordar. Instala nuestra extensión de Chrome para ChatGPT, Claude y Gemini — o conecta via MCP para herramientas de desarrollo. Gratis para siempre.",
         "hero.cta.start": "Como funciona?",
         "hero.cta.who": "Empezar Gratis",
         "nav.why": "Por que?",
@@ -2608,19 +2753,51 @@
         "eco.subtitle": "Proyectos de codigo abierto impulsados por memoria AI inteligente",
         "eco.hom.tagline": "Agente AI Autonomo con TUI Interactivo",
         "eco.hom.desc": "Un agente AI con interfaz interactiva de pantalla completa. Piensa, recuerda y actua — impulsado por el cerebro de 5 zonas de Stellar Memory.",
-        "eco.hom.download": "Descargar v0.5.0",
+        "eco.hom.install.win": "Instalar en Windows",
+        "eco.hom.install.toggle": "¿Otro SO?",
         "eco.hom.github": "Ver en GitHub",
         "eco.community.title": "Tu Proyecto?",
         "eco.community.tagline": "Unete al Ecosistema",
         "eco.community.desc": "Construye algo increible con Stellar Memory y muestralo aqui. Damos la bienvenida a todos los proyectos de codigo abierto.",
         "eco.community.cta": "Enviar tu Proyecto",
-        "footer.desc": "Un sistema de memoria AI inteligente inspirado en estructuras celestiales."
+        "footer.desc": "Un sistema de memoria AI inteligente inspirado en estructuras celestiales.",
+        "nav.extension": "Extensión",
+        "ext.label": "Extensión de Chrome",
+        "ext.title": "Instala una vez, toda IA te recuerda",
+        "ext.subtitle": "Sin programación. Solo instala y chatea — funciona con ChatGPT, Claude y Gemini.",
+        "ext.f1.title": "Captura Automática",
+        "ext.f1.desc": "Tus conversaciones se guardan automáticamente mientras chateas. Sin botones, sin complicaciones.",
+        "ext.f2.title": "Inyección Automática",
+        "ext.f2.desc": "Al iniciar un nuevo chat, los recuerdos relevantes se incluyen automáticamente. Tu IA ya conoce el contexto.",
+        "ext.f3.title": "Memoria Multiplataforma",
+        "ext.f3.desc": "Dile a ChatGPT que te encanta el café — Claude también lo recuerda. Tu memoria te sigue en cada IA.",
+        "ext.f4.title": "Privacidad Primero",
+        "ext.f4.desc": "Todos los datos permanecen en tu computadora. Nada se envía a servidores externos. Tus recuerdos son solo tuyos.",
+        "ext.before.label": "Sin Extensión",
+        "ext.before.user": "\"¿Cuál es mi bebida favorita?\"",
+        "ext.before.ai": "\"Lo siento, no tengo información sobre tus preferencias.\"",
+        "ext.after.label": "Con Extensión",
+        "ext.after.user": "\"¿Cuál es mi bebida favorita?\"",
+        "ext.after.ai": "\"¡Mencionaste que te encanta el café — especialmente el americano con hielo!\"",
+        "ext.cta": "Obtener Extensión de Chrome",
+        "ext.cta.sub": "Gratis y open source — funciona en cualquier navegador Chromium",
+        "hero.cta.ext": "Obtener Extensión de Chrome",
+        "hero.cta.dev": "SDK para Desarrolladores",
+        "setup.ai.extension": "Extensión de Chrome",
+        "setup.ai.ext.badge": "Más fácil",
+        "setup.ext.s1": "Instala desde Chrome Web Store",
+        "setup.ext.s2": "Visita cualquier sitio de IA (ChatGPT, Claude o Gemini)",
+        "setup.ext.s3": "Empieza a chatear — ¡Stellar Memory se encarga del resto!",
+        "eco.ext.tagline": "Memoria IA para ChatGPT, Claude y Gemini",
+        "eco.ext.desc": "Instala una vez y toda IA te recuerda. Captura conversaciones automáticamente e inyecta recuerdos relevantes.",
+        "eco.ext.install": "Instalar Extensión",
+        "eco.ext.github": "Ver Código"
       },
       ja: {
         "hero.badge": "100% 無料 & オープンソース",
         "hero.title": "Stellar Memory",
         "hero.subtitle": "AIがあなたを覚えます",
-        "hero.desc": "あらゆるAIに記憶能力を。永久無料、プログラミング不要。30秒でインストール、またはクラウドで利用。",
+        "hero.desc": "あらゆるAIに記憶能力を。ChatGPT、Claude、Gemini用のChrome拡張機能をインストール、または開発者ツール用にMCPで接続。永久無料。",
         "hero.cta.start": "無料で始める",
         "hero.cta.who": "誰のため？",
         "nav.why": "なぜ？",
@@ -2704,13 +2881,45 @@
         "eco.subtitle": "インテリジェントなAI記憶を活用したオープンソースプロジェクト",
         "eco.hom.tagline": "インタラクティブTUI搭載の自律型AIエージェント",
         "eco.hom.desc": "フルスクリーンのインタラクティブインターフェースを持つ自律型AIエージェント。自ら考え、記憶し、行動 — Stellar Memoryの5ゾーン脳で駆動。",
-        "eco.hom.download": "ダウンロード v0.5.0",
+        "eco.hom.install.win": "Windows インストール",
+        "eco.hom.install.toggle": "他のOS?",
         "eco.hom.github": "GitHubで見る",
         "eco.community.title": "あなたのプロジェクト?",
         "eco.community.tagline": "エコシステムに参加",
         "eco.community.desc": "Stellar Memoryで素晴らしいものを作り、ここで紹介しましょう。すべてのオープンソースプロジェクトを歓迎します。",
         "eco.community.cta": "プロジェクトを提出",
-        "footer.desc": "天体構造にインスパイアされた知的AI記憶システム。"
+        "footer.desc": "天体構造にインスパイアされた知的AI記憶システム。",
+        "nav.extension": "拡張機能",
+        "ext.label": "Chrome 拡張機能",
+        "ext.title": "一度インストールすれば、すべてのAIがあなたを覚えます",
+        "ext.subtitle": "プログラミング不要。インストールして会話するだけ — ChatGPT、Claude、Geminiで動作します。",
+        "ext.f1.title": "自動キャプチャ",
+        "ext.f1.desc": "会話中に自動保存されます。ボタンをクリックする必要も、覚える必要もありません。",
+        "ext.f2.title": "自動インジェクション",
+        "ext.f2.desc": "新しいチャットを始めると、関連する記憶が自動的に含まれます。AIはすでに文脈を理解しています。",
+        "ext.f3.title": "クロスプラットフォーム記憶",
+        "ext.f3.desc": "ChatGPTにコーヒーが好きだと言えば — Claudeも覚えています。記憶がすべてのAIについて回ります。",
+        "ext.f4.title": "プライバシーファースト",
+        "ext.f4.desc": "すべてのデータはあなたのパソコンに保存されます。外部サーバーには送信されません。記憶はあなただけのもの。",
+        "ext.before.label": "拡張機能なし",
+        "ext.before.user": "\"私の好きな飲み物は何？\"",
+        "ext.before.ai": "\"申し訳ありませんが、お好みに関する情報がありません。\"",
+        "ext.after.label": "拡張機能使用時",
+        "ext.after.user": "\"私の好きな飲み物は何？\"",
+        "ext.after.ai": "\"コーヒーがお好きだとおっしゃっていましたね — 特にアイスアメリカーノ！\"",
+        "ext.cta": "Chrome 拡張機能を入手",
+        "ext.cta.sub": "無料＆オープンソース — すべてのChromiumブラウザで動作",
+        "hero.cta.ext": "Chrome 拡張機能を入手",
+        "hero.cta.dev": "開発者 SDK",
+        "setup.ai.extension": "Chrome 拡張機能",
+        "setup.ai.ext.badge": "最も簡単",
+        "setup.ext.s1": "Chrome ウェブストアからインストール",
+        "setup.ext.s2": "AIサイトにアクセス（ChatGPT、Claude、またはGemini）",
+        "setup.ext.s3": "チャットを始めましょう — Stellar Memoryが残りを処理します！",
+        "eco.ext.tagline": "ChatGPT、Claude、Gemini用のAIメモリ",
+        "eco.ext.desc": "一度インストールすればすべてのAIがあなたを覚えます。会話を自動キャプチャし関連する記憶を注入します。",
+        "eco.ext.install": "拡張機能をインストール",
+        "eco.ext.github": "ソースを見る"
       }
     };
 
@@ -2791,7 +3000,8 @@
     var fadeTargets = [].concat(
       Array.from(document.querySelectorAll('.feature-card')),
       Array.from(document.querySelectorAll('.use-case-card')),
-      Array.from(document.querySelectorAll('.ai-card'))
+      Array.from(document.querySelectorAll('.ai-card')),
+      Array.from(document.querySelectorAll('.ext-feat-card'))
     );
 
     fadeTargets.forEach(function(el, i) {
@@ -2896,6 +3106,21 @@
         { titleKey: 'setup.other.s1', action: 'copy', command: 'pip install stellar-memory[mcp]' },
         { titleKey: 'setup.other.s2', action: 'copy', command: 'stellar-memory serve' },
         { titleKey: 'setup.other.s3', action: 'text' }
+      ],
+      'extension-windows': [
+        { titleKey: 'setup.ext.s1', action: 'link', url: 'https://github.com/sangjun0000/stellar-memory/tree/main/stellar-chrome', label: 'GitHub — stellar-chrome' },
+        { titleKey: 'setup.ext.s2', action: 'text' },
+        { titleKey: 'setup.ext.s3', action: 'text' }
+      ],
+      'extension-macos': [
+        { titleKey: 'setup.ext.s1', action: 'link', url: 'https://github.com/sangjun0000/stellar-memory/tree/main/stellar-chrome', label: 'GitHub — stellar-chrome' },
+        { titleKey: 'setup.ext.s2', action: 'text' },
+        { titleKey: 'setup.ext.s3', action: 'text' }
+      ],
+      'extension-linux': [
+        { titleKey: 'setup.ext.s1', action: 'link', url: 'https://github.com/sangjun0000/stellar-memory/tree/main/stellar-chrome', label: 'GitHub — stellar-chrome' },
+        { titleKey: 'setup.ext.s2', action: 'text' },
+        { titleKey: 'setup.ext.s3', action: 'text' }
       ]
     };
 
@@ -2953,6 +3178,10 @@
           html += '<button class="copy-btn" onclick="copyWizardCmd(this)" title="Copy">';
           html += '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
           html += '</button></div>';
+        } else if (step.action === 'link') {
+          html += '<a href="' + step.url + '" target="_blank" rel="noopener" class="wizard-download-btn">';
+          html += '<svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
+          html += step.label + '</a>';
         }
         html += '</div></div>';
       }
@@ -2985,12 +3214,55 @@
       });
     }
 
+    // ── Homunculus install OS toggle ────────────────────────────
+    function toggleHomInstallOS() {
+      var card = document.getElementById('hom-install');
+      if (!card) return;
+      var win = card.querySelector('.install-win');
+      var unix = card.querySelector('.install-unix');
+      if (win.style.display === 'none') {
+        win.style.display = '';
+        unix.style.display = 'none';
+      } else {
+        win.style.display = 'none';
+        unix.style.display = '';
+      }
+    }
+
+    function copyHomCmd() {
+      var cmd = document.getElementById('hom-curl').textContent.trim();
+      navigator.clipboard.writeText(cmd);
+      var btn = document.querySelector('#hom-install .copy-btn');
+      var orig = btn.textContent;
+      btn.textContent = 'Copied!';
+      setTimeout(function() { btn.textContent = orig; }, 1500);
+    }
+
     // Initialize OS detection on load
     selectedOS = detectOS();
     document.addEventListener('DOMContentLoaded', function() {
       var osPill = document.querySelector('[data-os="' + selectedOS + '"]');
       if (osPill) osPill.classList.add('selected');
+
+      // Homunculus install: show Windows or Unix based on OS
+      var homCard = document.getElementById('hom-install');
+      if (homCard) {
+        var winBtn = homCard.querySelector('.install-win');
+        var unixDiv = homCard.querySelector('.install-unix');
+        if (selectedOS === 'windows') {
+          winBtn.style.display = '';
+          unixDiv.style.display = 'none';
+        } else {
+          winBtn.style.display = 'none';
+          unixDiv.style.display = '';
+        }
+      }
     });
+
+    // ── Auto-select Extension in wizard when hash is #get-started ──
+    if (window.location.hash === '#get-started') {
+      setTimeout(function() { selectAI('extension'); }, 300);
+    }
 
     // ── Initialize language ────────────────────────────────────
     currentLang = detectLang();
