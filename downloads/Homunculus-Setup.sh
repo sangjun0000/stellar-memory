@@ -3,7 +3,7 @@ set -e
 
 echo ""
 echo "  ╔═══════════════════════════════════════╗"
-echo "  ║     Homunculus Setup v0.5.0           ║"
+echo "  ║     Homunculus Setup v1.0.0           ║"
 echo "  ║     Autonomous AI Agent               ║"
 echo "  ╚═══════════════════════════════════════╝"
 echo ""
@@ -24,9 +24,9 @@ PYVER=$(python3 --version 2>&1 | awk '{print $2}')
 echo "  [1/6] Python ${PYVER} found."
 
 # -- Step 2: Download --
-DOWNLOAD_URL="https://sangjun0000.github.io/stellar-memory/downloads/homunculus-v0.5.0.zip"
+DOWNLOAD_URL="https://sangjun0000.github.io/stellar-memory/downloads/homunculus-v1.0.0.zip"
 TEMP_DIR=$(mktemp -d)
-ZIP_FILE="${TEMP_DIR}/homunculus-v0.5.0.zip"
+ZIP_FILE="${TEMP_DIR}/homunculus-v1.0.0.zip"
 
 echo "  [2/6] Downloading..."
 if command -v curl &>/dev/null; then
@@ -43,7 +43,7 @@ echo "  [3/6] Extracting..."
 unzip -qo "$ZIP_FILE" -d "$TEMP_DIR"
 
 # -- Step 4: Install (auto mode) --
-SOURCE_DIR="${TEMP_DIR}/homunculus-v0.5.0"
+SOURCE_DIR="${TEMP_DIR}/homunculus-v1.0.0"
 echo "  [4/6] Installing..."
 python3 "${SOURCE_DIR}/src/homunculus/installer.py" "${SOURCE_DIR}" --auto
 

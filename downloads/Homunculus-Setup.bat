@@ -5,7 +5,7 @@ setlocal enabledelayedexpansion
 
 echo.
 echo  ╔═══════════════════════════════════════╗
-echo  ║     Homunculus Setup v0.5.0           ║
+echo  ║     Homunculus Setup v1.0.0           ║
 echo  ║     Autonomous AI Agent               ║
 echo  ╚═══════════════════════════════════════╝
 echo.
@@ -27,9 +27,9 @@ for /f "tokens=2 delims= " %%v in ('python --version 2^>^&1') do set PYVER=%%v
 echo  [1/6] Python %PYVER% found.
 
 :: -- Step 2: Download --
-set "DOWNLOAD_URL=https://sangjun0000.github.io/stellar-memory/downloads/homunculus-v0.5.0.zip"
+set "DOWNLOAD_URL=https://sangjun0000.github.io/stellar-memory/downloads/homunculus-v1.0.0.zip"
 set "TEMP_DIR=%TEMP%\homunculus-setup"
-set "ZIP_FILE=%TEMP_DIR%\homunculus-v0.5.0.zip"
+set "ZIP_FILE=%TEMP_DIR%\homunculus-v1.0.0.zip"
 if exist "%TEMP_DIR%" rmdir /s /q "%TEMP_DIR%"
 mkdir "%TEMP_DIR%"
 
@@ -50,7 +50,7 @@ powershell -ExecutionPolicy Bypass -Command ^
   "Expand-Archive -Path '%ZIP_FILE%' -DestinationPath '%TEMP_DIR%' -Force"
 
 :: -- Step 4: Install (auto mode) --
-set "SOURCE_DIR=%TEMP_DIR%\homunculus-v0.5.0"
+set "SOURCE_DIR=%TEMP_DIR%\homunculus-v1.0.0"
 if not exist "%SOURCE_DIR%\src\homunculus\installer.py" (
     echo  [ERROR] Invalid package. installer.py not found.
     pause
