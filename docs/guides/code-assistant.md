@@ -5,11 +5,12 @@ Build a code assistant that remembers project context, decisions, and patterns.
 ## Setup
 
 ```python
-from stellar_memory import StellarMemory, StellarConfig
+from stellar_memory import StellarBuilder, Preset
 
-config = StellarConfig(db_path="code_assistant_memory.db")
-memory = StellarMemory(config)
+memory = StellarBuilder(Preset.AGENT).with_sqlite("code_assistant_memory.db").build()
 ```
+
+The `AGENT` preset enables graph linking, summarization, and full recall for AI agents.
 
 ## Storing Project Context
 

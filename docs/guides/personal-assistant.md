@@ -5,14 +5,12 @@ Build an AI assistant that learns and remembers user preferences over time.
 ## Setup
 
 ```python
-from stellar_memory import StellarMemory, StellarConfig, EmotionConfig
+from stellar_memory import StellarBuilder, Preset
 
-config = StellarConfig(
-    db_path="assistant_memory.db",
-    emotion=EmotionConfig(enabled=True),
-)
-memory = StellarMemory(config)
+memory = StellarBuilder(Preset.CHAT).with_sqlite("assistant_memory.db").build()
 ```
+
+The `CHAT` preset enables emotion analysis and session support, ideal for personal assistants.
 
 ## Learning Preferences
 

@@ -1,69 +1,25 @@
-"""Stellar Memory - AI Memory Platform SDK.
+"""Backward compatibility for v2.0 imports.
 
-Give any AI human-like memory, built on a celestial structure.
+Usage::
 
-v3.0: Clean SDK with 11 core exports. For v2.0 imports, use stellar_memory.compat.
+    # If you used v2.0 imports like:
+    from stellar_memory import EventBus, MemoryGraph, ...
+
+    # You can temporarily use:
+    from stellar_memory.compat import EventBus, MemoryGraph, ...
+
+    # But prefer updating to direct module imports:
+    from stellar_memory.event_bus import EventBus
+    from stellar_memory.memory_graph import MemoryGraph
 """
 
-# 1. Main Class
-from stellar_memory.stellar import StellarMemory
+from __future__ import annotations
 
-# 2. Builder
-from stellar_memory.builder import StellarBuilder, Preset
+import importlib
+import warnings
 
-# 3. Core Models
-from stellar_memory.models import MemoryItem, MemoryStats
-
-# 4. Plugin Interface
-from stellar_memory.plugin import MemoryPlugin
-
-# 5. Extension Protocols
-from stellar_memory.protocols import (
-    StorageBackendProtocol,
-    EmbedderProvider,
-    ImportanceEvaluator,
-    MemoryStore,
-)
-
-# 6. Config
-from stellar_memory.config import StellarConfig
-
-try:
-    from importlib.metadata import version as _pkg_version
-    __version__ = _pkg_version("stellar-memory")
-except Exception:
-    __version__ = "3.0.0"
-
-__all__ = [
-    # Main
-    "StellarMemory",
-    # Builder
-    "StellarBuilder",
-    "Preset",
-    # Models
-    "MemoryItem",
-    "MemoryStats",
-    # Plugin
-    "MemoryPlugin",
-    # Protocols
-    "StorageBackendProtocol",
-    "EmbedderProvider",
-    "ImportanceEvaluator",
-    "MemoryStore",
-    # Config
-    "StellarConfig",
-]
-
-
-# --- Backward compatibility ---
-# v2.0 imports (e.g., `from stellar_memory import EventBus`) are redirected
-# to their module-level locations with a deprecation warning.
-
-import importlib as _importlib
-import warnings as _warnings
-
-# Lazy-load v2.0 exports with deprecation warnings
-_V2_COMPAT_MAP: dict[str, tuple[str, str]] = {
+# Map of v2 export names to (module_path, attribute_name)
+_V2_MAP: dict[str, tuple[str, str]] = {
     # Config classes
     "MemoryFunctionConfig": (".config", "MemoryFunctionConfig"),
     "ZoneConfig": (".config", "ZoneConfig"),
@@ -93,8 +49,6 @@ _V2_COMPAT_MAP: dict[str, tuple[str, str]] = {
     "MultimodalConfig": (".config", "MultimodalConfig"),
     "ReasoningConfig": (".config", "ReasoningConfig"),
     "BenchmarkConfig": (".config", "BenchmarkConfig"),
-    # Removed in v3.0 (redirect to compat for error messages)
-    # "BillingConfig" removed, "OnboardConfig" removed, "KnowledgeBaseConfig" removed
     # Models
     "ScoreBreakdown": (".models", "ScoreBreakdown"),
     "ReorbitResult": (".models", "ReorbitResult"),
@@ -163,14 +117,14 @@ _V2_COMPAT_MAP: dict[str, tuple[str, str]] = {
 
 
 def __getattr__(name: str):
-    if name in _V2_COMPAT_MAP:
-        module_path, attr = _V2_COMPAT_MAP[name]
-        _warnings.warn(
-            f"Importing '{name}' from stellar_memory is deprecated in v3.0. "
+    if name in _V2_MAP:
+        module_path, attr = _V2_MAP[name]
+        warnings.warn(
+            f"Importing {name} from stellar_memory.compat is deprecated. "
             f"Use 'from stellar_memory{module_path} import {attr}' instead.",
             DeprecationWarning,
             stacklevel=2,
         )
-        module = _importlib.import_module(module_path, package="stellar_memory")
+        module = importlib.import_module(module_path, package="stellar_memory")
         return getattr(module, attr)
-    raise AttributeError(f"module 'stellar_memory' has no attribute {name}")
+    raise AttributeError(f"module 'stellar_memory.compat' has no attribute {name}")

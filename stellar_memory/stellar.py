@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import time
 
+from stellar_memory._plugin_manager import PluginManager
 from stellar_memory.config import StellarConfig
 from stellar_memory.consolidator import MemoryConsolidator
 from stellar_memory.decay_manager import DecayManager
@@ -21,6 +22,7 @@ from stellar_memory.models import (
 )
 from stellar_memory.namespace import NamespaceManager
 from stellar_memory.orbit_manager import OrbitManager
+from stellar_memory.plugin import MemoryPlugin
 from stellar_memory.scheduler import ReorbitScheduler
 from stellar_memory.serializer import MemorySerializer
 from stellar_memory.session import SessionManager
@@ -57,6 +59,7 @@ class StellarMemory:
             self._orbit_mgr, self._memory_fn, self.config.reorbit_interval
         )
         self._event_bus = EventBus()
+        self._plugin_mgr = PluginManager()
 
         # Graph: persistent or in-memory
         if (self.config.graph.persistent
@@ -199,6 +202,14 @@ class StellarMemory:
     def events(self) -> EventBus:
         return self._event_bus
 
+    def use(self, plugin: MemoryPlugin) -> None:
+        """Register a plugin."""
+        self._plugin_mgr.register(plugin, self)
+
+    def on(self, event: str, callback) -> None:
+        """Register event callback (shorthand for EventBus)."""
+        self._event_bus.subscribe(event, callback)
+
     def store(self, content: str, importance: float = 0.5,
               metadata: dict | None = None,
               auto_evaluate: bool = False,
@@ -261,6 +272,8 @@ class StellarMemory:
             existing = self._find_similar_in_zones(item)
             if existing is not None:
                 merged = self._consolidator.merge(existing, item)
+                # Plugin hook: on_consolidate
+                merged = self._plugin_mgr.dispatch_consolidate(merged, [existing, item])
                 storage = self._orbit_mgr.get_storage(existing.zone)
                 storage.update(merged)
                 self._event_bus.emit("on_consolidate", existing, item)
@@ -317,6 +330,9 @@ class StellarMemory:
         if self.config.graph.enabled and self.config.graph.auto_link:
             self._auto_link(item)
 
+        # Plugin hook: on_store
+        item = self._plugin_mgr.dispatch_store(item)
+
         self._event_bus.emit("on_store", item)
         return item
 
@@ -329,6 +345,9 @@ class StellarMemory:
             self._access_control.require_permission(role, "read")
             if self._audit:
                 self._audit.log_access(role, "", "recall")
+
+        # Plugin hook: pre_recall
+        query = self._plugin_mgr.dispatch_pre_recall(query)
 
         query_embedding = self._embedder.embed(query)
         results: list[MemoryItem] = []
@@ -402,6 +421,9 @@ class StellarMemory:
                 if r.emotion is not None and r.emotion.dominant == emotion
             ]
 
+        # Plugin hook: on_recall
+        results = self._plugin_mgr.dispatch_recall(query, results)
+
         self._last_recall_ids = [item.id for item in results]
 
         # P9: Log recall for self-learning
@@ -420,6 +442,10 @@ class StellarMemory:
         return self._orbit_mgr.find_item(memory_id)
 
     def forget(self, memory_id: str, user_id: str | None = None) -> bool:
+        # Plugin hook: on_forget (can cancel)
+        if not self._plugin_mgr.dispatch_forget(memory_id):
+            return False
+
         item = self._orbit_mgr.find_item(memory_id)
         if item is None:
             return False
@@ -435,6 +461,11 @@ class StellarMemory:
 
     def reorbit(self) -> ReorbitResult:
         result = self._orbit_mgr.reorbit_all(self._memory_fn, time.time())
+
+        # Plugin hook: on_reorbit
+        moves = [(str(i), 0, 0) for i in range(result.moved)]
+        self._plugin_mgr.dispatch_reorbit(moves)
+
         self._event_bus.emit("on_reorbit", result)
 
         # Apply decay after reorbit
@@ -458,7 +489,7 @@ class StellarMemory:
             total_memories=total,
         )
 
-    def health(self) -> HealthStatus:
+    def _health(self) -> HealthStatus:
         """Run health diagnostics on the memory system."""
         status = HealthStatus()
 
@@ -493,7 +524,7 @@ class StellarMemory:
 
     # --- F4: WeightTuner Integration ---
 
-    def provide_feedback(self, query: str, used_ids: list[str]) -> None:
+    def _provide_feedback(self, query: str, used_ids: list[str]) -> None:
         record = FeedbackRecord(
             query=query,
             result_ids=self._last_recall_ids,
@@ -501,20 +532,20 @@ class StellarMemory:
         )
         self._tuner.record_feedback(record)
 
-    def auto_tune(self) -> dict[str, float] | None:
+    def _auto_tune(self) -> dict[str, float] | None:
         return self._tuner.tune()
 
-    def create_middleware(self, max_context: int = 5):
+    def _create_middleware(self, max_context: int = 5):
         """Create an LLM integration middleware."""
         from stellar_memory.llm_adapter import MemoryMiddleware
         return MemoryMiddleware(self, recall_limit=max_context)
 
     # --- F2: Session Management ---
 
-    def start_session(self) -> SessionInfo:
+    def _start_session(self) -> SessionInfo:
         return self._session_mgr.start_session()
 
-    def end_session(self, summarize: bool | None = None) -> SessionInfo | None:
+    def _end_session(self, summarize: bool | None = None) -> SessionInfo | None:
         session = self._session_mgr.end_session()
         if session is None:
             return None
@@ -575,7 +606,7 @@ class StellarMemory:
                 self._vector_index.add(item.id, item.embedding)
         return len(items)
 
-    def snapshot(self) -> MemorySnapshot:
+    def _snapshot(self) -> MemorySnapshot:
         items = self._orbit_mgr.get_all_items()
         serializer = MemorySerializer(self.config.embedder.dimension)
         return serializer.snapshot(items)
@@ -606,9 +637,16 @@ class StellarMemory:
                 if sim >= threshold:
                     self._graph.add_edge(item.id, other.id, "related_to", weight=sim)
 
-    def recall_graph(self, item_id: str, depth: int = 2) -> list[MemoryItem]:
-        """Recall memories related through the graph."""
-        related_ids = self._graph.get_related_ids(item_id, depth)
+    def link(self, source_id: str, target_id: str,
+             relation: str = "related", weight: float = 1.0) -> None:
+        """Explicitly link two memories in the knowledge graph."""
+        if not self.config.graph.enabled:
+            raise RuntimeError("Graph is not enabled")
+        self._graph.add_edge(source_id, target_id, relation, weight=weight)
+
+    def related(self, memory_id: str, depth: int = 2) -> list[MemoryItem]:
+        """Get memories related through the knowledge graph."""
+        related_ids = self._graph.get_related_ids(memory_id, depth)
         items = []
         for rid in related_ids:
             item = self._orbit_mgr.find_item(rid)
@@ -616,32 +654,56 @@ class StellarMemory:
                 items.append(item)
         return items
 
+    def _recall_graph(self, item_id: str, depth: int = 2) -> list[MemoryItem]:
+        """Deprecated: Use related() instead."""
+        return self.related(item_id, depth)
+
     @property
     def graph(self):
         return self._graph
 
     @property
+    def graph_analyzer(self):
+        """Public access to graph analytics module."""
+        return self._analyzer
+
+    @property
     def analyzer(self):
         return self._analyzer
 
+    @property
+    def session(self):
+        """Public access to session management module."""
+        return self._session_mgr
+
+    @property
+    def session_manager(self):
+        """Alias for backward compat. Prefer `session`."""
+        return self._session_mgr
+
+    @property
+    def self_learning(self):
+        """Public access to self-learning module."""
+        return self._weight_optimizer
+
     # --- P5: Graph Analytics ---
 
-    def graph_stats(self):
+    def _graph_stats(self):
         if self._analyzer is None:
             raise RuntimeError("Graph analytics not enabled")
         return self._analyzer.stats()
 
-    def graph_communities(self) -> list[list[str]]:
+    def _graph_communities(self) -> list[list[str]]:
         if self._analyzer is None:
             raise RuntimeError("Graph analytics not enabled")
         return self._analyzer.communities()
 
-    def graph_centrality(self, top_k: int = 10):
+    def _graph_centrality(self, top_k: int = 10):
         if self._analyzer is None:
             raise RuntimeError("Graph analytics not enabled")
         return self._analyzer.centrality(top_k)
 
-    def graph_path(self, source_id: str, target_id: str) -> list[str] | None:
+    def _graph_path(self, source_id: str, target_id: str) -> list[str] | None:
         if self._analyzer is None:
             raise RuntimeError("Graph analytics not enabled")
         return self._analyzer.path(source_id, target_id)
@@ -676,6 +738,11 @@ class StellarMemory:
     def _apply_decay(self) -> DecayResult:
         """Apply memory decay: demote stale memories, forget ancient ones."""
         all_items = self._orbit_mgr.get_all_items()
+
+        # Plugin hook: on_decay for each item
+        for item in all_items:
+            item.total_score = self._plugin_mgr.dispatch_decay(item, item.total_score)
+
         decay = self._decay_mgr.check_decay(all_items, time.time())
 
         for item_id in decay.to_forget:
@@ -699,7 +766,7 @@ class StellarMemory:
 
     # --- P6: Security ---
 
-    def encrypt_memory(self, memory_id: str) -> bool:
+    def _encrypt_memory(self, memory_id: str) -> bool:
         """Encrypt a memory's content in place."""
         if not self._encryption or not self._encryption.enabled:
             return False
@@ -714,7 +781,7 @@ class StellarMemory:
             self._audit.log_encrypt(memory_id)
         return True
 
-    def decrypt_memory(self, memory_id: str) -> str | None:
+    def _decrypt_memory(self, memory_id: str) -> str | None:
         """Decrypt and return a memory's content (does not alter storage)."""
         if not self._encryption or not self._encryption.enabled:
             return None
@@ -728,8 +795,8 @@ class StellarMemory:
 
     # --- P6: Knowledge Ingestion ---
 
-    def ingest(self, source: str, importance: float = 0.5,
-               **kwargs) -> IngestResult:
+    def _ingest(self, source: str, importance: float = 0.5,
+                **kwargs) -> IngestResult:
         """Ingest external knowledge from web, file, or API."""
         if not self.config.connectors.enabled:
             raise RuntimeError("Connectors are not enabled")
@@ -770,14 +837,14 @@ class StellarMemory:
             self._stream = MemoryStream(self)
         return self._stream
 
-    def timeline(self, start=None, end=None,
-                 limit: int = 100,
-                 user_id: str | None = None) -> list[TimelineEntry]:
+    def _timeline(self, start=None, end=None,
+                  limit: int = 100,
+                  user_id: str | None = None) -> list[TimelineEntry]:
         """Time-ordered memory timeline."""
         return self.stream.timeline(start, end, limit, user_id=user_id)
 
-    def narrate(self, topic: str, limit: int = 10,
-                user_id: str | None = None) -> str:
+    def _narrate(self, topic: str, limit: int = 10,
+                 user_id: str | None = None) -> str:
         """Generate narrative from memories about a topic."""
         return self.stream.narrate(topic, limit, user_id=user_id)
 
@@ -821,8 +888,8 @@ class StellarMemory:
         self._event_bus.emit("introspect", {"topic": topic, "confidence": result.confidence})
         return result
 
-    def recall_with_confidence(self, query: str, top_k: int = 5,
-                               threshold: float = 0.0) -> ConfidentRecall:
+    def _recall_with_confidence(self, query: str, top_k: int = 5,
+                                threshold: float = 0.0) -> ConfidentRecall:
         """Recall memories with confidence scoring."""
         if self._confidence_scorer is None:
             from stellar_memory.metacognition import ConfidenceScorer
@@ -838,7 +905,7 @@ class StellarMemory:
 
     # --- P9: Self-Learning ---
 
-    def optimize(self, min_logs: int | None = None) -> OptimizationReport:
+    def _optimize(self, min_logs: int | None = None) -> OptimizationReport:
         """Optimize memory function weights from recall patterns."""
         if self._pattern_collector is None or self._weight_optimizer is None:
             from stellar_memory.self_learning import PatternCollector, WeightOptimizer
@@ -866,7 +933,7 @@ class StellarMemory:
         })
         return report
 
-    def rollback_weights(self) -> dict[str, float]:
+    def _rollback_weights(self) -> dict[str, float]:
         """Rollback to previous memory function weights."""
         if self._weight_optimizer is None:
             raise RuntimeError("Self-learning is not initialized")
@@ -905,7 +972,7 @@ class StellarMemory:
         })
         return result
 
-    def detect_contradictions(self, scope: str | None = None) -> list[Contradiction]:
+    def _detect_contradictions(self, scope: str | None = None) -> list[Contradiction]:
         """Detect contradictions among memories."""
         from stellar_memory.reasoning import ContradictionDetector
 
@@ -935,8 +1002,8 @@ class StellarMemory:
 
     # --- P9: Benchmark ---
 
-    def benchmark(self, queries: int = 100, dataset: str = "standard",
-                  seed: int = 42) -> BenchmarkReport:
+    def _benchmark(self, queries: int = 100, dataset: str = "standard",
+                   seed: int = 42) -> BenchmarkReport:
         """Run comprehensive memory system benchmark."""
         from stellar_memory.benchmark import MemoryBenchmark
         bench = MemoryBenchmark(self)
@@ -953,9 +1020,52 @@ class StellarMemory:
         self._scheduler.start()
 
     def stop(self) -> None:
+        self._plugin_mgr.shutdown()
         self._scheduler.stop()
         self._tuner.close()
         if self._sync:
             self._sync.stop()
         if self._redis_cache:
             self._redis_cache.disconnect()
+
+    # --- v3.0 Backward Compatibility ---
+    # Methods moved to private API. Old names still work via __getattr__.
+
+    _DEPRECATED_METHODS: dict[str, str] = {
+        "health": "_health",
+        "provide_feedback": "_provide_feedback",
+        "auto_tune": "_auto_tune",
+        "create_middleware": "_create_middleware",
+        "start_session": "_start_session",
+        "end_session": "_end_session",
+        "snapshot": "_snapshot",
+        "recall_graph": "_recall_graph",
+        "graph_stats": "_graph_stats",
+        "graph_communities": "_graph_communities",
+        "graph_centrality": "_graph_centrality",
+        "graph_path": "_graph_path",
+        "encrypt_memory": "_encrypt_memory",
+        "decrypt_memory": "_decrypt_memory",
+        "ingest": "_ingest",
+        "timeline": "_timeline",
+        "narrate": "_narrate",
+        "recall_with_confidence": "_recall_with_confidence",
+        "optimize": "_optimize",
+        "rollback_weights": "_rollback_weights",
+        "detect_contradictions": "_detect_contradictions",
+        "benchmark": "_benchmark",
+    }
+
+    def __getattr__(self, name: str):
+        if name in StellarMemory._DEPRECATED_METHODS:
+            import warnings
+            warnings.warn(
+                f"StellarMemory.{name}() is deprecated in v3.0. "
+                f"Use the internal API or plugin system instead.",
+                DeprecationWarning,
+                stacklevel=2,
+            )
+            return getattr(self, StellarMemory._DEPRECATED_METHODS[name])
+        raise AttributeError(
+            f"'{type(self).__name__}' object has no attribute '{name}'"
+        )

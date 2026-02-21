@@ -15,7 +15,7 @@ StellarMemory(config: StellarConfig = None, namespace: str = None)
 | `config` | `StellarConfig` | `None` | Configuration object. Uses defaults if `None`. |
 | `namespace` | `str` | `None` | Memory namespace for isolation. |
 
-### Core Methods
+### Core Methods (v3.0 Public API)
 
 | Method | Description | Returns |
 |--------|-------------|---------|
@@ -25,18 +25,27 @@ StellarMemory(config: StellarConfig = None, namespace: str = None)
 | `forget(memory_id)` | Delete a memory | `bool` |
 | `reorbit()` | Trigger manual zone rebalancing | `ReorbitResult` |
 | `stats()` | Get memory statistics | `MemoryStats` |
-| `health()` | System health check | `HealthStatus` |
+| `link(source_id, target_id, relation, weight)` | Link two memories in the knowledge graph | `None` |
+| `related(memory_id, depth=2)` | Get memories related through the graph | `list[MemoryItem]` |
+| `use(plugin)` | Register a `MemoryPlugin` | `None` |
+| `export_json(include_embeddings)` | Export all memories to JSON | `str` |
+| `import_json(data)` | Import memories from JSON | `int` |
+| `start()` | Start background scheduler | `None` |
+| `stop()` | Stop scheduler and clean up | `None` |
 
-### Advanced Methods
+### Properties
 
-| Method | Description | Since |
-|--------|-------------|:-----:|
-| `timeline(start, end, limit)` | Time-ordered memory entries | P7 |
-| `narrate(topic, limit)` | Generate narrative from memories | P7 |
-| `export_json(include_embeddings)` | Export all memories to JSON | P2 |
-| `import_json(data)` | Import memories from JSON | P2 |
-| `start()` | Start background scheduler | P1 |
-| `stop()` | Stop scheduler and clean up | P1 |
+| Property | Type | Description |
+|----------|------|-------------|
+| `session` | `SessionManager` | Access session management |
+| `analyzer` | `GraphAnalyzer \| None` | Access graph analytics |
+| `self_learning` | `WeightOptimizer \| None` | Access self-learning module |
+
+### Deprecated Methods (v2.0 compat)
+
+The following methods are still accessible but emit `DeprecationWarning`. Use the plugin system or properties instead:
+
+`health()`, `timeline()`, `narrate()`, `provide_feedback()`, `auto_tune()`, `create_middleware()`, `start_session()`, `end_session()`, `snapshot()`, `graph_stats()`, `graph_communities()`, `graph_centrality()`, `graph_path()`, `encrypt_memory()`, `decrypt_memory()`, `ingest()`, `recall_with_confidence()`, `optimize()`, `rollback_weights()`, `detect_contradictions()`, `benchmark()`
 
 ### store()
 
@@ -83,19 +92,128 @@ print(f"Moved: {result.moved}, Evicted: {result.evicted}")
 
 Forces immediate rebalancing of all memories across zones.
 
+### link()
+
+```python
+memory.link(source_id, target_id, relation="related", weight=1.0)
+```
+
+Explicitly links two memories in the knowledge graph. Requires `graph.enabled = True`.
+
+### related()
+
+```python
+items = memory.related(memory_id, depth=2)
+for item in items:
+    print(item.content)
+```
+
+Returns memories connected through the knowledge graph up to the given depth.
+
+---
+
+## StellarBuilder (v3.0)
+
+The recommended way to create a configured `StellarMemory` instance.
+
+```python
+from stellar_memory import StellarBuilder, Preset
+
+memory = StellarBuilder(Preset.CHAT).with_sqlite("chat.db").build()
+```
+
+### Presets
+
+| Preset | Description | Use Case |
+|--------|-------------|----------|
+| `Preset.MINIMAL` | Bare minimum, no optional features | Testing, embedded |
+| `Preset.CHAT` | Emotions enabled, session support | Chatbots |
+| `Preset.AGENT` | Full features for autonomous agents | AI agents |
+| `Preset.KNOWLEDGE` | Graph + summarization optimized | Knowledge bases |
+| `Preset.RESEARCH` | All features, high recall limits | Research tools |
+
+### Builder Methods
+
+| Method | Description |
+|--------|-------------|
+| `.with_sqlite(path)` | Set SQLite database path |
+| `.with_memory()` | Use in-memory database |
+| `.with_emotions()` | Enable emotion analysis |
+| `.with_graph()` | Enable knowledge graph |
+| `.with_embedder(model, provider)` | Configure embedding model |
+| `.with_llm(provider, model)` | Configure LLM provider |
+| `.with_summarization(min_length, max_length)` | Enable summarization |
+| `.build()` | Build and return `StellarMemory` instance |
+
+---
+
+## MemoryPlugin (v3.0)
+
+Base class for extending StellarMemory with custom behavior.
+
+```python
+from stellar_memory import MemoryPlugin, StellarMemory
+
+class LoggingPlugin(MemoryPlugin):
+    def on_store(self, item):
+        print(f"Stored: {item.content[:50]}")
+
+    def on_recall(self, query, results):
+        print(f"Recalled {len(results)} items for '{query}'")
+
+memory = StellarMemory()
+memory.use(LoggingPlugin())
+```
+
+### Lifecycle Hooks
+
+| Hook | Trigger | Arguments |
+|------|---------|-----------|
+| `on_store(item)` | After a memory is stored | `MemoryItem` |
+| `on_recall(query, results)` | After a recall query | `str`, `list[MemoryItem]` |
+| `on_forget(memory_id)` | After a memory is deleted | `str` |
+| `on_reorbit(result)` | After zone rebalancing | `ReorbitResult` |
+| `on_consolidate(result)` | After memory consolidation | `ConsolidationResult` |
+| `on_decay(result)` | After decay processing | `DecayResult` |
+| `on_start()` | When scheduler starts | — |
+| `on_stop()` | When scheduler stops | — |
+| `on_error(error)` | When an error occurs | `Exception` |
+
+Errors in plugins are isolated — a failing plugin won't crash the system.
+
+---
+
+## Protocol Interfaces (v3.0)
+
+Runtime-checkable interfaces for extending or replacing internal components.
+
+```python
+from stellar_memory.protocols import Embedder, Evaluator, StorageBackendProtocol
+```
+
+| Protocol | Description | Key Methods |
+|----------|-------------|-------------|
+| `Embedder` | Text → vector embedding | `embed(text) → list[float]`, `embed_batch(texts)` |
+| `Evaluator` | Judge memory importance | `evaluate(content, metadata) → float` |
+| `Summarizer` | Summarize memory content | `summarize(content) → str` |
+| `StorageBackendProtocol` | Persistent storage backend | `save()`, `load()`, `delete()` |
+| `Encryptor` | Memory encryption | `encrypt(data) → bytes`, `decrypt(data) → bytes` |
+| `Syncer` | Multi-agent memory sync | `push()`, `pull()` |
+| `LLMProvider` | LLM integration | `complete(prompt) → str` |
+
 ---
 
 ## StellarConfig
 
-Configuration for StellarMemory.
+Direct configuration (for advanced use). Prefer `StellarBuilder` for most cases.
 
 ```python
-from stellar_memory import StellarConfig, EmotionConfig
+from stellar_memory import StellarConfig
 
 config = StellarConfig(
     db_path="my_memory.db",
-    emotion=EmotionConfig(enabled=True),
 )
+memory = StellarMemory(config)
 ```
 
 ### Key Options
@@ -105,18 +223,11 @@ config = StellarConfig(
 | `db_path` | `str` | `"stellar_memory.db"` | SQLite database path |
 | `emotion` | `EmotionConfig` | disabled | Emotion analysis settings |
 | `zones` | `list[ZoneConfig]` | 5 zones | Zone configuration |
-| `memory_fn` | `MemoryFunctionConfig` | default weights | Scoring weights |
-| `embedder` | `EmbedderConfig` | none | Embedding model settings |
-| `llm` | `LLMConfig` | none | LLM provider settings |
-
-### EmotionConfig
-
-```python
-EmotionConfig(
-    enabled=True,
-    weight=0.15,  # weight in memory function
-)
-```
+| `memory_function` | `MemoryFunctionConfig` | default weights | Scoring weights |
+| `embedder` | `EmbedderConfig` | default | Embedding model settings |
+| `llm` | `LLMConfig` | default | LLM provider settings |
+| `graph` | `GraphConfig` | enabled | Knowledge graph settings |
+| `session` | `SessionConfig` | enabled | Session management |
 
 ---
 

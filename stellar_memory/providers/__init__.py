@@ -3,24 +3,12 @@
 from __future__ import annotations
 
 import logging
-from typing import Callable, Protocol, runtime_checkable
+from typing import Callable
+
+# Re-export protocols from canonical location
+from stellar_memory.protocols import LLMProvider, EmbedderProvider  # noqa: F401
 
 logger = logging.getLogger(__name__)
-
-
-@runtime_checkable
-class LLMProvider(Protocol):
-    """Protocol for LLM providers."""
-
-    def complete(self, prompt: str, max_tokens: int = 256) -> str: ...
-
-
-@runtime_checkable
-class EmbedderProvider(Protocol):
-    """Protocol for embedding providers."""
-
-    def embed(self, text: str) -> list[float]: ...
-    def embed_batch(self, texts: list[str]) -> list[list[float]]: ...
 
 
 class NullLLMProvider:

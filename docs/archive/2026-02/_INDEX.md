@@ -201,3 +201,28 @@
   - `landing-persuasion/landing-persuasion.design.md`
   - `landing-persuasion/landing-persuasion.analysis.md`
   - `landing-persuasion/landing-persuasion.report.md`
+
+### smart-onboarding (v2.1.0 Smart Onboarding)
+- **Archived**: 2026-02-20
+- **Match Rate**: 96% (96%, 0 iterations)
+- **Duration**: 2026-02-20 (1 day)
+- **Features**: F1 Local Data Scanner (6 categories, platform-specific, privacy filters), F2 Smart Importer (paragraph chunking, Jaccard dedup, category importance), F3 CLI Commands (onboard/viz/sync-ai), F4 Memory Visualization (Solar System/List/Graph/Stats, dark theme, zero deps), F5 MCP Tools (7 new tools), F6 AI Knowledge Base (project detection, preference system, config sync)
+- **Files**: 4 new + 4 modified (~1,747 LOC)
+- **Documents**:
+  - `smart-onboarding/smart-onboarding.plan.md`
+  - `smart-onboarding/smart-onboarding.design.md`
+  - `smart-onboarding/smart-onboarding.analysis.md`
+  - `smart-onboarding/smart-onboarding.report.md`
+
+### platform-sdk (v3.0.0 SDK Redesign)
+- **Archived**: 2026-02-21
+- **Match Rate**: 90% (68% → 88% → 90%, 2 iterations)
+- **Tests**: 673 passed, 33 skipped, 0 failures
+- **Duration**: 2026-02-21 (1 day)
+- **Features**: F1 Core SDK Layer (16 public methods, __getattr__ backward compat), F2 Package Split (11-item __all__, compat.py 115 entries, billing/ deleted), F3 Plugin System (9 lifecycle hooks, PluginManager with error isolation), F4 Builder Pattern (StellarBuilder fluent API, 5 Presets), F5 Protocol Interfaces (7 @runtime_checkable Protocols), F6 Migration (celestial_engine thin shim, migration guide)
+- **Files**: 7 new + 7 modified + 8 deleted (~900 new LOC)
+- **Documents**:
+  - `platform-sdk/platform-sdk.plan.md`
+  - `platform-sdk/platform-sdk.design.md`
+  - `platform-sdk/platform-sdk.analysis.md`
+  - `platform-sdk/platform-sdk.report.md`

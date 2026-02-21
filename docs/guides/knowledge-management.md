@@ -5,11 +5,12 @@ Use Stellar Memory as a personal or team knowledge base with natural language re
 ## Setup
 
 ```python
-from stellar_memory import StellarMemory, StellarConfig
+from stellar_memory import StellarBuilder, Preset
 
-config = StellarConfig(db_path="knowledge.db")
-memory = StellarMemory(config)
+memory = StellarBuilder(Preset.KNOWLEDGE).with_sqlite("knowledge.db").build()
 ```
+
+The `KNOWLEDGE` preset enables graph linking and summarization for knowledge management.
 
 ## Storing Knowledge
 
@@ -37,9 +38,13 @@ Find related knowledge through memory connections:
 id1 = memory.store("FastAPI uses Pydantic for validation", importance=0.7).id
 id2 = memory.store("Pydantic v2 is 5-50x faster than v1", importance=0.6).id
 
-# Later, discover connections via graph
-if memory._analyzer:
-    neighbors = memory._analyzer.neighbors(id1, depth=2)
+# Explicitly link related knowledge
+memory.link(id1, id2, relation="related")
+
+# Discover connections through the graph
+related_items = memory.related(id1, depth=2)
+for item in related_items:
+    print(f"  Connected: {item.content}")
 ```
 
 ## Export and Backup

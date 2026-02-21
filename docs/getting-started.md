@@ -34,21 +34,38 @@ for zone_id, count in sorted(stats.zone_counts.items()):
     print(f"  Zone {zone_id}: {count}")
 ```
 
-## Step 5: Emotional Memory (1 minute)
+## Step 5: Use the Builder (v3.0)
+
+The recommended way to configure Stellar Memory:
 
 ```python
-from stellar_memory import StellarConfig, EmotionConfig
+from stellar_memory import StellarBuilder, Preset
 
-config = StellarConfig(emotion=EmotionConfig(enabled=True))
-memory = StellarMemory(config)
+# Choose a preset that fits your use case
+memory = StellarBuilder(Preset.CHAT).with_sqlite("chat.db").build()
 
 item = memory.store("Got my first customer today!")
-if item.emotion:
-    print(f"Dominant emotion: {item.emotion.dominant}")
-    print(f"Joy: {item.emotion.joy:.2f}")
+print(f"Stored: {item.content}")
 ```
 
-## Step 6: Clean Up
+Available presets: `MINIMAL`, `CHAT`, `AGENT`, `KNOWLEDGE`, `RESEARCH`.
+
+## Step 6: Link Related Memories
+
+```python
+id1 = memory.store("Python is my favorite language", importance=0.8).id
+id2 = memory.store("I use FastAPI for web APIs", importance=0.7).id
+
+# Explicitly link related memories
+memory.link(id1, id2, relation="related")
+
+# Discover related memories through the graph
+related = memory.related(id1)
+for item in related:
+    print(f"  Related: {item.content}")
+```
+
+## Step 7: Clean Up
 
 ```python
 memory.stop()
@@ -62,6 +79,7 @@ Choose your path:
 - **REST API** - Run `stellar-memory serve-api` and open `http://localhost:9000/docs`
 - **MCP Server** - Run `stellar-memory init-mcp` for Claude Code/Cursor integration
 - **Docker** - Run `docker-compose up stellar` for containerized deployment
+- **Migration from v2** - See [Migration Guide](migration-v2-to-v3.md) for upgrading
 
 ## Interactive Setup
 

@@ -11,14 +11,12 @@ pip install stellar-memory[ai]
 ## Basic Integration
 
 ```python
-from stellar_memory import StellarMemory, StellarConfig, EmotionConfig
+from stellar_memory import StellarBuilder, Preset
 
-config = StellarConfig(
-    db_path="chatbot_memory.db",
-    emotion=EmotionConfig(enabled=True),
-)
-memory = StellarMemory(config)
+memory = StellarBuilder(Preset.CHAT).with_sqlite("chatbot_memory.db").build()
 ```
+
+The `CHAT` preset enables emotion analysis and session support by default.
 
 ## Store User Messages
 

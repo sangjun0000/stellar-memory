@@ -246,13 +246,6 @@ class ChangeEvent:
 
 
 @dataclass
-class AccessRole:
-    """RBAC role definition."""
-    name: str
-    permissions: list[str] = field(default_factory=list)
-
-
-@dataclass
 class IngestResult:
     """Result of ingesting external knowledge."""
     source_url: str = ""
@@ -260,16 +253,6 @@ class IngestResult:
     summary_text: str = ""
     was_duplicate: bool = False
     original_length: int = 0
-
-
-@dataclass
-class ZoneDistribution:
-    """Zone distribution for dashboard."""
-    zone_id: int = 0
-    zone_name: str = ""
-    count: int = 0
-    capacity: int | None = None
-    usage_percent: float = 0.0
 
 
 # P9 models
@@ -399,16 +382,33 @@ class BenchmarkReport:
         )
 
 
-# Smart Onboarding models (v2.1.0)
+# --- Internal models (not part of public SDK API) ---
+
+@dataclass
+class AccessRole:
+    """RBAC role definition."""
+    name: str
+    permissions: list[str] = field(default_factory=list)
+
+
+@dataclass
+class ZoneDistribution:
+    """Zone distribution for dashboard."""
+    zone_id: int = 0
+    zone_name: str = ""
+    count: int = 0
+    capacity: int | None = None
+    usage_percent: float = 0.0
+
 
 @dataclass
 class ScanResult:
     """Single file discovered by LocalScanner."""
     path: str
-    category: str  # "documents"|"notes"|"ai-config"|"chat-history"|"code"|"bookmarks"
+    category: str
     size: int
     preview: str
-    ai_tool: str | None = None  # for ai-config: "claude"|"cursor"|"copilot"|"windsurf"
+    ai_tool: str | None = None
     importable: bool = True
 
 

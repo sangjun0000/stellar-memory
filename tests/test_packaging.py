@@ -21,16 +21,14 @@ class TestPackaging:
         assert isinstance(results, list)
 
     def test_public_api_exports(self):
+        """v3.0: __all__ has 11 core exports only."""
         import stellar_memory
         assert "StellarMemory" in stellar_memory.__all__
         assert "StellarConfig" in stellar_memory.__all__
         assert "MemoryItem" in stellar_memory.__all__
-        assert "EmotionVector" in stellar_memory.__all__
-        assert "TimelineEntry" in stellar_memory.__all__
-        assert "EmotionConfig" in stellar_memory.__all__
-        assert "ServerConfig" in stellar_memory.__all__
-        assert "EmotionAnalyzer" in stellar_memory.__all__
-        assert "MemoryStream" in stellar_memory.__all__
+        assert "StellarBuilder" in stellar_memory.__all__
+        assert "MemoryPlugin" in stellar_memory.__all__
+        assert len(stellar_memory.__all__) == 11
 
     def test_emotion_vector_importable(self):
         from stellar_memory import EmotionVector
