@@ -1179,25 +1179,29 @@
 <!-- INSTALL -->
 <section class="install fade-in" id="install">
   <div class="section-eyebrow">Get Started</div>
-  <h2 class="section-title">Two steps.<br>One minute.</h2>
+  <h2 class="section-title">One command.<br>That's it.</h2>
 
   <div class="install-steps">
     <div class="install-step">
       <div class="step-num">01</div>
-      <h3>Install</h3>
+      <h3>Install & Connect</h3>
       <div class="code-block">
-<pre><span class="cmd">git clone</span> <span class="string">https://github.com/sangjun0000/stellar-memory.git</span>
-<span class="cmd">cd</span> stellar-memory && <span class="cmd">npm install</span> && <span class="cmd">npm run build</span></pre>
+<pre><span class="cmd">npx</span> stellar-memory <span class="string">init</span></pre>
       </div>
+      <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5; margin-top: 16px;">
+        Downloads the model, registers the MCP server with Claude, and you're done.<br>
+        Your AI now remembers everything across sessions.
+      </p>
     </div>
     <div class="install-step">
       <div class="step-num">02</div>
-      <h3>Connect</h3>
+      <h3>Or install manually</h3>
       <div class="code-block">
-<pre><span class="cmd">claude mcp add</span> stellar-memory <span class="string">node /path/to/stellar-memory/dist/index.js</span></pre>
+<pre><span class="cmd">npm install</span> -g stellar-memory
+<span class="cmd">claude mcp add</span> stellar-memory -- <span class="string">npx -y stellar-memory</span></pre>
       </div>
       <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5; margin-top: 16px;">
-        Done. Your AI now remembers everything across sessions.
+        Prefer full control? Install globally and configure Claude manually.
       </p>
     </div>
   </div>
