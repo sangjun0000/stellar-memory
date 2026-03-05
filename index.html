@@ -707,7 +707,7 @@
 
     .install-steps {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 24px;
       margin-top: 64px;
     }
@@ -1179,41 +1179,25 @@
 <!-- INSTALL -->
 <section class="install fade-in" id="install">
   <div class="section-eyebrow">Get Started</div>
-  <h2 class="section-title">Three steps.<br>Two minutes.</h2>
+  <h2 class="section-title">Two steps.<br>One minute.</h2>
 
   <div class="install-steps">
     <div class="install-step">
       <div class="step-num">01</div>
-      <h3>Clone & Build</h3>
+      <h3>Install</h3>
       <div class="code-block">
 <pre><span class="cmd">git clone</span> <span class="string">https://github.com/sangjun0000/stellar-memory.git</span>
-<span class="cmd">cd</span> stellar-memory
-<span class="cmd">npm install</span>
-<span class="cmd">npm run build</span></pre>
+<span class="cmd">cd</span> stellar-memory && <span class="cmd">npm install</span> && <span class="cmd">npm run build</span></pre>
       </div>
     </div>
     <div class="install-step">
       <div class="step-num">02</div>
-      <h3>Add to Claude Code</h3>
+      <h3>Connect</h3>
       <div class="code-block">
-<pre><span class="comment">// .claude/settings.json</span>
-{
-  <span class="key">"mcpServers"</span>: {
-    <span class="key">"stellar-memory"</span>: {
-      <span class="key">"command"</span>: <span class="string">"node"</span>,
-      <span class="key">"args"</span>: [<span class="string">"/path/to/dist/index.js"</span>]
-    }
-  }
-}</pre>
+<pre><span class="cmd">claude mcp add</span> stellar-memory <span class="string">node /path/to/stellar-memory/dist/index.js</span></pre>
       </div>
-    </div>
-    <div class="install-step">
-      <div class="step-num">03</div>
-      <h3>Start Coding</h3>
-      <p style="color: var(--text-secondary); font-size: 15px; line-height: 1.6; margin-top: 16px;">
-        That's it. Stellar Memory automatically remembers decisions,
-        recalls context at session start, and commits state before exit.
-        Your AI now has persistent memory.
+      <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.5; margin-top: 16px;">
+        Done. Your AI now remembers everything across sessions.
       </p>
     </div>
   </div>
